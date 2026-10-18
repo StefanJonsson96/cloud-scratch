@@ -209,6 +209,7 @@ export class Game implements WorldHost {
     const reserve = portrait ? Math.max(120, Math.min(availH - ch, 200)) : 0;
     this.screen.style.height = `${ch + reserve}px`;
     this.screen.style.setProperty('--reserve', `${reserve}px`);
+    this.screen.style.setProperty('--canvas-h', `${ch}px`);
     this.screen.classList.toggle('portrait', portrait);
     this.screen.style.fontSize = `${Math.max(13, Math.min(19, cw / (portrait ? 26 : 46)))}px`;
   }

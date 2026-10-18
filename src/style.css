@@ -2717,3 +2717,19 @@ table.keys kbd {
 .creation .warn {
   color: var(--saffron);
 }
+
+/* Portrait phones: the objective sits under the map instead of over it. */
+.screen.portrait .hud-left {
+  position: absolute;
+  top: calc(var(--canvas-h, 0px) + 2px);
+  left: 0;
+  max-width: 100%;
+}
+
+.screen.portrait .hud-goal {
+  font-size: 0.85em;
+}
+
+.screen.portrait .hud-right {
+  margin-left: auto;
+}
