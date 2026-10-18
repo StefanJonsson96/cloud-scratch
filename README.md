@@ -39,7 +39,8 @@ volume (music, effects, voices) are the 🔊 and 🎚️ buttons in the corner.
   *¿estás cansada?* — everyone agrees with you, which is grammar practice in itself), your look,
   a class, and two difficulty settings: how hard the fights are, and how hard the Spanish is.
 - **Follow the 🎯 objective** in the corner — it always says what to do next, in Spanish with the
-  English underneath.
+  English underneath — and the yellow arrow on the map, which points at the target or at the exit
+  that leads there.
 - **Explore** a pixel-art coast: a fishing village, a market town, a whispering forest, a snowy
   monastery and the tower at the end. Talk to everyone — many villagers have lost a word and need
   you to give it back.
