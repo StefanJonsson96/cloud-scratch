@@ -3,7 +3,7 @@
 
 import { pushLayer } from '../engine/input';
 import { sfx } from '../engine/audio';
-import { speak, speechAvailable } from '../engine/speech';
+import { speak, speechAvailable, NARRATOR, type VoiceSpec } from '../engine/speech';
 import { portrait as portraitCanvas, hasSprite } from '../engine/sprites';
 import type { Settings } from '../state';
 import { h, clear, menu } from './dom';
@@ -15,6 +15,8 @@ export interface Line {
   face?: string;
   es?: string;
   en: string;
+  /** Who is speaking, for text-to-speech. */
+  voice?: VoiceSpec;
 }
 
 export interface Option {
@@ -101,13 +103,18 @@ export class Dialogue {
       );
       if (!always) this.tools.append(enBtn);
       if (this.settings().voice && speechAvailable()) {
-        this.tools.append(h('button', { class: 'dlg-tool no-advance', title: 'Read aloud (R)', onclick: () => speak(line.es!) }, '🔊'));
+        this.tools.append(h('button', { class: 'dlg-tool no-advance', title: 'Listen again (R)', onclick: () => this.speak(line) }, '🔊'));
+        if (this.settings().autoVoice) this.speak(line);
       }
     } else {
       this.textEl.append(h('span', { class: 'en-only' }, line.en));
       this.enEl.hidden = true;
     }
     return words;
+  }
+
+  private speak(line: Line) {
+    if (line.es) speak(line.es, line.voice ?? NARRATOR);
   }
 
   toggleEn() {
@@ -165,7 +172,7 @@ export class Dialogue {
           sfx('blip');
           finish();
         } else if (a === 'translate') this.toggleEn();
-        else if (a === 'speak' && line.es) speak(line.es);
+        else if (a === 'speak') this.speak(line);
         else return false;
         return true;
       });
@@ -194,7 +201,7 @@ export class Dialogue {
           return true;
         }
         if (a === 'speak' && line.es) {
-          speak(line.es);
+          this.speak(line);
           return true;
         }
         return false;

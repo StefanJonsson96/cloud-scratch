@@ -1,11 +1,13 @@
 import './style.css';
-import { initInput, inputDebug } from './engine/input';
+import { initInput, inputDebug, setHelpHandler } from './engine/input';
+import { showHelp } from './ui/corner';
 import { initSpeech } from './engine/speech';
 import { Game } from './game';
 import { showTitle } from './ui/title';
 import { newGame, save, todayKey } from './state';
 
 initInput();
+setHelpHandler(() => void showHelp());
 initSpeech();
 
 const app = document.getElementById('app')!;

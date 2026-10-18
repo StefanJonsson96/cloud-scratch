@@ -2,6 +2,7 @@
 // bestiary), quick review practice, settings and saving.
 
 import type { Game } from '../game';
+import { volumeSliders, showHelp } from './corner';
 import { h, clear, menu, appendAll } from './dom';
 import { spanish } from './spanish';
 import { pushLayer } from '../engine/input';
@@ -493,18 +494,15 @@ const ajustes: View = (game, el, rerender, close) => {
       [true, 'On'],
       [false, 'Off'],
     ]),
-    seg('voice', 'Voz · Spanish voice', speechAvailable() ? `Reads Spanish aloud: ${voiceName()}` : 'No Spanish voice found in this browser/OS.', [
+    seg('voice', 'Voz · Spanish voice', speechAvailable() ? `Reads Spanish aloud with: ${voiceName()}` : 'No Spanish voice found in this browser/OS. Add one in your system settings.', [
       [true, 'On'],
       [false, 'Off'],
     ]),
-    seg('music', 'Música · Music', 'Chiptune soundtrack.', [
+    seg('autoVoice', 'Leer diálogos · Auto-read dialogue', 'Every line is read aloud as it appears. 🔊 (or R) plays it again.', [
       [true, 'On'],
       [false, 'Off'],
     ]),
-    seg('sfx', 'Efectos · Sound effects', '', [
-      [true, 'On'],
-      [false, 'Off'],
-    ]),
+    h('div', { class: 'switch' }, h('div', null, 'Volumen · Volume', h('small', null, 'Also in the 🎚️ button in the corner. Saved on this device.')), volumeSliders()),
     seg('textSpeed', 'Texto · Text speed', '', [
       ['normal', 'Normal'],
       ['fast', 'Fast'],
@@ -590,6 +588,6 @@ const ajustes: View = (game, el, rerender, close) => {
     msg,
     code,
     importBox,
-    h('p', { class: 'muted' }, 'Keys: arrows/WASD move · Enter/Space/Z talk & confirm · Esc/X back · M menu · Shift run · T translate · H hint · R repeat audio · 1–4 answer'),
+    h('button', { class: 'btn', onclick: () => void showHelp() }, '❓ Controles · Controls'),
   );
 };

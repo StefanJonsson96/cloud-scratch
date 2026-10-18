@@ -15,6 +15,7 @@ export type Action =
   | 'translate'
   | 'hint'
   | 'speak'
+  | 'help'
   | `num${number}`;
 
 export type Layer = (a: Action, e?: KeyboardEvent) => boolean | void;
@@ -22,6 +23,25 @@ export type Layer = (a: Action, e?: KeyboardEvent) => boolean | void;
 const layers: Layer[] = [];
 const held = new Set<string>();
 let runHeld = false;
+let modals = 0;
+let helpHandler: (() => void) | null = null;
+
+/** Run a full-screen popup: keys stop reaching the screens below and walking pauses. */
+export async function modal<T>(fn: () => Promise<T>): Promise<T> {
+  modals++;
+  const pop = pushLayer(() => true);
+  try {
+    return await fn();
+  } finally {
+    pop();
+    modals--;
+  }
+}
+
+/** F1 / ? opens help from anywhere. */
+export function setHelpHandler(fn: () => void) {
+  helpHandler = fn;
+}
 
 export function pushLayer(l: Layer): () => void {
   layers.push(l);
@@ -61,6 +81,8 @@ const KEYMAP: Record<string, Action> = {
   KeyT: 'translate',
   KeyH: 'hint',
   KeyR: 'speak',
+  F1: 'help',
+  Slash: 'help',
 };
 
 function isTyping(): boolean {
@@ -69,6 +91,7 @@ function isTyping(): boolean {
 }
 
 export function heldDirection(): 'up' | 'down' | 'left' | 'right' | null {
+  if (modals) return null;
   // Most recently pressed direction wins.
   const order = [...held].reverse();
   for (const k of order) {
@@ -102,7 +125,11 @@ export function initInput() {
     if (!a) return;
     e.preventDefault();
     if (!e.repeat) held.add(e.code);
-    if (e.repeat && (a === 'confirm' || a === 'cancel' || a === 'menu')) return;
+    if (e.repeat && (a === 'confirm' || a === 'cancel' || a === 'menu' || a === 'help')) return;
+    if (a === 'help') {
+      helpHandler?.();
+      return;
+    }
     dispatch(a, e);
   });
   window.addEventListener('keyup', (e) => {

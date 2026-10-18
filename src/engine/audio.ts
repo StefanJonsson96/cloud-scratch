@@ -7,8 +7,63 @@ let ctx: AudioContext | null = null;
 let master: GainNode;
 let musicGain: GainNode;
 let sfxGain: GainNode;
-let sfxOn = true;
-let musicOn = true;
+
+// ------------------------------------------------------------------ volume
+/** Volume settings belong to the device, not the save game. */
+export interface AudioPrefs {
+  muted: boolean;
+  /** 0–1 */
+  music: number;
+  sfx: number;
+  voice: number;
+}
+
+const PREFS_KEY = 'palabrista-audio';
+const DEFAULT_PREFS: AudioPrefs = { muted: false, music: 0.6, sfx: 0.8, voice: 1 };
+let prefs: AudioPrefs = loadPrefs();
+const listeners = new Set<(p: AudioPrefs) => void>();
+
+function loadPrefs(): AudioPrefs {
+  try {
+    return { ...DEFAULT_PREFS, ...JSON.parse(localStorage.getItem(PREFS_KEY) ?? '{}') };
+  } catch {
+    return { ...DEFAULT_PREFS };
+  }
+}
+
+export function audioPrefs(): AudioPrefs {
+  return prefs;
+}
+
+export function setAudioPrefs(p: Partial<AudioPrefs>) {
+  const wasSilent = musicSilent();
+  prefs = { ...prefs, ...p };
+  try {
+    localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+  } catch {
+    /* storage unavailable: the change still applies for this session */
+  }
+  applyGains();
+  if (wasSilent && !musicSilent() && wanted) playMusic(wanted, true);
+  if (!wasSilent && musicSilent()) stopMusic();
+  for (const l of listeners) l(prefs);
+}
+
+/** Get told when the volume changes (to update mute icons). */
+export function onAudioPrefs(fn: (p: AudioPrefs) => void): () => void {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+const musicSilent = () => prefs.muted || prefs.music <= 0;
+
+function applyGains() {
+  if (!ctx) return;
+  const t = ctx.currentTime;
+  master.gain.setTargetAtTime(prefs.muted ? 0 : 0.5, t, 0.02);
+  musicGain.gain.setTargetAtTime(0.5 * prefs.music, t, 0.02);
+  sfxGain.gain.setTargetAtTime(0.7 * prefs.sfx, t, 0.02);
+}
 
 function ac(): AudioContext | null {
   if (ctx) return ctx;
@@ -16,14 +71,14 @@ function ac(): AudioContext | null {
   if (!Ctor) return null;
   ctx = new Ctor();
   master = ctx.createGain();
-  master.gain.value = 0.5;
   master.connect(ctx.destination);
   musicGain = ctx.createGain();
-  musicGain.gain.value = 0.32;
   musicGain.connect(master);
   sfxGain = ctx.createGain();
-  sfxGain.gain.value = 0.55;
   sfxGain.connect(master);
+  master.gain.value = prefs.muted ? 0 : 0.5;
+  musicGain.gain.value = 0.5 * prefs.music;
+  sfxGain.gain.value = 0.7 * prefs.sfx;
   return ctx;
 }
 
@@ -31,16 +86,6 @@ function ac(): AudioContext | null {
 export function unlockAudio() {
   const c = ac();
   if (c && c.state === 'suspended') void c.resume();
-}
-
-export function setSfx(on: boolean) {
-  sfxOn = on;
-}
-
-export function setMusic(on: boolean) {
-  musicOn = on;
-  if (!on) stopMusic();
-  else if (wanted) playMusic(wanted, true);
 }
 
 const NOTE: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
@@ -110,7 +155,7 @@ export type Sfx =
   | 'ultimate';
 
 export function sfx(name: Sfx) {
-  if (!sfxOn) return;
+  if (prefs.muted || prefs.sfx <= 0) return;
   const c = ac();
   if (!c) return;
   const t = c.currentTime + 0.01;
@@ -269,7 +314,7 @@ export function currentMusic() {
 
 export function playMusic(name: string, force = false) {
   wanted = name;
-  if (!musicOn) return;
+  if (musicSilent()) return;
   if (playing === name && !force) return;
   const c = ac();
   if (!c) return;

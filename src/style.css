@@ -2401,3 +2401,137 @@ body.has-touch.no-world .touch {
   opacity: 0.6;
   text-decoration: line-through;
 }
+
+/* Corner buttons: mute, volume, help */
+.hud-right,
+.b-top-right {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.hud-right .hud-btn {
+  margin-left: 0;
+}
+
+.corner-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.hud-btn.icon {
+  padding: 3px 6px;
+  line-height: 1.2;
+  min-width: 2em;
+}
+
+.b-top-right .corner-btns .hud-btn {
+  font-size: 0.95em;
+}
+
+.title-corner {
+  position: absolute;
+  top: max(10px, env(safe-area-inset-top, 0px));
+  right: 10px;
+  z-index: 3;
+}
+
+.vol-pop {
+  position: fixed;
+  z-index: 80;
+  width: min(320px, calc(100vw - 16px));
+  padding: 12px 14px;
+  text-align: left;
+}
+
+.vol-title {
+  font-family: var(--font-display);
+  margin-bottom: 6px;
+}
+
+.vol-title small {
+  font-family: var(--font-body);
+  color: var(--muted);
+}
+
+.vol-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: min(300px, 100%);
+}
+
+.vol-row {
+  display: grid;
+  grid-template-columns: 7.5em 1fr 3em;
+  align-items: center;
+  gap: 8px;
+}
+
+.vol-label small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78em;
+}
+
+.vol-row input[type='range'] {
+  width: 100%;
+  accent-color: var(--saffron);
+}
+
+.vol-val {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-size: 0.85em;
+}
+
+.vol-mute {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.help-overlay {
+  z-index: 90;
+}
+
+.help-panel h2 small,
+.help-panel h3 small {
+  font-weight: normal;
+  color: var(--muted);
+  font-size: 0.6em;
+  margin-left: 6px;
+}
+
+table.keys {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0 12px;
+}
+
+table.keys th,
+table.keys td {
+  text-align: left;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92em;
+}
+
+table.keys th {
+  color: var(--muted);
+  font-weight: normal;
+}
+
+table.keys kbd {
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
+.help-list {
+  text-align: left;
+  padding-left: 1.2em;
+  line-height: 1.5;
+}

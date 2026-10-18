@@ -16,8 +16,9 @@ import { runBattle, type BattleOutcome, type BattleSetup } from './battle/battle
 import { fullHeal, save, type GameState } from './state';
 import { currentGoal } from './story/goals';
 import { spanish } from './ui/spanish';
+import { cornerButtons } from './ui/corner';
 import { initTouch } from './engine/input';
-import { playMusic, setMusic, setSfx } from './engine/audio';
+import { playMusic } from './engine/audio';
 import { setSpeechEnabled } from './engine/speech';
 
 export class Game implements WorldHost {
@@ -52,7 +53,7 @@ export class Game implements WorldHost {
       '☰ Menú',
     );
     this.goalEl = h('div', { class: 'hud-goal', hidden: true });
-    this.hud.append(h('div', { class: 'hud-left' }, this.goalEl, h('div', { class: 'hud-place' })), menuBtn);
+    this.hud.append(h('div', { class: 'hud-left' }, this.goalEl, h('div', { class: 'hud-place' })), h('div', { class: 'hud-right' }, cornerButtons(), menuBtn));
     window.addEventListener('resize', () => this.layout());
     window.visualViewport?.addEventListener('resize', () => this.layout());
     setLookupHandler((e) => {
@@ -71,8 +72,6 @@ export class Game implements WorldHost {
 
   applySettings() {
     const s = this.g.settings;
-    setSfx(s.sfx);
-    setMusic(s.music);
     setSpeechEnabled(s.voice);
   }
 

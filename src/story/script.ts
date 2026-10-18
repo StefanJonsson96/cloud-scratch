@@ -14,7 +14,7 @@ import { runChallenge } from '../ui/challengeView';
 import { ITEMS, ACCESSORIES } from '../data/items';
 import { h, menu, wait, waitConfirm } from '../ui/dom';
 import { sfx, playMusic } from '../engine/audio';
-import { speechAvailable } from '../engine/speech';
+import { speechAvailable, type VoiceSpec } from '../engine/speech';
 import { spanish } from '../ui/spanish';
 
 export type ScriptFn = (s: Script) => Promise<void>;
@@ -28,32 +28,38 @@ export function script(id: string, fn: ScriptFn) {
 export interface Speaker {
   name: string;
   face?: string;
+  voice?: VoiceSpec;
 }
 
+const v = (id: string, gender: 'f' | 'm', pitch = 1, rate = 1): VoiceSpec => ({ id, gender, pitch, rate });
+
 export const CAST: Record<string, Speaker> = {
-  abuela: { name: 'Abuela Rosa', face: 'abuela' },
-  mateo: { name: 'Mateo', face: 'mateo' },
-  lola: { name: 'Lola', face: 'lola' },
-  ramon: { name: 'Don Ramón', face: 'pescador' },
-  carmen: { name: 'Doña Carmen', face: 'vendedora' },
-  pepe: { name: 'Pepe', face: 'vecino' },
-  lucia: { name: 'Lucía', face: 'vecina' },
-  nino: { name: 'Dani', face: 'nino' },
-  guardia: { name: 'Guardia', face: 'guardia' },
-  peregrina: { name: 'Peregrina', face: 'peregrina' },
-  monje: { name: 'Hermano Tomás', face: 'monje' },
-  callado: { name: 'El Callado', face: 'callado' },
-  bruno: { name: 'Bruno', face: 'bruno' },
-  voz: { name: '???' },
-  posadera: { name: 'Doña Pilar', face: 'vecina' },
-  frutera: { name: 'La frutera', face: 'vecina2' },
-  quesero: { name: 'El quesero', face: 'vecino2' },
-  pescadera: { name: 'La pescadera', face: 'vecina' },
-  tendera: { name: 'Doña Encarna', face: 'vendedora' },
-  panadero: { name: 'Don Julián', face: 'vecino' },
-  camarero: { name: 'El camarero', face: 'vecino2' },
-  nina: { name: 'Marta', face: 'nino' },
-  gloton: { name: 'El Glotón' },
+  abuela: { name: 'Abuela Rosa', face: 'abuela', voice: v('abuela', 'f', 0.85, 0.86) },
+  mateo: { name: 'Mateo', face: 'mateo', voice: v('mateo', 'm', 1.1, 1.05) },
+  lola: { name: 'Lola', face: 'lola', voice: v('lola', 'f', 1.1, 1.05) },
+  ramon: { name: 'Don Ramón', face: 'pescador', voice: v('ramon', 'm', 0.8, 0.9) },
+  carmen: { name: 'Doña Carmen', face: 'vendedora', voice: v('carmen', 'f', 0.95, 0.95) },
+  pepe: { name: 'Pepe', face: 'vecino', voice: v('pepe', 'm', 0.95) },
+  lucia: { name: 'Lucía', face: 'vecina', voice: v('lucia', 'f', 1.05) },
+  nino: { name: 'Dani', face: 'nino', voice: v('nino', 'm', 1.5, 1.08) },
+  guardia: { name: 'Guardia', face: 'guardia', voice: v('guardia', 'm', 0.85, 0.95) },
+  peregrina: { name: 'Peregrina', face: 'peregrina', voice: v('peregrina', 'f', 1) },
+  monje: { name: 'Hermano Tomás', face: 'monje', voice: v('monje', 'm', 0.8, 0.85) },
+  callado: { name: 'El Callado', face: 'callado', voice: v('callado', 'm', 0.6, 0.8) },
+  bruno: { name: 'Bruno', face: 'bruno', voice: v('bruno', 'm', 0.75, 0.9) },
+  voz: { name: '???', voice: v('voz', 'f', 0.9, 0.88) },
+  posadera: { name: 'Doña Pilar', face: 'vecina', voice: v('posadera', 'f', 0.95) },
+  frutera: { name: 'La frutera', face: 'vecina2', voice: v('frutera', 'f', 1.05, 1.05) },
+  quesero: { name: 'El quesero', face: 'vecino2', voice: v('quesero', 'm', 0.9) },
+  pescadera: { name: 'La pescadera', face: 'vecina', voice: v('pescadera', 'f', 1) },
+  tendera: { name: 'Doña Encarna', face: 'vendedora', voice: v('tendera', 'f', 0.9, 0.95) },
+  panadero: { name: 'Don Julián', face: 'vecino', voice: v('panadero', 'm', 0.9) },
+  camarero: { name: 'El camarero', face: 'vecino2', voice: v('camarero', 'm', 1.05, 1.08) },
+  nina: { name: 'Marta', face: 'nino', voice: v('nina', 'f', 1.4, 1.08) },
+  gloton: { name: 'El Glotón', voice: v('gloton', 'm', 0.5, 0.8) },
+  Paco: { name: 'Paco', voice: v('paco', 'm', 0.95) },
+  Leñador: { name: 'Leñador', voice: v('lenador', 'm', 0.75, 0.9) },
+  Alpinista: { name: 'Alpinista', voice: v('alpinista', 'm', 1) },
 };
 
 export class Script {
@@ -69,14 +75,14 @@ export class Script {
   }
 
   private speaker(who: string): Speaker {
-    if (who === 'hero') return { name: this.g.heroName, face: 'hero' };
+    if (who === 'hero') return { name: this.g.heroName, face: 'hero', voice: { id: 'hero', gender: this.g.gender ?? 'm' } };
     return CAST[who] ?? { name: who };
   }
 
   /** A character speaks Spanish (with an English translation one tap away). */
   async say(who: string, es: string, en: string) {
     const sp = this.speaker(who);
-    await this.game.dialogue.say({ who: sp.name, face: sp.face, es, en });
+    await this.game.dialogue.say({ who: sp.name, face: sp.face, voice: sp.voice, es, en });
   }
 
   /** English narration (no speaker). */
@@ -88,7 +94,7 @@ export class Script {
   async ask(who: string, es: string, en: string, options: [string, string][]): Promise<number> {
     const sp = this.speaker(who);
     return this.game.dialogue.ask(
-      { who: sp.name, face: sp.face, es, en },
+      { who: sp.name, face: sp.face, voice: sp.voice, es, en },
       options.map(([oes, oen]) => ({ es: oes || undefined, en: oen })),
     );
   }

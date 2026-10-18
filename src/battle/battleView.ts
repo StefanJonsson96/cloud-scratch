@@ -22,6 +22,7 @@ import type { GameState, LevelUp } from '../state';
 import type { Grade } from '../learn/check';
 import { h, clear, menu, wait, waitConfirm, type MenuItem } from '../ui/dom';
 import { spanish, hideGloss } from '../ui/spanish';
+import { cornerButtons } from '../ui/corner';
 import { spriteCanvas, portrait, sprite } from '../engine/sprites';
 import { pushLayer } from '../engine/input';
 import { sfx } from '../engine/audio';
@@ -78,7 +79,7 @@ export class BattleView {
     this.layer = h(
       'div',
       { class: `battle bg-${bg}` },
-      h('div', { class: 'b-top' }, this.timeline, this.racha),
+      h('div', { class: 'b-top' }, this.timeline, h('div', { class: 'b-top-right' }, this.racha, cornerButtons())),
       h('div', { class: 'b-stage' }, this.enemyRow, this.banner),
       this.logEl,
       h('div', { class: 'b-bottom' }, this.partyRow, this.cmd),
@@ -93,7 +94,7 @@ export class BattleView {
     let el = this.layer.querySelector<HTMLElement>('.b-goals');
     if (!el) {
       el = h('div', { class: 'b-goals' });
-      this.layer.querySelector('.b-top')!.insertBefore(el, this.racha);
+      this.layer.querySelector('.b-top')!.insertBefore(el, this.racha.parentElement);
     }
     const next = steps.find((t) => !t.done);
     el.replaceChildren(

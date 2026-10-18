@@ -5,6 +5,7 @@ import { spriteCanvas, PALETTE } from '../engine/sprites';
 import { unlockAudio, playMusic, sfx } from '../engine/audio';
 import { dayStreak, hasSave, load, deleteSave, type GameState, type Settings } from '../state';
 import { pushLayer } from '../engine/input';
+import { cornerButtons } from './corner';
 
 export interface TitleResult {
   mode: 'continue' | 'new';
@@ -51,7 +52,7 @@ export function showTitle(): Promise<TitleResult> {
     const tiles = h('canvas', { class: 'tiles', 'aria-hidden': 'true' }) as HTMLCanvasElement;
     azulejos(tiles);
     const inner = h('div', { class: 'title-inner' });
-    const screen = h('div', { class: 'title-screen' }, tiles, inner);
+    const screen = h('div', { class: 'title-screen' }, tiles, h('div', { class: 'title-corner' }, cornerButtons()), inner);
     document.body.append(screen);
     document.body.classList.add('no-world');
 

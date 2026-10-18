@@ -13,10 +13,10 @@ export interface Settings {
   translations: 'always' | 'tap';
   /** Ask for typed answers sooner (active recall). */
   typingFocus: boolean;
-  /** Read Spanish aloud. */
+  /** Read Spanish aloud (🔊 buttons, listening challenges). */
   voice: boolean;
-  sfx: boolean;
-  music: boolean;
+  /** Read every dialogue line aloud as it appears. */
+  autoVoice: boolean;
   textSpeed: 'normal' | 'fast' | 'instant';
   /** Random encounter frequency. */
   encounters: 'normal' | 'low';
@@ -27,6 +27,8 @@ export interface Settings {
 export interface GameState {
   version: 1;
   heroName: string;
+  /** Grammatical gender the world uses for you: cansado / cansada. */
+  gender?: 'm' | 'f';
   chapter: number;
   map: string;
   x: number;
@@ -51,8 +53,7 @@ export const DEFAULT_SETTINGS: Settings = {
   translations: 'tap',
   typingFocus: true,
   voice: true,
-  sfx: true,
-  music: true,
+  autoVoice: true,
   textSpeed: 'normal',
   encounters: 'normal',
   easy: false,
