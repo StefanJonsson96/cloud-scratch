@@ -25,13 +25,21 @@ Prefer a single file? `npm run build` writes `dist/index.html`, which runs strai
 double-click it, or put it on a phone. Your progress is saved in the browser; *Menú → Ajustes* gives
 you a save code to carry it to another device.
 
-**Sound:** Spanish is read aloud by your browser's own text-to-speech. The game picks a Spain
-(es-ES) voice when one is installed — on Windows that's *Microsoft Helena/Pablo/Laura*, on macOS
-*Mónica/Jorge*, and Chrome ships *Google español*. If you hear nothing, add a Spanish voice in your
-OS settings.
+**Sound:** every line of dialogue is read aloud by your browser's text-to-speech, and each
+character has their own voice — women and girls get a female Spanish voice, men and boys a male one,
+each with their own pitch and pace. The game prefers Spain (es-ES) voices: on Windows that's
+*Microsoft Helena/Laura/Pablo* (Edge adds natural voices like *Elvira* and *Álvaro*), on macOS
+*Mónica/Jorge*, and Chrome ships *Google español*. With only one voice installed, pitch is shifted
+to tell characters apart. If you hear nothing, add a Spanish voice in your OS settings. Mute and
+volume (music, effects, voices) are the 🔊 and 🎚️ buttons in the corner.
 
 ## How it plays
 
+- **Make your character.** Pick a name, how Spanish should address you (*¿estás cansado?* or
+  *¿estás cansada?* — everyone agrees with you, which is grammar practice in itself), your look,
+  a class, and two difficulty settings: how hard the fights are, and how hard the Spanish is.
+- **Follow the 🎯 objective** in the corner — it always says what to do next, in Spanish with the
+  English underneath.
 - **Explore** a pixel-art coast: a fishing village, a market town, a whispering forest, a snowy
   monastery and the tower at the end. Talk to everyone — many villagers have lost a word and need
   you to give it back.
@@ -51,6 +59,22 @@ OS settings.
     (*hoy he comido*), *indefinido* vs *imperfecto*, and *gustar*.
 - **Racha.** Right answers fill a streak meter. When it's full, unleash a *Palabra Final* by
   building a Spanish sentence from word tiles.
+- **No clock.** Take as long as you need to read and answer. (Want pressure? Turn on the speed bonus
+  in *Ajustes*.) Lost a fight? Each retry gives you *¡Ánimo!* — the enemies get a bit weaker.
+
+![Choose a class: each changes how you grow, adds a skill and a passive](docs/classes.png)
+
+### Classes and talents
+
+| Class | Plays like | Signature skill | Passive |
+| --- | --- | --- | --- |
+| 🔥 Hechicero / Hechicera | Glass cannon | *Meteoro*: fire on every foe | Right answers deal +15% |
+| 🛡️ Guardián / Guardiana | Tank | *Muralla*: draw attacks to you, shielded | Mistakes never break your Racha |
+| 🗡️ Pícaro / Pícara | Fast and lucky | *Birlar*: hit and steal | Right answers bring your next turn sooner; crits on 18–20 |
+
+Every 3 levels you pick one of three **talents** — party-wide perks like *Segundo aliento* (survive a
+knockout once per battle), *Maestro de combos*, *Buena memoria* (hints stop lowering your grade) or
+*Regateo* (cheaper shops).
 
 ## What it teaches (and why)
 
@@ -66,6 +90,17 @@ It's built to sit next to Duolingo and fill the gaps an app course tends to leav
 | Ser/estar, por/para, gustar | Drilled as fast decisions, with the classic edge cases (*la fiesta es en…*, *está listo / es listo*) |
 | Past tenses | Spain's *perfecto* for today, *indefinido* vs *imperfecto* in the story's own flashbacks |
 | Idioms | *estar hecho polvo, ser pan comido, meter la pata, quien calla otorga…* |
+| Agreement | NPCs address you as *listo / lista, preparado / preparada*; class names agree with you |
+
+### Spanish level
+
+| Level | What changes |
+| --- | --- |
+| **A1 · Principiante** | Core words and the present tense; grammar unlocks slowly; mostly multiple choice; short sentences; a missing accent still counts |
+| **A2 · Intermedio** | Past tenses (Spain's *perfecto*, *indefinido*, *imperfecto*), ser/estar, por/para, gustar; typing once you know a word |
+| **B1 · Avanzado** | Everything from the start, plus the **future, conditional, present subjunctive and commands** (with *vosotros*: *¡venid!*), indicative-or-subjunctive drills, **false friends** (*embarazada, éxito, librería…*), **Spain vs Latin America** (*ordenador / computadora, móvil / celular…*), colloquial Spain Spanish (*flipar, currar, majo, ¡qué fuerte!*), and lots of typing |
+
+Change it any time in *Menú → Ajustes*; the Grimorio shows the tenses and notes for your level.
 
 ![Every Spanish word is tappable; EN shows the whole line](docs/dialogue.png)
 
@@ -87,8 +122,10 @@ fade into the background, and mastered ones return days later.
 | Back | Esc / X | B |
 | Menu | M | ☰ |
 | Translate line | T | EN button |
-| Hint · repeat audio | H · R | 💡 · 🔊 |
+| Hint · hear it again | H · R | 💡 · 🔊 |
 | Answer | 1–4 | tap |
+| All controls | F1 or ? | ❓ |
+| Mute · volume | — | 🔊 · 🎚️ (corner) |
 
 ## Project layout
 
@@ -96,15 +133,17 @@ fade into the background, and mastered ones return days later.
 src/
   data/       vocabulary, verbs (all tenses), grammar drills, sentences, items, glossary
   learn/      answer checking, spaced repetition, challenge generator, tap-to-translate dictionary
-  battle/     rules (turn order, damage, combos, enemy AI), enemies, battle controller and screen
+  battle/     rules (turn order, damage, combos, enemy AI), enemies, classes & talents, controller and screen
   world/      tiles, maps, overworld engine
-  story/      the scripts for every chapter
-  ui/         dialogue, challenge card, menus, title screen
-  engine/     input, audio (chiptune synth), speech, pixel-art sprites
+  story/      the scripts for every chapter, and the objective for each stage
+  ui/         dialogue, challenge card, menus, title, character creation, help & volume
+  engine/     input, audio (chiptune synth, volume), speech (per-character voices), pixel-art sprites
   art/        sprites as strings of palette characters
 tests/        learning logic, battle rules, and map/story integrity
+tech-debt/    known shortcuts we intend to fix later
 ```
 
-`npm test` runs the test suite: answer checking, conjugations, the scheduler, battle rules, and checks
-that every map is walkable, every exit leads somewhere, and every Spanish word in the story has a
+`npm test` runs the test suite: answer checking, conjugations (all eight tenses), the scheduler,
+the Spanish levels, battle rules, classes and talents, and checks that every map is walkable, every
+exit leads somewhere, every story stage has an objective, and every Spanish word in the story has a
 translation.
