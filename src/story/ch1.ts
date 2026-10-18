@@ -254,7 +254,7 @@ script('mateo_muelle', async (s) => {
     tips: [
       {
         at: 'start',
-        text: '<b>Mateo</b> fights with quick decisions: <b>el or la</b>, <b>ser or estar</b>… Answer fast for a bonus! His <b>Proteger</b> takes hits for an ally — perfect when a bubble says an enemy <b>«va a…»</b> attack someone.',
+        text: '<b>Mateo</b> fights with quick decisions: <b>el or la</b>, <b>ser or estar</b>… His <b>Proteger</b> takes hits for an ally — perfect when a bubble says an enemy <b>«va a…»</b> attack someone.',
       },
     ],
   });

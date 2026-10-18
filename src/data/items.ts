@@ -48,7 +48,7 @@ function acc(a: AccessoryDef) {
 }
 
 acc({ id: 'tilde', name: 'Amuleto de la Tilde', en: 'Accent Amulet', icon: '´', accents: true, desc: 'Missing accents (á, é, ñ…) count as correct.' });
-acc({ id: 'reloj', name: 'Reloj de arena', en: 'Hourglass', icon: '⏳', slowTimer: 1.6, desc: 'More time to earn the fast bonus.' });
+acc({ id: 'reloj', name: 'Reloj de arena', en: 'Hourglass', icon: '⏳', slowTimer: 1.6, racha: 1, desc: 'Start every battle with 1 Racha. With the speed bonus on: more time to answer.' });
 acc({ id: 'concha', name: 'Concha de vieira', en: 'Scallop Shell', icon: '🐚', bonus: { def: 4, maxHp: 15 }, desc: 'The pilgrim’s shell. +4 DEF, +15 HP.' });
 acc({ id: 'anillo', name: 'Anillo de fuerza', en: 'Ring of Strength', icon: '💍', bonus: { atk: 5 }, desc: '+5 ATK.' });
 acc({ id: 'gafas', name: 'Gafas del sabio', en: "Sage's Glasses", icon: '👓', bonus: { mag: 5, maxMp: 8 }, desc: '+5 MAG, +8 MP.' });

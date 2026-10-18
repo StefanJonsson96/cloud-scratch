@@ -441,7 +441,7 @@ const repaso: View = (game, el) => {
       });
       game.recent.push(ch.key);
       if (game.recent.length > 12) game.recent.shift();
-      const r = await runChallenge(game.overlayHost, ch, { title: `Repaso ${i + 1}/10`, voice: g.settings.voice });
+      const r = await runChallenge(game.overlayHost, ch, { title: `Repaso ${i + 1}/10`, voice: g.settings.voice, timed: g.settings.speedBonus });
       if (ch.srs) record(g.srs, ch.key, r.grade, Date.now(), ch.maxBox);
       g.stats.answered++;
       if (r.grade === 'fast' || r.grade === 'correct') {
@@ -503,6 +503,10 @@ const ajustes: View = (game, el, rerender, close) => {
       [false, 'Off'],
     ]),
     h('div', { class: 'switch' }, h('div', null, 'Volumen · Volume', h('small', null, 'Also in the 🎚️ button in the corner. Saved on this device.')), volumeSliders()),
+    seg('speedBonus', 'Bonus de rapidez · Speed bonus', 'Off: take all the time you need. On: a timer bar — answer before it runs out for ×1.25 power.', [
+      [false, 'Off'],
+      [true, 'On'],
+    ]),
     seg('textSpeed', 'Texto · Text speed', '', [
       ['normal', 'Normal'],
       ['fast', 'Fast'],

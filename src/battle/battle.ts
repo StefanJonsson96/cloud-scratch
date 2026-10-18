@@ -87,12 +87,16 @@ export function introText(ids: string[]): { es: string; en: string } {
   return { es: `¡Han aparecido ${NUM[ids.length] ?? ids.length} enemigos!`, en: `${ids.length} enemies have appeared!` };
 }
 
-export function powerFor(grade: Grade, ch: Challenge): number {
+/**
+ * Spell power from an answer. Without the speed bonus a right answer is worth a
+ * little more, so turning the timer off never makes you weaker.
+ */
+export function powerFor(grade: Grade, ch: Challenge, timed = false): number {
   switch (grade) {
     case 'fast':
       return ch.difficulty * 1.25;
     case 'correct':
-      return ch.difficulty;
+      return ch.difficulty * (timed ? 1 : 1.1);
     case 'close':
       return Math.max(0.8, ch.difficulty * 0.85);
     case 'wrong':
@@ -287,7 +291,7 @@ async function perform(
       const r = await challenge(ctx, view, actor, ch, `${actor.name} · ${cmd.skill.name}`);
       const grade = r.grade;
       track(ctx, s, view, ch, grade, practiced);
-      const mult = powerFor(grade, ch);
+      const mult = powerFor(grade, ch, g.settings.speedBonus);
       await view.play(executeSkill(s, actor, cmd.skill, cmd.target, mult, grade));
       return 'done';
     }
@@ -326,12 +330,15 @@ async function challenge(ctx: BattleContext, view: BattleView, actor: Unit, ch: 
   const g = ctx.g;
   const acc = actor.accessory ? ACCESSORIES[actor.accessory] : undefined;
   const anyTilde = g.party.some((m) => m.accessory && ACCESSORIES[m.accessory]?.accents);
+  const timed = g.settings.speedBonus;
+  const right = (ch.difficulty * (timed ? 1 : 1.1)).toFixed(2).replace(/\.?0+$/, '');
   return runChallenge(view.layer, ch, {
     title,
-    stakes: stakes ?? `×${ch.difficulty.toFixed(2).replace(/\.?0+$/, '')} power if right · ⚡ answer fast for ×1.25`,
+    stakes: stakes ?? `×${right} power if right${timed ? ' · ⚡ answer fast for ×' + (ch.difficulty * 1.25).toFixed(2).replace(/\.?0+$/, '') : ''}`,
     accentsOptional: anyTilde,
     slowTimer: acc?.slowTimer ?? 1,
     voice: g.settings.voice,
+    timed,
   });
 }
 

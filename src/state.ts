@@ -17,6 +17,8 @@ export interface Settings {
   voice: boolean;
   /** Read every dialogue line aloud as it appears. */
   autoVoice: boolean;
+  /** Timer bar in challenges with a bonus for fast answers. Off = no time pressure. */
+  speedBonus: boolean;
   textSpeed: 'normal' | 'fast' | 'instant';
   /** Random encounter frequency. */
   encounters: 'normal' | 'low';
@@ -54,6 +56,7 @@ export const DEFAULT_SETTINGS: Settings = {
   typingFocus: true,
   voice: true,
   autoVoice: true,
+  speedBonus: false,
   textSpeed: 'normal',
   encounters: 'normal',
   easy: false,

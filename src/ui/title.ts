@@ -92,7 +92,7 @@ export function showTitle(): Promise<TitleResult> {
           { class: 'panel', style: { textAlign: 'left' } },
           h('p', null, '🗺️ Walk with the arrow keys / WASD (or the on-screen pad). Talk and confirm with Enter, Space or Z.'),
           h('p', null, '⚔️ Battles are turn-based. The bar at the top shows who acts next. Enemies announce their next move in Spanish — read it and react (defend, protect, or put them to sleep).'),
-          h('p', null, '✨ Special moves need Spanish: answer a quick challenge. Right = full power, fast = bonus, wrong = weak. Each friend practises a different skill: you do vocabulary, Mateo does el/la, ser/estar and por/para, Lola does verbs.'),
+          h('p', null, '✨ Special moves need Spanish: answer a quick challenge. Right = full power, wrong = weak — and there is no clock: take your time. Each friend practises a different skill: you do vocabulary, Mateo does el/la, ser/estar and por/para, Lola does verbs.'),
           h('p', null, '🔥 Right answers fill the Racha. When it is full, unleash a Palabra Final by building a sentence.'),
           h('p', null, '🇬🇧 Translations are always one tap away: press EN (or T) for a whole line, or tap any underlined word. 💡 gives a hint in challenges.'),
           h('p', null, '📖 The menu (M) holds the Grimorio — your dictionary, verb tables and grammar notes — plus a quick Repaso to review on the go.'),

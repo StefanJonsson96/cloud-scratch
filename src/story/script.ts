@@ -126,7 +126,7 @@ export class Script {
           })
         : style;
     this.game.recent.push(ch.key);
-    const r = await runChallenge(this.game.overlayHost, ch, { title, voice: this.g.settings.voice });
+    const r = await runChallenge(this.game.overlayHost, ch, { title, voice: this.g.settings.voice, timed: this.g.settings.speedBonus });
     if (ch.srs) record(this.g.srs, ch.key, r.grade, Date.now(), ch.maxBox);
     this.g.stats.answered++;
     if (r.grade === 'fast' || r.grade === 'correct') this.g.stats.right++;

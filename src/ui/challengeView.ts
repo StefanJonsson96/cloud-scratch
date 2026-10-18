@@ -21,6 +21,14 @@ export interface ChallengeOptions {
   accentsOptional?: boolean;
   slowTimer?: number;
   voice?: boolean;
+  /** Show a timer bar and award a bonus for fast answers (the "speed bonus" setting). */
+  timed?: boolean;
+}
+
+/** Time to answer for the speed bonus: the challenge's own allowance plus time to read it. */
+export function fastWindow(ch: Challenge, slow = 1): number {
+  const text = [ch.prompt, ch.sub ?? '', ...(ch.options ?? []), ...(ch.tiles ?? [])].join(' ');
+  return (ch.fastMs + 1200 + text.length * 45) * slow;
 }
 
 const ACCENTS = ['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü'];
@@ -38,7 +46,8 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
     let usedHint = false;
     let answered = false;
     const t0 = performance.now();
-    const fastMs = ch.fastMs * (opts.slowTimer ?? 1);
+    const timed = !!opts.timed;
+    const fastMs = fastWindow(ch, opts.slowTimer ?? 1);
 
     const hintBox = h('div', { class: 'cc-hint', hidden: true }, ch.hint ?? '');
     const hintBtn = ch.hint
@@ -63,7 +72,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
         h('div', { class: 'cc-tools' }, sayBtn, hintBtn),
       ),
       h('div', { class: 'cc-label' }, ch.isNew ? h('span', { class: 'badge-new' }, 'NEW') : null, ch.label, opts.stakes ? h('span', { class: 'cc-stakes' }, opts.stakes) : null),
-      h('div', { class: 'cc-timer', title: 'Answer before the bar runs out for a fast bonus' }, timerFill),
+      timed ? h('div', { class: 'cc-timer', title: 'Answer before the bar runs out for a fast bonus' }, timerFill) : null,
       h('div', { class: `cc-prompt ${ch.promptLang === 'es' ? 'es' : 'en'}${ch.listening ? ' listening' : ''}`, lang: ch.promptLang }, ch.prompt),
       ch.sub ? h('div', { class: 'cc-sub' }, ch.sub) : null,
       hintBox,
@@ -91,7 +100,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
       if (!correct) return 'wrong';
       if (typed === 'close') return 'close';
       if (usedHint) return 'close';
-      return ms <= fastMs ? 'fast' : 'correct';
+      return timed && ms <= fastMs ? 'fast' : 'correct';
     }
 
     let focusables: HTMLElement[] = [];
