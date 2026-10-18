@@ -14,6 +14,8 @@ import { setLookupHandler } from './ui/spanish';
 import { openPauseMenu } from './ui/pauseMenu';
 import { runBattle, type BattleOutcome, type BattleSetup } from './battle/battle';
 import { fullHeal, save, type GameState } from './state';
+import { currentGoal } from './story/goals';
+import { spanish } from './ui/spanish';
 import { initTouch } from './engine/input';
 import { playMusic, setMusic, setSfx } from './engine/audio';
 import { setSpeechEnabled } from './engine/speech';
@@ -22,6 +24,7 @@ export class Game implements WorldHost {
   g!: GameState;
   readonly screen: HTMLElement;
   readonly hud: HTMLElement;
+  private goalEl: HTMLElement;
   readonly overlayHost: HTMLElement;
   readonly world: Overworld;
   readonly dialogue: Dialogue;
@@ -48,7 +51,8 @@ export class Game implements WorldHost {
       },
       '☰ Menú',
     );
-    this.hud.append(h('div', { class: 'hud-place' }), menuBtn);
+    this.goalEl = h('div', { class: 'hud-goal', hidden: true });
+    this.hud.append(h('div', { class: 'hud-left' }, this.goalEl, h('div', { class: 'hud-place' })), menuBtn);
     window.addEventListener('resize', () => this.layout());
     window.visualViewport?.addEventListener('resize', () => this.layout());
     setLookupHandler((e) => {
@@ -80,7 +84,9 @@ export class Game implements WorldHost {
     this.world.load(g.map, g.x, g.y, g.dir);
     this.world.start();
     this.layout();
-    if (fresh) await this.world.lockWhile(this.runScript('intro'));
+    this.updateGoal();
+    // A tutorial interrupted by a reload or quitting resumes instead of soft-locking the house door.
+    if (fresh || !g.flags.intro_done) await this.world.lockWhile(this.runScript('intro'));
     else if (this.world.map.onEnter) await this.world.lockWhile(this.runScript(this.world.map.onEnter));
   }
 
@@ -105,7 +111,25 @@ export class Game implements WorldHost {
       this.dialogue.close();
       this.world.refreshNpcs();
       this.world.applyMood();
+      this.updateGoal();
     }
+  }
+
+  /** Refresh the objective shown in the corner. */
+  updateGoal() {
+    const goal = this.g ? currentGoal(this.g) : null;
+    this.goalEl.hidden = !goal;
+    if (!goal) return;
+    const key = goal.es;
+    if (this.goalEl.dataset.key === key) return;
+    this.goalEl.dataset.key = key;
+    this.goalEl.replaceChildren(
+      h('span', { class: 'goal-icon', 'aria-hidden': 'true' }, '🎯'),
+      h('div', { class: 'goal-text' }, spanish(goal.es), h('small', null, goal.en)),
+    );
+    this.goalEl.classList.remove('fresh');
+    void this.goalEl.offsetWidth;
+    this.goalEl.classList.add('fresh');
   }
 
   async battle(setup: BattleSetup): Promise<BattleOutcome> {
@@ -150,7 +174,10 @@ export class Game implements WorldHost {
     playMusic(map.music);
     const place = this.hud.querySelector('.hud-place')!;
     place.replaceChildren(h('div', { class: 'place-toast' }, map.name, h('small', null, map.nameEn)));
-    if (this.g) save(this.g);
+    if (this.g) {
+      save(this.g);
+      this.updateGoal();
+    }
   }
 
   toast(text: string) {

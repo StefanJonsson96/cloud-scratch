@@ -161,6 +161,62 @@ canvas.world {
   }
 }
 
+.hud-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  max-width: min(62%, 30em);
+  pointer-events: none;
+}
+
+.hud-left > * {
+  pointer-events: auto;
+}
+
+.hud-goal {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  background: rgba(18, 26, 51, 0.8);
+  border: 1px solid rgba(240, 179, 35, 0.55);
+  border-left: 3px solid var(--saffron);
+  border-radius: 6px;
+  padding: 3px 8px 4px 6px;
+  font-size: 0.8em;
+  line-height: 1.3;
+}
+
+.hud-goal[hidden] {
+  display: none;
+}
+
+.hud-goal.fresh {
+  animation: goal-in 0.9s ease;
+}
+
+.hud-goal .goal-icon {
+  font-size: 0.95em;
+  padding-top: 1px;
+}
+
+.hud-goal small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.86em;
+}
+
+@keyframes goal-in {
+  0% {
+    transform: translateY(-4px);
+    box-shadow: 0 0 0 3px rgba(240, 179, 35, 0.7);
+  }
+  100% {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
 .hud-btn {
   margin-left: auto;
   background: rgba(18, 26, 51, 0.82);
@@ -2297,4 +2353,51 @@ body.has-touch.no-world .touch {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Tutorial checklist in battle */
+.b-goals {
+  background: rgba(18, 26, 51, 0.88);
+  border: 2px solid var(--saffron);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.86em;
+  line-height: 1.3;
+  max-width: 340px;
+  margin: 0 8px;
+}
+
+.b-goals .bg-title {
+  font-family: var(--font-display);
+  color: var(--saffron);
+  margin-bottom: 3px;
+}
+
+.b-goals .bg-title small {
+  font-family: var(--font-body);
+  color: var(--muted);
+}
+
+.b-goals .bg-step {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  padding: 2px 0;
+  opacity: 0.85;
+}
+
+.b-goals .bg-step small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.86em;
+}
+
+.b-goals .bg-step.next {
+  opacity: 1;
+  font-weight: 600;
+}
+
+.b-goals .bg-step.done {
+  opacity: 0.6;
+  text-decoration: line-through;
 }

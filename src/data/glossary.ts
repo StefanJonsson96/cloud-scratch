@@ -2,6 +2,17 @@
 // tapped for a translation. Inflected forms carry a short grammar note.
 
 export const GLOSSARY: [string, string][] = [
+  ['practica', 'practise! (practicar, tú command) / practises'],
+  ['corre', 'run! (correr, tú command) / runs'],
+  ['busca', 'look for! (buscar, tú command) / looks for'],
+  ['guitarrista', 'guitarist'],
+  ['entra', 'go in! (entrar, tú command) / goes in'],
+  ['devuelve', 'give back! (devolver, tú command) / gives back'],
+  ['cruza', 'cross! (cruzar, tú command) / crosses'],
+  ['sube', 'go up! (subir, tú command) / goes up'],
+  ['adivina', 'guess! (adivinar, tú command) / guesses'],
+  ['segunda', 'second (f)'],
+  ['cima', 'summit, top'],
   ['abrirán', 'they will open (abrir, future)'],
   ['abrígate', 'wrap up warm (abrigarse, command)'],
   ['acerques', 'no te acerques = don’t come closer (acercarse)'],

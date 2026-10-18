@@ -88,6 +88,27 @@ export class BattleView {
     this.refresh();
   }
 
+  /** The practice checklist shown during the tutorial fight. */
+  checklist(steps: { es: string; en: string; done: boolean }[]) {
+    let el = this.layer.querySelector<HTMLElement>('.b-goals');
+    if (!el) {
+      el = h('div', { class: 'b-goals' });
+      this.layer.querySelector('.b-top')!.insertBefore(el, this.racha);
+    }
+    const next = steps.find((t) => !t.done);
+    el.replaceChildren(
+      h('div', { class: 'bg-title' }, 'Práctica', h('small', null, ' · try each one')),
+      ...steps.map((t) =>
+        h(
+          'div',
+          { class: `bg-step${t.done ? ' done' : ''}${t === next ? ' next' : ''}` },
+          h('span', { class: 'bg-check', 'aria-hidden': 'true' }, t.done ? '✅' : '⬜'),
+          h('span', null, spanish(t.es), h('small', null, t.en)),
+        ),
+      ),
+    );
+  }
+
   destroy() {
     hideGloss();
     this.layer.remove();

@@ -24,22 +24,27 @@ script('intro', async (s) => {
     'Si no entiendes algo, toca las palabras. O pulsa EN.',
     "If you don't understand something, tap the words. Or press EN (or the T key) for the whole sentence.",
   );
-  await s.say('abuela', '¿Ves el muñeco de paja? Vamos a practicar. ¡Ataca!', "See the straw dummy? Let's practise. Attack!");
+  await s.say('abuela', '¿Ves el muñeco de paja? Vamos a practicar tres cosas.', "See the straw dummy? Let's practise three things.");
   await s.battle({
     enemies: ['muneco'],
-    hp: { muneco: 70 },
+    hp: { muneco: 999 },
     bg: 'casa',
     canFlee: false,
     noGameOver: true,
-    intro: { es: '¡A practicar con el muñeco!', en: "Practice time with the dummy!" },
+    intro: { es: '¡A practicar con el muñeco!', en: 'Practice time with the dummy!' },
+    tutorial: [
+      { cmd: 'attack', es: 'Ataca: ⚔️ Atacar', en: 'Attack: choose ⚔️ Atacar, then the dummy' },
+      { cmd: 'skill', es: 'Usa una palabra: ✨ Palabras', en: 'Cast a spell: ✨ Palabras → Fuego, then answer the question' },
+      { cmd: 'defend', es: 'Defiéndete: 🛡️ Defender', en: 'Defend: choose 🛡️ Defender' },
+    ],
     tips: [
       {
         at: 'start',
-        text: '<b>¡Tu turno!</b> The bar at the top shows who acts next. Choose <b>⚔️ Atacar</b> to swing your staff — you roll a d20, and a 20 is a critical hit. Or choose <b>✨ Palabras</b> to cast a spell.',
+        text: '<b>¡Tu turno!</b> Try the three moves on the <b>Práctica</b> list (top of the screen) — in any order. When all three are ticked, the practice is over. The bar at the top left shows who acts next.',
       },
       {
         at: 'challenge',
-        text: '<b>Spells need Spanish.</b> Answer the question: right = full power, fast = ⚡ bonus, wrong = a weak spell (and you see the answer). Stuck? <b>💡 Hint</b> helps, but then the answer counts as “almost”.',
+        text: '<b>Spells need Spanish.</b> Answer the question: right = full power, wrong = a weak spell (and you see the answer). Stuck? <b>💡 Hint</b> helps, but then the answer counts as “almost”. Take your time — there is no rush.',
       },
       {
         at: 'enemy',
@@ -62,7 +67,7 @@ script('intro', async (s) => {
 });
 
 script('block_house', async (s) => {
-  await s.say('abuela', '¡Eh! ¿Adónde vas? Primero, a practicar.', 'Hey! Where are you going? Practice first.');
+  await s.say('abuela', '¡Eh! ¿Adónde vas? Primero, a practicar con el muñeco.', 'Hey! Where are you going? Practise with the straw dummy first: walk up to it and press Enter (or A).');
 });
 
 script('abuela', async (s) => {

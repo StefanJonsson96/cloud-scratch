@@ -1,6 +1,6 @@
 // Shared scripts: chests, signs, beds, doors, and helpers for word puzzles.
 
-import { script, type Script } from './script';
+import { script, SCRIPTS, type Script } from './script';
 import { getWord, withArticle } from '../data/vocab';
 import { VERB_BY_INF, conjugate, TABLE_PERSONS, TENSES, slot, type Person, type Tense } from '../data/verbs';
 import { distractors, verbKey, type Challenge } from '../learn/challenges';
@@ -44,6 +44,8 @@ script('cama', async (s) => {
 });
 
 script('muneco', async (s) => {
+  // The tutorial isn't finished yet: talking to the dummy starts it.
+  if (!s.has('intro_done')) return SCRIPTS.intro(s);
   const i = await s.ask(
     '',
     'El muñeco de práctica. ¿Quieres practicar?',

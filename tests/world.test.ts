@@ -6,6 +6,7 @@ import { TILES, tileInfo } from '../src/world/tiles';
 import { ENEMIES } from '../src/battle/enemies';
 import { ITEMS, ACCESSORIES } from '../src/data/items';
 import { unknownWords } from '../src/learn/dictionary';
+import { currentGoal } from '../src/story/goals';
 import type { MapDef } from '../src/world/types';
 import type { GameState } from '../src/state';
 
@@ -141,5 +142,40 @@ describe('story text', () => {
       }
     }
     expect([...missing.keys()].sort()).toEqual([]);
+  });
+});
+
+describe('objectives', () => {
+  // The story flags in the order a player sets them.
+  const ORDER = [
+    'intro_done', 'has_bread', 'fog', 'abuela_silenced', 'mateo_joined', 'gate_cueva', 'boss_rey', 'faro_lit', 'ramon_gift',
+    'ch2', 'sansabor_seen', 'lola_joined', 'gate_bodega', 'gloton', 'sabor',
+    'ch3', 'flor_roja', 'flor_azul', 'flor_amarilla', 'loba', 'color',
+    'ch4', 'tomas_story', 'monje_mano', 'monje_oreja', 'monje_corazon', 'golem', 'voz',
+    'ch5', 'gate_torre1', 'gate_torre2', 'final', 'fin',
+  ];
+  const stages = ORDER.map((_, i) => ({ flags: Object.fromEntries(ORDER.slice(0, i).map((k) => [k, true])) }) as unknown as GameState);
+
+  it('there is always something to do until the final scene', () => {
+    for (const [i, g] of stages.entries()) {
+      if (ORDER[i - 1] === 'final') continue;
+      expect(currentGoal(g), `after ${ORDER[i - 1] ?? 'start'}`).not.toBeNull();
+    }
+  });
+
+  it('every objective moves on when its step is done', () => {
+    const texts = stages.map((g) => currentGoal(g)?.es);
+    for (let i = 1; i < texts.length; i++) {
+      if (['ramon_gift', 'tomas_story'].includes(ORDER[i - 1])) continue;
+      if (texts[i] === 'Toca el cristal.' && texts[i - 1] === 'Toca el cristal.') continue;
+      expect(texts[i], `after ${ORDER[i - 1]}`).not.toBe(texts[i - 1]);
+    }
+  });
+
+  it('objectives use words the dictionary knows', () => {
+    const names = ['Carmen', 'Mateo', 'Ramón', 'San', 'Sabor', 'Monte', 'Eco', 'Torre', 'Muda', 'Callado', 'Puerto', 'Alegre', 'Doña', 'Don'];
+    const missing = new Set<string>();
+    for (const g of stages) for (const w of unknownWords(currentGoal(g)?.es ?? '', names)) missing.add(w);
+    expect([...missing]).toEqual([]);
   });
 });

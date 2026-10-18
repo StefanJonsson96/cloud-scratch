@@ -13,6 +13,8 @@ import {
   executeSkill,
   executeUltimate,
   fleeChance,
+  knockOut,
+  livingEnemies,
   nextActor,
   outcome,
   partyUnit,
@@ -55,6 +57,14 @@ export interface BattleSetup {
   noGameOver?: boolean;
   /** Statuses applied when the fight starts (ambushes, calmed bosses…). */
   start?: { enemies?: [StatusId, number][]; party?: [StatusId, number][] };
+  /** Guided practice: a checklist of commands to try. The fight ends when all are done. */
+  tutorial?: TutorialStep[];
+}
+
+export interface TutorialStep {
+  cmd: Command['kind'];
+  es: string;
+  en: string;
 }
 
 export interface BattleContext {
@@ -144,6 +154,9 @@ async function fight(ctx: BattleContext, setup: BattleSetup, animo = 0): Promise
     }
   };
 
+  const steps = setup.tutorial?.map((t) => ({ ...t, done: false }));
+  if (steps) view.checklist(steps);
+
   await view.intro(setup.intro ?? introText(setup.enemies));
   if (animo) await view.message({ es: '¡Ánimo! Esta vez los enemigos están más débiles.', en: `Encouragement! This time the enemies are weaker (−${animo * 10}% attack).` }, 1600);
   await tip('start');
@@ -190,9 +203,22 @@ async function fight(ctx: BattleContext, setup: BattleSetup, animo = 0): Promise
         result = 'flee';
       }
       if (cmd.kind === 'defend') weight = 0.8;
+      const step = steps?.find((t) => !t.done && t.cmd === cmd.kind);
+      if (step) {
+        step.done = true;
+        view.checklist(steps!);
+        sfx('correct');
+      }
       break;
     }
     if (result) break;
+    if (steps && steps.every((t) => t.done)) {
+      const ev: BattleEvent[] = [];
+      for (const e of livingEnemies(s)) knockOut(s, e, ev);
+      await view.message({ es: '¡Todo hecho! El muñeco se cae.', en: 'All done! The dummy falls over.' }, 1400);
+      await view.play(ev);
+      continue;
+    }
     const ev2: BattleEvent[] = [];
     endTurn(s, actor, ev2, weight);
     await view.play(ev2);
