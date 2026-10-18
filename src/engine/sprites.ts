@@ -49,7 +49,8 @@ const defs = new Map<string, SpriteDef>();
 
 export function defineSprite(name: string, def: SpriteDef) {
   defs.set(name, def);
-  cache.delete(name);
+  // Drop the cached canvas and its flipped / greyed copies.
+  for (const k of [...cache.keys()]) if (k === name || k.startsWith(`${name}:`)) cache.delete(k);
 }
 
 export function hasSprite(name: string) {

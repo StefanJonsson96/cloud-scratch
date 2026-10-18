@@ -1,5 +1,6 @@
 // Static battle data: elements, statuses, party members and their abilities.
 
+import type { ClassId } from './classes';
 import type { ChallengeStyle } from '../learn/challenges';
 
 export type Element = 'fisico' | 'fuego' | 'agua' | 'hielo' | 'rayo' | 'viento' | 'luz' | 'sombra' | 'tierra';
@@ -29,7 +30,8 @@ export type StatusId =
   | 'debil'
   | 'escudo'
   | 'cargando'
-  | 'mudo';
+  | 'mudo'
+  | 'provocando';
 
 export interface StatusDef {
   es: string;
@@ -53,6 +55,7 @@ export const STATUSES: Record<StatusId, StatusDef> = {
   escudo: { es: 'Escudo', en: 'Shielded', icon: '🛡️', good: true, desc: 'Takes 40% less damage.' },
   cargando: { es: 'Cargando', en: 'Charging', icon: '⚠️', good: true, desc: 'Preparing a powerful attack!' },
   mudo: { es: 'Mudo', en: 'Silenced', icon: '🤐', good: false, desc: 'Cannot use special abilities.' },
+  provocando: { es: 'Provocando', en: 'Taunting', icon: '🎯', good: true, desc: 'Enemies aim their single attacks at this fighter.' },
 };
 
 export type MemberId = 'hero' | 'mateo' | 'lola';
@@ -78,9 +81,11 @@ export interface SkillDef {
   cleanse?: StatusId[];
   /** Cancels a charging attack and resets the target's intent. */
   interrupt?: boolean;
-  special?: 'guard' | 'revive';
+  special?: 'guard' | 'revive' | 'taunt' | 'steal';
   level: number;
   desc: string;
+  /** Only for a hero of this class. */
+  cls?: ClassId;
 }
 
 export const SKILLS: SkillDef[] = [
@@ -115,6 +120,20 @@ export const SKILLS: SkillDef[] = [
   {
     id: 'viento', name: 'Viento', en: 'Wind', user: 'hero', mp: 8, target: 'allEnemies', element: 'viento', stat: 'mag',
     power: 0.85, interrupt: true, level: 9, desc: 'Hits all foes and blows away charging attacks.',
+  },
+  // Class skills
+  {
+    id: 'meteoro', name: 'Meteoro', en: 'Meteor', user: 'hero', cls: 'hechicero', mp: 9, target: 'allEnemies', element: 'fuego',
+    stat: 'mag', power: 1.0, status: { id: 'quemado', turns: 3, chance: 0.3 }, level: 3, desc: 'Fire rains on every foe. May burn.',
+  },
+  {
+    id: 'muralla', name: 'Muralla', en: 'Bulwark', user: 'hero', cls: 'guardian', mp: 4, target: 'self', element: 'fisico',
+    stat: 'atk', special: 'taunt', status: { id: 'escudo', turns: 2, chance: 1 }, level: 1,
+    desc: 'For 2 turns, every single-target attack comes at you — and you are shielded.',
+  },
+  {
+    id: 'birlar', name: 'Birlar', en: 'Swipe', user: 'hero', cls: 'picaro', mp: 3, target: 'enemy', element: 'fisico', stat: 'atk',
+    power: 1.1, special: 'steal', level: 1, desc: 'A quick strike that steals an item or some coins.',
   },
   // --- Mateo: strength and loyalty
   {
@@ -229,6 +248,6 @@ export function xpToNext(level: number): number {
   return Math.round(16 * Math.pow(level, 1.55));
 }
 
-export function skillsFor(member: MemberId, level: number): SkillDef[] {
-  return SKILLS.filter((s) => s.user === member && s.level <= level);
+export function skillsFor(member: MemberId, level: number, cls?: ClassId): SkillDef[] {
+  return SKILLS.filter((s) => s.user === member && s.level <= level && (!s.cls || s.cls === cls));
 }

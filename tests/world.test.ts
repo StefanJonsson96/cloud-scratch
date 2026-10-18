@@ -123,7 +123,7 @@ describe('maps', () => {
 describe('story text', () => {
   // Pull the Spanish arguments out of the story scripts.
   const spanish: string[] = [];
-  const clean = (s: string) => s.replace(/\$\{[^}]*\}/g, 'Alex');
+  const clean = (s: string) => s.replace(/\$\{[^}]*\}/g, 'Alex').replace(/\{([^{}|]*)\|([^{}|]*)\}/g, '$1 $2');
   for (const m of storySrc.matchAll(/\.(?:say|ask|quiz)\(\s*'[^']*',\s*(['`"])((?:\\.|(?!\1).)*)\1/g)) spanish.push(clean(m[2]));
   for (const m of storySrc.matchAll(/\[\s*(['`"])((?:\\.|(?!\1).)*)\1,\s*(['`"])/g)) spanish.push(clean(m[2]));
   for (const m of storySrc.matchAll(/narrate\(\s*(['`"])(?:\\.|(?!\1).)*\1,\s*(['`"])((?:\\.|(?!\2).)*)\2/g)) spanish.push(clean(m[3]));

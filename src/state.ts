@@ -5,6 +5,22 @@ import { newSrs, type SrsState } from './learn/srs';
 import type { MemberState } from './battle/rules';
 import { memberStats } from './battle/rules';
 import { xpToNext, skillsFor, type MemberId } from './battle/defs';
+import type { ClassId } from './battle/classes';
+
+/** How the hero looks: palette keys for the sprite. */
+export interface Look {
+  skin: string;
+  hair: string;
+  style: 'corto' | 'largo' | 'coleta';
+  outfit: string;
+  skirt: boolean;
+}
+
+export const DEFAULT_LOOK: Look = { skin: 'j', hair: 'i', style: 'corto', outfit: '9', skirt: false };
+
+export type Difficulty = 'facil' | 'normal' | 'dificil';
+/** Spanish level: beginner (A1), intermediate (A2), advanced (B1). */
+export type SpanishLevel = 'a1' | 'a2' | 'b1';
 
 export type Dir = 'up' | 'down' | 'left' | 'right';
 
@@ -22,15 +38,21 @@ export interface Settings {
   textSpeed: 'normal' | 'fast' | 'instant';
   /** Random encounter frequency. */
   encounters: 'normal' | 'low';
-  /** Story mode: enemies hit softer. */
-  easy: boolean;
+  /** Combat difficulty. */
+  difficulty: Difficulty;
+  /** How hard the Spanish is. */
+  level: SpanishLevel;
 }
 
 export interface GameState {
   version: 1;
   heroName: string;
   /** Grammatical gender the world uses for you: cansado / cansada. */
-  gender?: 'm' | 'f';
+  gender: 'm' | 'f';
+  look: Look;
+  heroClass: ClassId;
+  /** Talents picked so far. */
+  talents: string[];
   chapter: number;
   map: string;
   x: number;
@@ -59,15 +81,29 @@ export const DEFAULT_SETTINGS: Settings = {
   speedBonus: false,
   textSpeed: 'normal',
   encounters: 'normal',
-  easy: false,
+  difficulty: 'normal',
+  level: 'a2',
 };
 
-export function newGame(heroName = 'Alex', settings: Partial<Settings> = {}): GameState {
-  const hero: MemberState = { id: 'hero', level: 1, xp: 0, hp: 0, mp: 0 };
+export interface NewGameOptions {
+  name?: string;
+  gender?: 'm' | 'f';
+  look?: Look;
+  heroClass?: ClassId;
+  settings?: Partial<Settings>;
+}
+
+export function newGame(o: NewGameOptions = {}): GameState {
+  const heroClass = o.heroClass ?? 'hechicero';
+  const hero: MemberState = { id: 'hero', level: 1, xp: 0, hp: 0, mp: 0, cls: heroClass };
   fullHeal(hero);
   return {
     version: 1,
-    heroName,
+    heroName: o.name ?? 'Alex',
+    gender: o.gender ?? 'm',
+    look: { ...DEFAULT_LOOK, ...o.look },
+    heroClass,
+    talents: [],
     chapter: 0,
     map: 'casa_abuela',
     x: 8,
@@ -79,7 +115,7 @@ export function newGame(heroName = 'Alex', settings: Partial<Settings> = {}): Ga
     euros: 20,
     flags: {},
     srs: newSrs(),
-    settings: { ...DEFAULT_SETTINGS, ...settings },
+    settings: { ...DEFAULT_SETTINGS, ...o.settings },
     stats: { battles: 0, wins: 0, answered: 0, right: 0, playMs: 0, days: [] },
     looked: [],
     bestiary: [],
@@ -114,14 +150,14 @@ export function grantXp(g: GameState, xp: number): LevelUp[] {
     m.xp += xp;
     while (m.xp >= xpToNext(m.level) && m.level < 30) {
       m.xp -= xpToNext(m.level);
-      const before = new Set(skillsFor(m.id, m.level).map((s) => s.id));
+      const before = new Set(skillsFor(m.id, m.level, m.cls).map((s) => s.id));
       const old = memberStats(m);
       m.level++;
       const now = memberStats(m);
       // Level-ups restore the HP/MP gained.
       m.hp += now.maxHp - old.maxHp;
       m.mp += now.maxMp - old.maxMp;
-      const learned = skillsFor(m.id, m.level).filter((s) => !before.has(s.id)).map((s) => s.name);
+      const learned = skillsFor(m.id, m.level, m.cls).filter((s) => !before.has(s.id)).map((s) => s.name);
       ups.push({ id: m.id, level: m.level, newSkills: learned });
     }
   }
@@ -202,7 +238,16 @@ export function importSave(code: string): GameState | null {
 
 function migrate(g: GameState): GameState | null {
   if (!g || g.version !== 1 || !Array.isArray(g.party)) return null;
-  g.settings = { ...DEFAULT_SETTINGS, ...g.settings };
+  const old = g.settings as Partial<Settings> & { easy?: boolean };
+  g.settings = { ...DEFAULT_SETTINGS, ...old };
+  if (old?.easy && !old.difficulty) g.settings.difficulty = 'facil';
+  // Saves from before character creation: a classic word-mage.
+  g.gender ??= 'm';
+  g.look = { ...DEFAULT_LOOK, ...g.look };
+  g.heroClass ??= 'hechicero';
+  g.talents ??= [];
+  const hero = g.party.find((m) => m.id === 'hero');
+  if (hero) hero.cls ??= g.heroClass;
   g.looked ??= [];
   g.bestiary ??= [];
   g.accessories ??= [];

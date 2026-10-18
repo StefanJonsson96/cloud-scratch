@@ -179,7 +179,7 @@ script('lola_plaza', async (s) => {
   await s.say('lola', 'La la la… ¡Ay, no! Otra vez. No recuerdo la letra de mi canción.', "La la la… oh no! Again. I can't remember the words to my song.");
   await s.say('lola', '¡Hola! Me llamo Lola. Soy música, de Sevilla. ¡Encantada!', "Hi! I'm Lola. I'm a musician, from Seville. Nice to meet you!");
   const i = await s.ask('hero', '', '(Introduce yourself)', [
-    [`Me llamo ${s.g.heroName}. ¡Mucho gusto!`, `I'm ${s.g.heroName}. Pleased to meet you!`],
+    [`Me llamo ${s.g.heroName}. ¡{Encantado|Encantada}!`, `I'm ${s.g.heroName}. Pleased to meet you!`],
     ['¿Qué es una guitarra?', "What's a guitar?"],
   ]);
   if (i === 1) await s.say('lola', 'Jaja, ¡esto! Una guitarra española. ¡Qué gracia!', 'Haha, this! A Spanish guitar. How funny!');

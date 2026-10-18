@@ -52,6 +52,12 @@ script('alpinista', async (s) => {
   } else {
     await s.say('Alpinista', 'Jaja, no: significa que estoy muy, muy cansado.', "Haha, no: it means I'm very, very tired.");
   }
+  const tired = await s.ask('lola', `¿Y tú, ${s.g.heroName}? ¿Estás {hecho|hecha} polvo?`, 'And you? Are you exhausted?', [
+    ['¡Sí, estoy {hecho|hecha} polvo!', "Yes, I'm exhausted!"],
+    ['No, estoy bien.', "No, I'm fine."],
+  ]);
+  if (tired === 0) await s.say('mateo', '¡Y yo! Estoy hecho polvo… y tengo hambre.', "Me too! I'm exhausted… and hungry.");
+  else await s.say('lola', '¡Qué energía! Yo estoy hecha polvo.', "What energy! I'm exhausted.");
 });
 
 // ------------------------------------------------------------- the temple

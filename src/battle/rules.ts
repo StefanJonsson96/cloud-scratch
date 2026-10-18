@@ -15,6 +15,7 @@ import {
 import { ENEMIES, enemySubject, type EnemyAction, type EnemyDef } from './enemies';
 import { ACCESSORIES, ITEMS } from '../data/items';
 import type { Grade } from '../learn/check';
+import { classBonus, type ClassId } from './classes';
 
 export interface Status {
   id: StatusId;
@@ -60,6 +61,14 @@ export interface Unit {
   statusResist: number;
   stolen: string[];
   accessory?: string;
+  /** Hero class (party only). */
+  cls?: ClassId;
+  /** Basic attacks crit on a d20 roll of this or higher. */
+  critFrom?: number;
+  /** Segundo aliento already used this battle. */
+  secondWind?: boolean;
+  /** Already stolen from with Birlar. */
+  robbed?: boolean;
 }
 
 export interface BattleState {
@@ -69,6 +78,10 @@ export interface BattleState {
   inventory: Record<string, number>;
   turn: number;
   canFlee: boolean;
+  /** Talents the party has. */
+  perks?: Set<string>;
+  /** Coins stolen during the fight, paid out on victory. */
+  bonusEuros?: number;
 }
 
 export type BattleEvent =
@@ -96,10 +109,13 @@ export interface MemberState {
   hp: number;
   mp: number;
   accessory?: string;
+  /** The hero's class. */
+  cls?: ClassId;
 }
 
 export function memberStats(m: MemberState) {
   const s = statsAt(MEMBERS[m.id], m.level);
+  for (const [k, v] of Object.entries(classBonus(m.cls, m.level))) s[k === 'hp' ? 'maxHp' : k === 'mp' ? 'maxMp' : (k as keyof typeof s)] += Math.round(v);
   const bonus = m.accessory ? ACCESSORIES[m.accessory]?.bonus : undefined;
   if (bonus) for (const [k, v] of Object.entries(bonus)) s[k as keyof typeof s] += v ?? 0;
   return s;
@@ -133,6 +149,8 @@ export function partyUnit(m: MemberState, heroName: string): Unit {
     statusResist: 1,
     stolen: [],
     accessory: m.accessory,
+    cls: m.cls,
+    critFrom: m.cls === 'picaro' ? 18 : 20,
   };
 }
 
@@ -318,17 +336,18 @@ export function hit(s: BattleState, attacker: Unit, target: Unit, o: HitOpts, ev
   dmg *= m;
 
   let combo: string | undefined;
+  const master = !!s.perks?.has('combos') && attacker.side === 'party';
   if (o.element === 'rayo' && has(target, 'mojado')) {
-    dmg *= 2;
-    combo = '¡Electrocutado! ×2';
+    dmg *= master ? 2.5 : 2;
+    combo = master ? '¡Electrocutado! ×2.5' : '¡Electrocutado! ×2';
     removeStatus(target, 'mojado', ev);
   } else if (o.element === 'fuego' && has(target, 'mojado')) {
     dmg *= 0.5;
     combo = 'Vapor… ×0.5';
     removeStatus(target, 'mojado', ev);
   } else if (o.element === 'fisico' && has(target, 'congelado')) {
-    dmg *= 1.5;
-    combo = '¡Hielo roto! ×1.5';
+    dmg *= master ? 2 : 1.5;
+    combo = master ? '¡Hielo roto! ×2' : '¡Hielo roto! ×1.5';
     removeStatus(target, 'congelado', ev);
   } else if (o.element === 'agua' && target.id === 'pan_duro' && has(target, 'escudo')) {
     combo = '¡Pan mojado! Se ablanda.';
@@ -340,9 +359,15 @@ export function hit(s: BattleState, attacker: Unit, target: Unit, o: HitOpts, ev
   if (target.defending) dmg *= 0.5;
   if (has(target, 'escudo')) dmg *= 0.6;
   if (redirected) dmg *= 0.7;
+  if (target.side === 'party' && s.perks?.has('piel_dura')) dmg *= 0.9;
 
   const amount = Math.max(1, Math.round(dmg));
   target.hp = Math.max(0, target.hp - amount);
+  if (target.hp === 0 && target.side === 'party' && s.perks?.has('segundo_aliento') && !target.secondWind) {
+    target.secondWind = true;
+    target.hp = 1;
+    ev.push({ t: 'text', text: `¡${target.name} aguanta con 1 PV!`, en: `${target.name} hangs on with 1 HP! (Second wind)` });
+  }
   ev.push({ t: 'damage', uid: target.uid, amount, crit: o.crit, eff, combo, element: o.element });
 
   // Freezing happens after the hit so the ice isn't immediately shattered.
@@ -485,7 +510,9 @@ export function chooseIntent(s: BattleState, e: Unit) {
     action = pickWeighted(s, (options.length ? options : def.actions.filter((a) => !a.chargedOnly)).map((a) => [a, a.weight]));
   }
   let targets: Unit[] = [];
-  if (action.target === 'one') targets = livingParty(s).length ? [pickWeighted(s, partyTargetWeights(s))] : [];
+  const taunter = livingParty(s).find((u) => has(u, 'provocando'));
+  if (action.target === 'one' && taunter) targets = [taunter];
+  else if (action.target === 'one') targets = livingParty(s).length ? [pickWeighted(s, partyTargetWeights(s))] : [];
   else if (action.target === 'all') targets = livingParty(s);
   else if (action.target === 'self') targets = [e];
   else targets = livingEnemies(s);
@@ -500,6 +527,12 @@ export function retarget(s: BattleState, e: Unit) {
   const def = ENEMIES[e.id];
   const a = def.actions.find((x) => x.id === it.actionId);
   if (!a || a.target !== 'one') return;
+  const taunter = livingParty(s).find((u) => has(u, 'provocando'));
+  if (taunter && !it.targets.includes(taunter.uid) && (a.power ?? 0) > 0) {
+    const text = intentText(e, a, [taunter]);
+    e.intent = { ...it, targets: [taunter.uid], es: text.es, en: text.en };
+    return;
+  }
   if (it.targets.every((uid) => alive(unit(s, uid)))) return;
   const living = livingParty(s);
   if (!living.length) return;
@@ -621,7 +654,7 @@ export function executeAttack(s: BattleState, u: Unit, target: Unit): BattleEven
     ev.push({ t: 'text', text: '¡Has fallado!', en: 'You missed!' });
     return ev;
   }
-  hit(s, u, target, { power: 1, stat: 'atk', element: 'fisico', crit: roll === 20 }, ev);
+  hit(s, u, target, { power: 1, stat: 'atk', element: 'fisico', crit: roll >= (u.critFrom ?? 20) }, ev);
   return ev;
 }
 
@@ -655,6 +688,36 @@ export function executeSkill(s: BattleState, u: Unit, skill: SkillDef, targetUid
     }
     return ev;
   }
+  if (skill.special === 'taunt') {
+    applyStatus(s, u, 'provocando', 2, 1, ev);
+    if (skill.status) applyStatus(s, u, skill.status.id, skill.status.turns, 1, ev);
+    ev.push({ t: 'text', text: `¡${u.name} provoca a los enemigos!`, en: `${u.name} draws the enemies' attacks!` });
+    return ev;
+  }
+  if (skill.special === 'steal') {
+    const t = targets[0];
+    if (t && alive(t)) {
+      hit(s, u, t, { power: skill.power ?? 1, stat: skill.stat, element: skill.element, mult }, ev);
+      const def = ENEMIES[t.id];
+      if (t.robbed) {
+        ev.push({ t: 'text', text: 'Ya no tiene nada más.', en: 'It has nothing left to steal.' });
+      } else if (grade === 'wrong') {
+        ev.push({ t: 'text', text: '¡No has podido robar nada!', en: "You couldn't steal anything!" });
+      } else {
+        t.robbed = true;
+        const drop = def?.drops?.[Math.floor(s.rand() * def.drops.length)];
+        if (drop) {
+          s.inventory[drop.item] = (s.inventory[drop.item] ?? 0) + 1;
+          ev.push({ t: 'text', text: `¡Has robado: ${ITEMS[drop.item].name}!`, en: `You stole: ${ITEMS[drop.item].en}!` });
+        } else {
+          const coins = Math.max(3, Math.round((def?.euros ?? 5) * 0.6));
+          s.bonusEuros = (s.bonusEuros ?? 0) + coins;
+          ev.push({ t: 'text', text: `¡Has robado ${coins} euros!`, en: `You stole ${coins} euros!` });
+        }
+      }
+    }
+    return ev;
+  }
   if (skill.special === 'revive') {
     const t = targets[0];
     if (t && !alive(t)) revive(t, (skill.heal ?? 0.4) * Math.min(1.5, mult), ev);
@@ -677,7 +740,7 @@ export function executeSkill(s: BattleState, u: Unit, skill: SkillDef, targetUid
 
 export function executeUltimate(s: BattleState, u: Unit, targetUid: string | undefined, success: boolean): BattleEvent[] {
   const ev: BattleEvent[] = [];
-  const mult = success ? 1 : 0.6;
+  const mult = (success ? 1 : 0.6) * (s.perks?.has('racha_caliente') ? 1.3 : 1);
   s.racha = 0;
   switch (u.id as MemberId) {
     case 'hero':
@@ -715,13 +778,14 @@ export function useItem(s: BattleState, u: Unit, itemId: string, target: Unit): 
   const item = ITEMS[itemId];
   if (!item || (s.inventory[itemId] ?? 0) <= 0) return ev;
   s.inventory[itemId]--;
+  const food = s.perks?.has('buen_provecho') ? 1.5 : 1;
   ev.push({ t: 'action', uid: u.uid, name: item.name, en: item.en });
   switch (item.kind) {
     case 'heal':
-      heal(target, item.amount, ev);
+      heal(target, item.amount * food, ev);
       break;
     case 'healAll':
-      for (const t of livingParty(s)) heal(t, item.amount, ev);
+      for (const t of livingParty(s)) heal(t, item.amount * food, ev);
       break;
     case 'mp':
       restoreMp(target, item.amount, ev);
@@ -742,11 +806,11 @@ export function useItem(s: BattleState, u: Unit, itemId: string, target: Unit): 
   return ev;
 }
 
-export function defend(u: Unit): BattleEvent[] {
+export function defend(u: Unit, s?: BattleState): BattleEvent[] {
   const ev: BattleEvent[] = [];
   u.defending = true;
   ev.push({ t: 'action', uid: u.uid, name: 'Defensa', en: 'Defend' });
-  restoreMp(u, Math.max(3, u.maxMp * 0.1), ev);
+  restoreMp(u, Math.max(3, u.maxMp * 0.1) * (s?.perks?.has('mente_clara') ? 2 : 1), ev);
   return ev;
 }
 

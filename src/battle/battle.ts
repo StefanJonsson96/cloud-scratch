@@ -132,13 +132,25 @@ export async function runBattle(ctx: BattleContext, setup: BattleSetup): Promise
 /** Retries of a lost battle get "¡Ánimo!": each one weakens the enemies a little more, up to this many. */
 const ANIMO_MAX = 3;
 
+/** Enemy strength per combat difficulty. */
+export const DIFFICULTY: Record<string, { atk: number; hp: number }> = {
+  facil: { atk: 0.75, hp: 0.85 },
+  normal: { atk: 1, hp: 1 },
+  dificil: { atk: 1.15, hp: 1.25 },
+};
+
 async function fight(ctx: BattleContext, setup: BattleSetup, animo = 0): Promise<{ result: BattleOutcome; view: BattleView }> {
   const g = ctx.g;
   const party = g.party.map((m) => partyUnit(m, g.heroName));
   const s = createBattle(party, setup.enemies, ctx.rand, g.inventory, setup.canFlee ?? true);
+  s.perks = new Set(g.talents);
+  if (s.perks.has('poliglota')) s.racha = Math.min(RACHA_MAX, s.racha + 1);
+  if (s.perks.has('iniciativa')) for (const u of party) u.ct *= 0.3;
+  const diff = DIFFICULTY[g.settings.difficulty] ?? DIFFICULTY.normal;
   for (const e of enemies(s)) {
     if (setup.hp?.[e.id]) e.hp = e.maxHp = setup.hp[e.id];
-    if (g.settings.easy) e.atk = Math.round(e.atk * 0.7);
+    else e.hp = e.maxHp = Math.round(e.maxHp * diff.hp);
+    e.atk = Math.round(e.atk * diff.atk);
     if (animo) {
       e.atk = Math.round(e.atk * (1 - 0.1 * animo));
       e.hp = e.maxHp = Math.round(e.maxHp * (1 - 0.08 * animo));
@@ -207,6 +219,7 @@ async function fight(ctx: BattleContext, setup: BattleSetup, animo = 0): Promise
         result = 'flee';
       }
       if (cmd.kind === 'defend') weight = 0.8;
+      if (done === 'quick') weight = 0.6;
       const step = steps?.find((t) => !t.done && t.cmd === cmd.kind);
       if (step) {
         step.done = true;
@@ -243,6 +256,9 @@ async function fight(ctx: BattleContext, setup: BattleSetup, animo = 0): Promise
   if (result === 'win') {
     g.stats.wins++;
     const r = rewards(s);
+    r.euros += s.bonusEuros ?? 0;
+    if (s.perks?.has('ahorro')) r.euros = Math.round(r.euros * 1.3);
+    if (s.perks?.has('sabiduria')) r.xp = Math.round(r.xp * 1.2);
     g.euros += r.euros;
     for (const it of [...r.drops, ...r.recovered]) g.inventory[it] = (g.inventory[it] ?? 0) + 1;
     for (const e of enemies(s)) if (!g.bestiary.includes(e.id)) g.bestiary.push(e.id);
@@ -267,14 +283,14 @@ async function perform(
   cmd: Command,
   practiced: Practiced[],
   tip: TipFn,
-): Promise<'done' | 'back' | 'fled'> {
+): Promise<'done' | 'back' | 'fled' | 'quick'> {
   const g = ctx.g;
   switch (cmd.kind) {
     case 'attack':
       await view.play(executeAttack(s, actor, s.units.find((u) => u.uid === cmd.target)!));
       return 'done';
     case 'defend':
-      await view.play(defend(actor));
+      await view.play(defend(actor, s));
       return 'done';
     case 'item':
       await view.play(useItem(s, actor, cmd.item, s.units.find((u) => u.uid === cmd.target)!));
@@ -290,10 +306,15 @@ async function perform(
       const ch = nextChallenge(ctx, style);
       const r = await challenge(ctx, view, actor, ch, `${actor.name} · ${cmd.skill.name}`);
       const grade = r.grade;
-      track(ctx, s, view, ch, grade, practiced);
-      const mult = powerFor(grade, ch, g.settings.speedBonus);
+      const right = grade === 'fast' || grade === 'correct';
+      // Class passives: Elocuencia, Paciencia, Picardía.
+      const cls = actor.cls;
+      track(ctx, s, view, ch, grade, practiced, cls === 'guardian');
+      let mult = powerFor(grade, ch, g.settings.speedBonus);
+      if (cls === 'hechicero' && right) mult *= 1.15;
+      if (cls === 'guardian' && grade === 'wrong') mult = Math.max(mult, 0.8);
       await view.play(executeSkill(s, actor, cmd.skill, cmd.target, mult, grade));
-      return 'done';
+      return cls === 'picaro' && right ? 'quick' : 'done';
     }
     case 'ultimate': {
       const ch = nextChallenge(ctx, 'sentence');
@@ -339,17 +360,18 @@ async function challenge(ctx: BattleContext, view: BattleView, actor: Unit, ch: 
     slowTimer: acc?.slowTimer ?? 1,
     voice: g.settings.voice,
     timed,
+    freeHint: g.talents.includes('memoria'),
   });
 }
 
-function track(ctx: BattleContext, s: BattleState, view: BattleView, ch: Challenge, grade: Grade, practiced: Practiced[]) {
+function track(ctx: BattleContext, s: BattleState, view: BattleView, ch: Challenge, grade: Grade, practiced: Practiced[], patient = false) {
   const g = ctx.g;
   if (ch.srs) record(g.srs, ch.key, grade, Date.now(), ch.maxBox);
   g.stats.answered++;
   if (grade === 'fast' || grade === 'correct') {
     g.stats.right++;
     s.racha = Math.min(RACHA_MAX, s.racha + 1);
-  } else if (grade === 'wrong') {
+  } else if (grade === 'wrong' && !patient) {
     s.racha = Math.max(0, s.racha - 2);
   }
   practiced.push({ es: ch.reveal.es, en: ch.reveal.en, grade });

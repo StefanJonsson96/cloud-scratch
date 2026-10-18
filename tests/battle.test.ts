@@ -13,11 +13,15 @@ import {
   outcome,
   partyUnit,
   preview,
+  retarget,
+  memberStats,
   startTurn,
   unit,
   type BattleEvent,
 } from '../src/battle/rules';
-import { SKILL_BY_ID, xpToNext, statsAt, MEMBERS } from '../src/battle/defs';
+import { SKILL_BY_ID, xpToNext, statsAt, MEMBERS, skillsFor } from '../src/battle/defs';
+import { talentChoices, talentsEarned } from '../src/battle/classes';
+import { agree } from '../src/story/agree';
 import { ENEMIES } from '../src/battle/enemies';
 
 function rng(seed = 1) {
@@ -188,5 +192,84 @@ describe('progression', () => {
   it('xp curve grows and stats grow with level', () => {
     expect(xpToNext(2)).toBeGreaterThan(xpToNext(1));
     expect(statsAt(MEMBERS.mateo, 10).maxHp).toBeGreaterThan(statsAt(MEMBERS.mateo, 1).maxHp);
+  });
+});
+
+describe('classes and talents', () => {
+  const hero = (cls: 'hechicero' | 'guardian' | 'picaro', level = 5) => ({ id: 'hero' as const, level, xp: 0, hp: 999, mp: 999, cls });
+
+  it('classes change how the hero grows', () => {
+    const mage = memberStats(hero('hechicero', 10));
+    const tank = memberStats(hero('guardian', 10));
+    const rogue = memberStats(hero('picaro', 10));
+    expect(mage.mag).toBeGreaterThan(tank.mag);
+    expect(tank.maxHp).toBeGreaterThan(mage.maxHp);
+    expect(tank.def).toBeGreaterThan(rogue.def);
+    expect(rogue.spd).toBeGreaterThan(mage.spd);
+  });
+
+  it('each class gets its own signature skill', () => {
+    const ids = (cls: 'hechicero' | 'guardian' | 'picaro') => skillsFor('hero', 10, cls).map((s) => s.id);
+    expect(ids('hechicero')).toContain('meteoro');
+    expect(ids('hechicero')).not.toContain('muralla');
+    expect(ids('guardian')).toContain('muralla');
+    expect(ids('picaro')).toContain('birlar');
+    expect(skillsFor('hero', 10).map((s) => s.id)).not.toContain('birlar');
+  });
+
+  it('Muralla draws single-target attacks to the guardian', () => {
+    const party = [partyUnit(hero('guardian'), 'Alex'), partyUnit({ id: 'mateo', level: 5, xp: 0, hp: 999, mp: 999 }, 'Alex')];
+    const s = createBattle(party, ['lobo', 'lobo'], rng(3), {});
+    executeSkill(s, party[0], SKILL_BY_ID.get('muralla')!, undefined, 1, 'correct');
+    for (const e of s.units.filter((u) => u.side === 'enemy')) {
+      retarget(s, e);
+      chooseIntent(s, e);
+      const a = ENEMIES[e.id].actions.find((x) => x.id === e.intent!.actionId)!;
+      if (a.target === 'one') expect(e.intent!.targets).toEqual(['hero']);
+    }
+  });
+
+  it('Birlar steals once per enemy', () => {
+    const party = [partyUnit(hero('picaro'), 'Alex')];
+    const inv: Record<string, number> = {};
+    const s = createBattle(party, ['queso'], rng(5), inv);
+    const target = s.units.find((u) => u.side === 'enemy')!;
+    target.hp = target.maxHp = 9999;
+    executeSkill(s, party[0], SKILL_BY_ID.get('birlar')!, target.uid, 1, 'correct');
+    const got = Object.values(inv).reduce((a, b) => a + b, 0) + (s.bonusEuros ?? 0);
+    expect(got).toBeGreaterThan(0);
+    const before = JSON.stringify([inv, s.bonusEuros]);
+    executeSkill(s, party[0], SKILL_BY_ID.get('birlar')!, target.uid, 1, 'correct');
+    expect(JSON.stringify([inv, s.bonusEuros])).toBe(before);
+  });
+
+  it('Segundo aliento saves a friend once per battle', () => {
+    const s = setup(['golem']);
+    s.perks = new Set(['segundo_aliento']);
+    const golem = s.units.find((u) => u.side === 'enemy')!;
+    const h = unit(s, 'hero');
+    h.hp = 5;
+    hit(s, golem, h, { power: 10, stat: 'atk', element: 'fisico' }, []);
+    expect(h.hp).toBe(1);
+    hit(s, golem, h, { power: 10, stat: 'atk', element: 'fisico' }, []);
+    expect(h.hp).toBe(0);
+  });
+
+  it('talent choices are three you do not have yet', () => {
+    const c = talentChoices(['poliglota', 'ahorro'], rng(2));
+    expect(c).toHaveLength(3);
+    expect(c).not.toContain('poliglota');
+    expect(new Set(c).size).toBe(3);
+    expect(talentsEarned(2)).toBe(0);
+    expect(talentsEarned(9)).toBe(3);
+  });
+});
+
+describe('gender agreement', () => {
+  it('picks the form that agrees with the hero', () => {
+    expect(agree('¿Estás {cansado|cansada}?', 'm')).toBe('¿Estás cansado?');
+    expect(agree('¿Estás {cansado|cansada}?', 'f')).toBe('¿Estás cansada?');
+    expect(agree('Eres {un buen alumno|una buena alumna}.', 'f')).toBe('Eres una buena alumna.');
+    expect(agree('Hola, {name}', 'f')).toBe('Hola, {name}');
   });
 });

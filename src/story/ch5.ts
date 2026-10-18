@@ -158,6 +158,7 @@ script('final', async (s) => {
   s.refresh();
   await s.narrate('Puerto Alegre, that evening. Lanterns, guitars, the smell of paella. The whole coast has come to celebrate.');
   await s.say('abuela', `¡${s.g.heroName}! Lo has conseguido. Estoy muy orgullosa de ti.`, `${s.g.heroName}! You did it. I'm so proud of you.`);
+  await s.say('abuela', 'Ahora eres {un Palabrista de verdad|una Palabrista de verdad}.', "Now you're a real Palabrista."); 
   await s.say('bruno', 'Rosa… te he echado mucho de menos.', "Rosa… I've missed you so much.");
   await s.say('abuela', 'Y yo a ti, hermano. Bienvenido a casa.', 'And I you, brother. Welcome home.');
   await s.say('lola', '¡Venga! ¡Una canción para todos!', 'Come on! A song for everyone!');

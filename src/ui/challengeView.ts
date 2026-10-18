@@ -23,6 +23,8 @@ export interface ChallengeOptions {
   voice?: boolean;
   /** Show a timer bar and award a bonus for fast answers (the "speed bonus" setting). */
   timed?: boolean;
+  /** Hints don't lower the grade (the Buena memoria talent). */
+  freeHint?: boolean;
 }
 
 /** Time to answer for the speed bonus: the challenge's own allowance plus time to read it. */
@@ -99,7 +101,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
       const ms = performance.now() - t0;
       if (!correct) return 'wrong';
       if (typed === 'close') return 'close';
-      if (usedHint) return 'close';
+      if (usedHint && !opts.freeHint) return 'close';
       return timed && ms <= fastMs ? 'fast' : 'correct';
     }
 

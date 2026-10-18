@@ -1,6 +1,6 @@
 // Ties everything together: the overworld, scripts, battles, menus and saving.
 
-import './art/characters';
+import { defineHero } from './art/characters';
 import './art/enemies';
 import './art/objects';
 import { Overworld, type NpcInstance, type WorldHost } from './world/overworld';
@@ -17,6 +17,7 @@ import { fullHeal, save, type GameState } from './state';
 import { currentGoal } from './story/goals';
 import { spanish } from './ui/spanish';
 import { cornerButtons } from './ui/corner';
+import { offerTalents, pendingTalents } from './ui/talents';
 import { initTouch } from './engine/input';
 import { playMusic } from './engine/audio';
 import { setSpeechEnabled } from './engine/speech';
@@ -77,6 +78,7 @@ export class Game implements WorldHost {
 
   async start(g: GameState, fresh: boolean) {
     this.g = g;
+    defineHero(g.look);
     this.applySettings();
     document.body.classList.remove('no-world');
     this.screen.hidden = false;
@@ -87,6 +89,7 @@ export class Game implements WorldHost {
     // A tutorial interrupted by a reload or quitting resumes instead of soft-locking the house door.
     if (fresh || !g.flags.intro_done) await this.world.lockWhile(this.runScript('intro'));
     else if (this.world.map.onEnter) await this.world.lockWhile(this.runScript(this.world.map.onEnter));
+    if (pendingTalents(g)) await this.world.lockWhile(offerTalents(g).then(() => void save(g)));
   }
 
   stop() {
@@ -136,6 +139,7 @@ export class Game implements WorldHost {
     document.body.classList.add('no-world');
     const out = await runBattle({ g: this.g, host: document.body, recent: this.recent, rand: Math.random }, setup);
     document.body.classList.remove('no-world');
+    if (out === 'win') await offerTalents(this.g);
     if (out === 'lose' && !setup.noGameOver) await this.wakeUp();
     save(this.g);
     return out;

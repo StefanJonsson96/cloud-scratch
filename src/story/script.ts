@@ -16,6 +16,7 @@ import { h, menu, wait, waitConfirm } from '../ui/dom';
 import { sfx, playMusic } from '../engine/audio';
 import { speechAvailable, type VoiceSpec } from '../engine/speech';
 import { spanish } from '../ui/spanish';
+import { agree } from './agree';
 
 export type ScriptFn = (s: Script) => Promise<void>;
 export const SCRIPTS: Record<string, ScriptFn> = {};
@@ -79,23 +80,28 @@ export class Script {
     return CAST[who] ?? { name: who };
   }
 
+  /** "{cansado|cansada}" → the form that agrees with the hero. */
+  gx(text: string): string {
+    return agree(text, this.g.gender);
+  }
+
   /** A character speaks Spanish (with an English translation one tap away). */
   async say(who: string, es: string, en: string) {
     const sp = this.speaker(who);
-    await this.game.dialogue.say({ who: sp.name, face: sp.face, voice: sp.voice, es, en });
+    await this.game.dialogue.say({ who: sp.name, face: sp.face, voice: sp.voice, es: this.gx(es), en: this.gx(en) });
   }
 
   /** English narration (no speaker). */
   async narrate(en: string, es?: string) {
-    await this.game.dialogue.say({ en, es });
+    await this.game.dialogue.say({ en: this.gx(en), es: es && this.gx(es) });
   }
 
   /** Ask a question; options are [spanish, english] (spanish may be empty). */
   async ask(who: string, es: string, en: string, options: [string, string][]): Promise<number> {
     const sp = this.speaker(who);
     return this.game.dialogue.ask(
-      { who: sp.name, face: sp.face, voice: sp.voice, es, en },
-      options.map(([oes, oen]) => ({ es: oes || undefined, en: oen })),
+      { who: sp.name, face: sp.face, voice: sp.voice, es: this.gx(es), en: this.gx(en) },
+      options.map(([oes, oen]) => ({ es: oes ? this.gx(oes) : undefined, en: this.gx(oen) })),
     );
   }
 
@@ -126,7 +132,12 @@ export class Script {
           })
         : style;
     this.game.recent.push(ch.key);
-    const r = await runChallenge(this.game.overlayHost, ch, { title, voice: this.g.settings.voice, timed: this.g.settings.speedBonus });
+    const r = await runChallenge(this.game.overlayHost, ch, {
+      title,
+      voice: this.g.settings.voice,
+      timed: this.g.settings.speedBonus,
+      freeHint: this.g.talents.includes('memoria'),
+    });
     if (ch.srs) record(this.g.srs, ch.key, r.grade, Date.now(), ch.maxBox);
     this.g.stats.answered++;
     if (r.grade === 'fast' || r.grade === 'correct') this.g.stats.right++;
@@ -278,6 +289,7 @@ export class Script {
     const purse = h('div', { class: 'muted' });
     const host = h('div');
     panel.append(h('h2', null, sp.name, h('small', null, 'Tienda · Shop')), say, purse, host);
+    const price = (id: string) => Math.max(1, Math.round(ITEMS[id].price * (this.g.talents.includes('regateo') ? 0.8 : 1)));
     let greeting = '¿Qué te pongo?';
     let greetingEn = 'What can I get you?';
     for (;;) {
@@ -287,19 +299,20 @@ export class Script {
         const i = ITEMS[id];
         return {
           label: `${i.icon} ${i.name}`,
-          right: `${i.price} €`,
+          right: `${price(id)} €`,
           sub: `${i.en} — ${i.desc}  (tienes ${this.g.inventory[id] ?? 0})`,
-          disabled: this.g.euros < i.price,
+          disabled: this.g.euros < price(id),
         };
       });
       const pick = await menu(host, [...items, { label: '👋 Adiós', sub: 'Leave' }], { cancel: true });
       if (pick === null || pick >= stock.length) break;
       const it = ITEMS[stock[pick]];
-      this.g.euros -= it.price;
+      const cost = price(it.id);
+      this.g.euros -= cost;
       addItem(this.g, it.id);
       sfx('chest');
-      greeting = `Aquí tienes: ${it.name}. Son ${numberWords(it.price)} euros. ¿Algo más?`;
-      greetingEn = `Here you go: ${it.en}. That's ${it.price} euros. Anything else?`;
+      greeting = `Aquí tienes: ${it.name}. Son ${numberWords(cost)} euros. ¿Algo más?`;
+      greetingEn = `Here you go: ${it.en}. That's ${cost} euros. Anything else?`;
     }
     ov.remove();
     save(this.g);

@@ -17,7 +17,7 @@ game.stop();
 async function title() {
   game.stop();
   const r = await showTitle();
-  const g = r.mode === 'continue' && r.save ? r.save : newGame(r.name, r.settings);
+  const g = r.mode === 'continue' && r.save ? r.save : newGame(r.options);
   if (!g.stats.days.includes(todayKey())) g.stats.days.push(todayKey());
   save(g);
   await game.start(g, r.mode === 'new');

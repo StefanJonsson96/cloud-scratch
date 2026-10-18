@@ -120,13 +120,74 @@ const SKIN = { S: 'j', E: '0' };
 const SKIN_DARK = { S: 'h', E: '0' };
 
 // ------------------------------------------------------------------- party
-defineCharacter('hero', {
-  map: { ...SKIN, H: 'i', h: 't', C: '9', c: '8', A: 'n', P: 'f', B: 'i' },
-  over: {
-    down: ['', '', '', '', '...H.HH..HH.H...'],
-    left: ['', '', '', '', '...HHHHHHHHHH...'],
+// The hero is built from the look chosen at character creation.
+export const SKIN_TONES: [string, string][] = [
+  ['j', 'Claro'],
+  ['k', 'Medio'],
+  ['g', 'Moreno'],
+  ['i', 'Oscuro'],
+];
+/** Hair colour → [colour, shade]. */
+export const HAIR_COLOURS: [string, string, string][] = [
+  ['i', 't', 'Castaño'],
+  ['f', '0', 'Negro'],
+  ['4', 'n', 'Rubio'],
+  ['3', 's', 'Pelirrojo'],
+  ['d', 'e', 'Plateado'],
+];
+/** Outfit colour → [colour, shade]. */
+export const OUTFITS: [string, string, string][] = [
+  ['9', '8', 'Azul'],
+  ['2', 'l', 'Rojo'],
+  ['6', 'q', 'Verde'],
+  ['o', 'w', 'Morado'],
+  ['3', 's', 'Naranja'],
+  ['7', '8', 'Turquesa'],
+];
+export const HAIR_STYLES: ['corto' | 'largo' | 'coleta', string][] = [
+  ['corto', 'Corto'],
+  ['largo', 'Largo'],
+  ['coleta', 'Coleta'],
+];
+
+const BANGS: Partial<Record<Dir, string[]>> = {
+  down: ['', '', '', '', '...H.HH..HH.H...'],
+  left: ['', '', '', '', '...HHHHHHHHHH...'],
+};
+const HAIR: Record<'corto' | 'largo' | 'coleta', Partial<Record<Dir, string[]>>> = {
+  corto: BANGS,
+  largo: {
+    down: ['', '', '', '', '...H.HH..HH.H...', '..HH........HH..', '..H..........H..', '..H..........H..', '..HH........HH..', '..HH........HH..', '..H..........H..'],
+    up: ['', '', '', '', '', '', '', '', '...HHHHHHHHHH...', '...HHHHHHHHHH...', '....HHHHHHHH....', '.....hhhhhh.....'],
+    left: ['', '', '', '', '...HHHHHHHHHH...', '', '', '', '.........HHH....', '..........HHH...', '..........HH....'],
   },
-});
+  coleta: {
+    down: ['', '', '', '', '...H.HH..HH.H...'],
+    up: ['', '', '', '', '', '', '', '', '.......HH.......', '.......HH.......', '.......hh.......'],
+    left: ['', '', '', '.............HH.', '...HHHHHHHHHH.H.', '..............H.', '.............H..'],
+  },
+};
+
+export interface HeroLook {
+  skin: string;
+  hair: string;
+  style: 'corto' | 'largo' | 'coleta';
+  outfit: string;
+  skirt: boolean;
+}
+
+/** (Re)draw the hero's sprites for a look. */
+export function defineHero(look: HeroLook, name = 'hero') {
+  const [hair, hairShade] = HAIR_COLOURS.find(([k]) => k === look.hair) ?? HAIR_COLOURS[0];
+  const [cloth, clothShade] = OUTFITS.find(([k]) => k === look.outfit) ?? OUTFITS[0];
+  defineCharacter(name, {
+    map: { S: look.skin, E: '0', H: hair, h: hairShade, C: cloth, c: clothShade, A: 'n', P: 'f', B: 'i' },
+    skirt: look.skirt,
+    over: HAIR[look.style] ?? BANGS,
+  });
+}
+
+defineHero({ skin: 'j', hair: 'i', style: 'corto', outfit: '9', skirt: false });
 
 defineCharacter('mateo', {
   map: { ...SKIN_DARK, H: 'f', h: '0', C: '8', c: '9', A: 'g', P: 'r', B: 'i', R: '2', L: 'l' },

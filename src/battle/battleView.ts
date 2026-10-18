@@ -345,7 +345,7 @@ export class BattleView {
 
   private async chooseSkill(actor: Unit): Promise<Command | null> {
     clear(this.cmd);
-    const skills = skillsFor(actor.id as MemberId, actor.level);
+    const skills = skillsFor(actor.id as MemberId, actor.level, actor.cls);
     this.cmd.append(h('div', { class: 'cmd-title' }, `${SKILL_MENU[actor.id as MemberId].es} · ${MEMBERS[actor.id as MemberId].styleEn} challenge`));
     const items: MenuItem[] = skills.map((sk) => {
       const noTarget = this.candidates(sk.target, actor).length === 0;

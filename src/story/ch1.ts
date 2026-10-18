@@ -14,9 +14,11 @@ script('intro', async (s) => {
   const i = await s.ask('hero', '', '(Answer Abuela)', [
     ['¡Muy bien, gracias!', 'Very well, thanks!'],
     ['Mal… tengo sueño.', 'Badly… I’m sleepy.'],
+    ['Estoy {cansado|cansada}…', 'I’m tired…'],
   ]);
   if (i === 0) await s.say('abuela', '¡Me alegro! Hoy es un día especial.', "I'm glad! Today is a special day.");
-  else await s.say('abuela', 'Jaja, ¡venga, arriba! Hoy es un día especial.', 'Haha, come on, up you get! Today is a special day.');
+  else if (i === 1) await s.say('abuela', 'Jaja, ¡venga, arriba! Hoy es un día especial.', 'Haha, come on, up you get! Today is a special day.');
+  else await s.say('abuela', '¿{Cansado|Cansada}? ¡Pero si has dormido diez horas! Jaja. Hoy es un día especial.', 'Tired? But you slept ten hours! Haha. Today is a special day.');
   await s.say('abuela', 'Hoy empieza tu formación de Palabrista.', 'Today your training as a Palabrista begins.');
   await s.say('abuela', 'Un Palabrista usa las palabras como magia. Cada palabra tiene poder.', 'A Palabrista uses words as magic. Every word has power.');
   await s.say(
@@ -24,7 +26,8 @@ script('intro', async (s) => {
     'Si no entiendes algo, toca las palabras. O pulsa EN.',
     "If you don't understand something, tap the words. Or press EN (or the T key) for the whole sentence.",
   );
-  await s.say('abuela', '¿Ves el muñeco de paja? Vamos a practicar tres cosas.', "See the straw dummy? Let's practise three things.");
+  await s.say('abuela', '¿Ves el muñeco de paja? Vamos a practicar tres cosas. ¿Estás {listo|lista}?', "See the straw dummy? Let's practise three things. Are you ready?");
+  await s.narrate('“{Listo|Lista}”: Spanish adjectives agree with the person. Everyone will talk to you that way.');
   await s.battle({
     enemies: ['muneco'],
     hp: { muneco: 999 },
@@ -57,7 +60,7 @@ script('intro', async (s) => {
     ],
   });
   s.heal();
-  await s.say('abuela', '¡Muy bien! Tienes talento.', 'Very good! You have talent.');
+  await s.say('abuela', '¡Muy bien! Eres {un buen alumno|una buena alumna}. Tienes talento.', "Very good! You're a good student. You have talent.");
   await s.say('abuela', 'Puedes practicar con el muñeco cuando quieras.', 'You can practise with the dummy whenever you like.');
   await s.say('abuela', 'Y ahora… tengo hambre. ¿Puedes ir a la tienda de Doña Carmen? Necesito pan.', "And now… I'm hungry. Can you go to Doña Carmen's shop? I need bread.");
   await s.say('abuela', 'Su puesto está al lado de la plaza. ¡Hasta luego!', 'Her stall is next to the square. See you later!');
@@ -101,7 +104,7 @@ script('carmen', async (s) => {
     return;
   }
   if (s.has('bread_quest') && !s.has('has_bread')) {
-    await s.say('carmen', '¡Buenos días, cariño! ¿Qué te pongo?', 'Good morning, dear! What can I get you? (“¿Qué te pongo?” is how shopkeepers in Spain say it.)');
+    await s.say('carmen', '¡Buenos días, cariño! ¡Qué {guapo|guapa} estás hoy! ¿Qué te pongo?', "Good morning, dear! Don't you look lovely today! What can I get you? (“¿Qué te pongo?” is how shopkeepers in Spain say it.)");
     for (;;) {
       const i = await s.ask('hero', '', '(What do you ask for?)', [
         ['Una barra de pan, por favor.', 'A loaf of bread, please.'],
@@ -228,7 +231,7 @@ script('mateo_muelle', async (s) => {
     await s.say('mateo', 'Luego vamos a pescar, ¿vale?', "Later we're going fishing, okay?");
     return;
   }
-  await s.say('mateo', `¡${s.g.heroName}! ¿Estás bien? ¡Mi padre no habla! Está gris, como una piedra.`, `${s.g.heroName}! Are you okay? My dad isn't talking! He's grey, like a stone.`);
+  await s.say('mateo', `¡${s.g.heroName}! ¿Estás {herido|herida}? ¡Mi padre no habla! Está gris, como una piedra.`, `${s.g.heroName}! Are you hurt? My dad isn't talking! He's grey, like a stone.`);
   const a = await s.ask('hero', '', '(Answer Mateo)', [
     ['Mi abuela también.', 'My grandma too.'],
     ['¿Qué es una piedra?', "What's a stone?"],
@@ -338,8 +341,8 @@ script('paco', async (s) => {
 script('faro_view', async (s) => {
   s.flag('faro_seen');
   await s.say('mateo', 'Allí está el faro. ¡Qué oscuro está!', "There's the lighthouse. How dark it is!");
-  await s.say('mateo', 'La entrada de la cueva está debajo. ¿Vamos? Yo estoy preparado.', "The cave entrance is underneath. Shall we? I'm ready.");
-  await s.narrate('“Preparado” agrees with Mateo, a boy. Lola would say “preparada”: adjectives match the person they describe.');
+  await s.say('mateo', 'La entrada de la cueva está debajo. ¿Vamos? Yo estoy preparado. ¿Y tú? ¿Estás {preparado|preparada}?', "The cave entrance is underneath. Shall we? I'm ready. And you? Are you ready?");
+  await s.narrate('“Preparado” agrees with Mateo, a boy. To you he says “{preparado|preparada}”: adjectives match the person they describe.');
 });
 
 // ------------------------------------------------------------------ the cave

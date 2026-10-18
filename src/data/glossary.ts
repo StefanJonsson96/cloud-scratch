@@ -2,6 +2,13 @@
 // tapped for a translation. Inflected forms carry a short grammar note.
 
 export const GLOSSARY: [string, string][] = [
+  ['alumno', 'student (m)'],
+  ['alumna', 'student (f)'],
+  ['guapa', 'good-looking, pretty (f) · also a friendly “dear”'],
+  ['hecha', 'made, done (f) · hecha polvo = exhausted'],
+  ['herido', 'hurt, injured (m)'],
+  ['herida', 'hurt, injured (f) · also: a wound'],
+  ['preparada', 'ready, prepared (f)'],
   ['practica', 'practise! (practicar, tú command) / practises'],
   ['corre', 'run! (correr, tú command) / runs'],
   ['busca', 'look for! (buscar, tú command) / looks for'],

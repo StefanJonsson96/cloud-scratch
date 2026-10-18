@@ -3,6 +3,8 @@
 
 import type { Game } from '../game';
 import { volumeSliders, showHelp } from './corner';
+import { offerTalents, pendingTalents } from './talents';
+import { CLASSES, TALENTS, TALENT_EVERY, className, type TalentId } from '../battle/classes';
 import { h, clear, menu, appendAll } from './dom';
 import { spanish } from './spanish';
 import { pushLayer } from '../engine/input';
@@ -102,6 +104,7 @@ const equipo: View = (game, el, rerender) => {
     const def = MEMBERS[m.id];
     const s = memberStats(m);
     const name = m.id === 'hero' ? g.heroName : def.name;
+    const cls = m.id === 'hero' ? CLASSES[g.heroClass] : undefined;
     const acc = m.accessory ? ACCESSORIES[m.accessory] : undefined;
     grid.append(
       h(
@@ -111,7 +114,7 @@ const equipo: View = (game, el, rerender) => {
         h(
           'div',
           null,
-          h('h3', null, name, h('small', null, `${def.role} · ${def.roleEn}`)),
+          h('h3', null, name, h('small', null, cls ? `${cls.icon} ${className(cls.id, g.gender)} · ${cls.en}` : `${def.role} · ${def.roleEn}`)),
           h('div', { class: 'muted' }, `Nivel ${m.level} · ${m.xp}/${xpToNext(m.level)} PX · Spanish style: ${def.styleEn}`),
           h(
             'div',
@@ -133,10 +136,11 @@ const equipo: View = (game, el, rerender) => {
             'div',
             { class: 'skill-list' },
             'Habilidades: ',
-            SKILLS.filter((x) => x.user === m.id)
+            SKILLS.filter((x) => x.user === m.id && (!x.cls || x.cls === m.cls))
               .map((x) => (x.level <= m.level ? `${x.name} (${x.en})` : `🔒 Nv ${x.level}`))
               .join(' · '),
           ),
+          cls ? h('div', { class: 'skill-list' }, h('b', null, `Pasiva: ${cls.passive.name}`), ` (${cls.passive.en}) — ${cls.passive.desc}`) : null,
           h(
             'div',
             { class: 'row', style: { marginTop: '6px' } },
@@ -176,6 +180,35 @@ const equipo: View = (game, el, rerender) => {
     );
   }
   el.append(grid);
+  const pending = pendingTalents(g);
+  appendAll(
+    el,
+    h('h3', null, 'Talentos', h('small', null, ` · Talents — a new one every ${TALENT_EVERY} levels of ${g.heroName}`)),
+    g.talents.length
+      ? h(
+          'ul',
+          { class: 'talent-list' },
+          g.talents.map((id) => {
+            const t = TALENTS[id as TalentId];
+            return t ? h('li', null, `${t.icon} `, h('b', null, t.name), ` (${t.en}) — ${t.desc}`) : null;
+          }),
+        )
+      : h('p', { class: 'muted' }, 'None yet.'),
+    pending
+      ? h(
+          'button',
+          {
+            class: 'btn primary',
+            onclick: async () => {
+              await offerTalents(g);
+              save(g);
+              rerender();
+            },
+          },
+          `✨ Elegir talento (${pending})`,
+        )
+      : null,
+  );
 };
 
 // ------------------------------------------------------------------ items
@@ -441,7 +474,12 @@ const repaso: View = (game, el) => {
       });
       game.recent.push(ch.key);
       if (game.recent.length > 12) game.recent.shift();
-      const r = await runChallenge(game.overlayHost, ch, { title: `Repaso ${i + 1}/10`, voice: g.settings.voice, timed: g.settings.speedBonus });
+      const r = await runChallenge(game.overlayHost, ch, {
+        title: `Repaso ${i + 1}/10`,
+        voice: g.settings.voice,
+        timed: g.settings.speedBonus,
+        freeHint: g.talents.includes('memoria'),
+      });
       if (ch.srs) record(g.srs, ch.key, r.grade, Date.now(), ch.maxBox);
       g.stats.answered++;
       if (r.grade === 'fast' || r.grade === 'correct') {
@@ -516,9 +554,15 @@ const ajustes: View = (game, el, rerender, close) => {
       ['normal', 'Normal'],
       ['low', 'Fewer'],
     ]),
-    seg('easy', 'Modo historia · Story mode', 'Enemies hit softer. The Spanish stays the same.', [
-      [false, 'Off'],
-      [true, 'On'],
+    seg('difficulty', 'Combate · Battle difficulty', 'How tough enemies are. The Spanish stays the same.', [
+      ['facil', 'Fácil'],
+      ['normal', 'Normal'],
+      ['dificil', 'Difícil'],
+    ]),
+    seg('level', 'Español · Spanish level', 'Which words and grammar you practise, and how often you type.', [
+      ['a1', 'A1'],
+      ['a2', 'A2'],
+      ['b1', 'B1'],
     ]),
   );
   const code = h('textarea', { id: 'save-code', readonly: true, 'aria-label': 'Save code' }) as HTMLTextAreaElement;

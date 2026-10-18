@@ -3,15 +3,14 @@
 import { h, menu, clear, appendAll } from './dom';
 import { spriteCanvas, PALETTE } from '../engine/sprites';
 import { unlockAudio, playMusic, sfx } from '../engine/audio';
-import { dayStreak, hasSave, load, deleteSave, type GameState, type Settings } from '../state';
-import { pushLayer } from '../engine/input';
+import { dayStreak, hasSave, load, deleteSave, type GameState, type NewGameOptions } from '../state';
+import { characterCreation } from './creation';
 import { cornerButtons } from './corner';
 
 export interface TitleResult {
   mode: 'continue' | 'new';
   save?: GameState;
-  name?: string;
-  settings?: Partial<Settings>;
+  options?: NewGameOptions;
 }
 
 /** Draws a field of azulejo tiles — the blue-and-white ceramic of Spanish walls. */
@@ -78,7 +77,7 @@ export function showTitle(): Promise<TitleResult> {
         playMusic('town');
         const id = existing ? i : (i ?? 0) + 1;
         if (id === 0 && existing) finish({ mode: 'continue', save: existing });
-        else if (id === 1) setup(!!existing);
+        else if (id === 1) void setup(!!existing);
         else help();
       });
     };
@@ -103,96 +102,14 @@ export function showTitle(): Promise<TitleResult> {
       void menu(host, [{ label: '↩ Volver', sub: 'Back' }], { cancel: true }).then(home);
     };
 
-    const setup = (overwrite: boolean) => {
+    const setup = async (overwrite: boolean) => {
       clear(inner);
-      const name = h('input', { type: 'text', id: 'hero-name', maxlength: '12', value: 'Alex', 'aria-label': 'Your name', autocomplete: 'off' }) as HTMLInputElement;
-      let translations: Settings['translations'] = 'tap';
-      let typing = true;
-      const seg = (opts: [string, string][], get: () => string, set: (v: string) => void) => {
-        const wrap = h('div', { class: 'seg' });
-        const draw = () => {
-          clear(wrap);
-          for (const [v, l] of opts)
-            wrap.append(
-              h(
-                'button',
-                {
-                  class: get() === v ? 'on' : '',
-                  onclick: () => {
-                    set(v);
-                    sfx('blip');
-                    draw();
-                  },
-                },
-                l,
-              ),
-            );
-        };
-        draw();
-        return wrap;
-      };
-      const start = h('button', { class: 'btn primary', style: { width: '100%' } }, '¡Empezar! · Start');
-      const warn = overwrite ? h('p', { class: 'muted' }, 'Starting a new game replaces your current save.') : null;
-      inner.append(
-        h('h2', { class: 'logo', style: { fontSize: '34px' } }, 'Nueva partida'),
-        h(
-          'div',
-          { class: 'panel', style: { textAlign: 'left' } },
-          h('div', { class: 'field' }, h('label', { for: 'hero-name' }, '¿Cómo te llamas? · What is your name?'), name),
-          h(
-            'div',
-            { class: 'switch' },
-            h('div', null, 'Translations', h('small', null, 'English under every line, or only when you tap EN. You can change this later.')),
-            seg(
-              [
-                ['always', 'Always'],
-                ['tap', 'On tap'],
-              ],
-              () => translations,
-              (v) => (translations = v as Settings['translations']),
-            ),
-          ),
-          h(
-            'div',
-            { class: 'switch' },
-            h('div', null, 'Typing focus', h('small', null, 'Type answers from memory sooner — great if multiple choice feels too easy.')),
-            seg(
-              [
-                ['on', 'On'],
-                ['off', 'Off'],
-              ],
-              () => (typing ? 'on' : 'off'),
-              (v) => (typing = v === 'on'),
-            ),
-          ),
-          warn,
-          start,
-        ),
-      );
-      const backBtn = h('button', { class: 'btn', style: { width: '100%' } }, '↩ Volver · Back');
-      inner.append(backBtn);
-      let popSetup: (() => void) | null = null;
-      const leave = (fn: () => void) => {
-        popSetup?.();
-        popSetup = null;
-        fn();
-      };
-      const go = () =>
-        leave(() => {
-          if (overwrite) deleteSave();
-          finish({ mode: 'new', name: name.value.trim() || 'Alex', settings: { translations, typingFocus: typing } });
-        });
-      start.addEventListener('click', go);
-      backBtn.addEventListener('click', () => leave(home));
-      name.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') go();
-      });
-      popSetup = pushLayer((a) => {
-        if (a === 'confirm') go();
-        else if (a === 'cancel') leave(home);
-        return true;
-      });
-      setTimeout(() => name.focus(), 50);
+      inner.classList.add('wide');
+      const r = await characterCreation(inner, overwrite);
+      inner.classList.remove('wide');
+      if (!r) return home();
+      if (overwrite) deleteSave();
+      finish({ mode: 'new', options: r });
     };
 
     const finish = (r: TitleResult) => {
