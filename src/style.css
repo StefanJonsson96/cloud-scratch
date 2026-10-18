@@ -2733,3 +2733,49 @@ table.keys kbd {
 .screen.portrait .hud-right {
   margin-left: auto;
 }
+
+/* Voices settings */
+.voices-panel {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.voices-panel h3 small {
+  color: var(--muted);
+  font-weight: normal;
+}
+
+.voice-pick {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.voice-pick select {
+  max-width: 100%;
+  min-width: 0;
+  flex: 1 1 260px;
+}
+
+.voice-tests {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0;
+}
+
+.warn-box {
+  background: rgba(244, 185, 66, 0.12);
+  border-left: 3px solid var(--saffron);
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+.voice-howto,
+.voice-list {
+  font-size: 0.88em;
+  line-height: 1.45;
+  padding-left: 1.2em;
+}

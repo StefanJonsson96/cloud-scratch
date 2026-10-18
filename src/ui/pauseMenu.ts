@@ -3,6 +3,7 @@
 
 import type { Game } from '../game';
 import { volumeSliders, showHelp } from './corner';
+import { voicesPanel } from './voices';
 import { offerTalents, pendingTalents } from './talents';
 import { CLASSES, TALENTS, TALENT_EVERY, className, type TalentId } from '../battle/classes';
 import { h, clear, menu, appendAll } from './dom';
@@ -548,6 +549,7 @@ const ajustes: View = (game, el, rerender, close) => {
       [false, 'Off'],
     ]),
     h('div', { class: 'switch' }, h('div', null, 'Volumen · Volume', h('small', null, 'Also in the 🎚️ button in the corner. Saved on this device.')), volumeSliders()),
+    voicesPanel(),
     seg('marker', 'Marcador · Objective marker', 'A yellow arrow on the map shows where to go next (or which exit leads there).', [
       [true, 'On'],
       [false, 'Off'],

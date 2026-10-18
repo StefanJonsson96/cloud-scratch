@@ -28,8 +28,45 @@ const MALE = /pablo|jorge|[aá]lvaro|diego|juan|carlos|enrique|ra[uú]l|arnau|da
 let pools: { f: SpeechSynthesisVoice[]; m: SpeechSynthesisVoice[]; any: SpeechSynthesisVoice[] } = { f: [], m: [], any: [] };
 let enabled = true;
 let ready = false;
+const listeners = new Set<() => void>();
 
-function genderOf(v: SpeechSynthesisVoice): 'f' | 'm' | null {
+// ------------------------------------------------------------ player's choice
+/** Voices the player picked for female and male characters (saved on this device). */
+export interface VoiceChoice {
+  f?: string;
+  m?: string;
+}
+const CHOICE_KEY = 'palabrista-voices';
+let choice: VoiceChoice = loadChoice();
+
+function loadChoice(): VoiceChoice {
+  try {
+    return JSON.parse(localStorage.getItem(CHOICE_KEY) ?? '{}') as VoiceChoice;
+  } catch {
+    return {};
+  }
+}
+
+export function voiceChoice(): VoiceChoice {
+  return choice;
+}
+
+export function setVoiceChoice(c: VoiceChoice) {
+  choice = { ...choice, ...c };
+  try {
+    localStorage.setItem(CHOICE_KEY, JSON.stringify(choice));
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+/** Get told when the system's voice list changes (it loads asynchronously). */
+export function onVoicesChanged(fn: () => void): () => void {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+export function genderOf(v: SpeechSynthesisVoice): 'f' | 'm' | null {
   // Check male first: "female" contains "male".
   if (/\bfemale\b|mujer/i.test(v.name)) return 'f';
   if (MALE.test(v.name)) return 'm';
@@ -65,6 +102,29 @@ function pickVoices() {
     any: best(es),
   };
   ready = true;
+  for (const l of listeners) l();
+}
+
+/** Every Spanish voice on this device, best first, with the gender we think it has. */
+export function spanishVoices(): { voice: SpeechSynthesisVoice; gender: 'f' | 'm' | null }[] {
+  if (!('speechSynthesis' in window)) return [];
+  if (!ready) pickVoices();
+  return speechSynthesis
+    .getVoices()
+    .filter((v) => v.lang.toLowerCase().startsWith('es'))
+    .sort((a, b) => rank(b) - rank(a))
+    .map((voice) => ({ voice, gender: genderOf(voice) }));
+}
+
+/** Which genders have no Spanish voice of their own (pitch is shifted instead). */
+export function missingVoiceGenders(): ('f' | 'm')[] {
+  if (!speechAvailable()) return [];
+  return (['f', 'm'] as const).filter((g) => !pools[g].length && !byName(choice[g]));
+}
+
+function byName(name?: string): SpeechSynthesisVoice | undefined {
+  if (!name || !('speechSynthesis' in window)) return undefined;
+  return speechSynthesis.getVoices().find((v) => v.name === name);
 }
 
 export function initSpeech() {
@@ -101,8 +161,15 @@ function hash(s: string): number {
 
 /** Which system voice and pitch to use for a character. */
 export function resolveVoice(spec: VoiceSpec): { voice: SpeechSynthesisVoice | null; pitch: number } {
-  const own = pools[spec.gender];
   let pitch = spec.pitch ?? 1;
+  // The player's own pick wins.
+  const chosen = byName(choice[spec.gender]);
+  if (chosen) {
+    const g = genderOf(chosen);
+    if (g && g !== spec.gender) pitch *= spec.gender === 'f' ? 1.45 : 0.72;
+    return { voice: chosen, pitch };
+  }
+  const own = pools[spec.gender];
   if (own.length) {
     // Spread characters over the good voices, but keep the best one for the narrator.
     const top = own.slice(0, Math.min(own.length, 4));
@@ -114,8 +181,8 @@ export function resolveVoice(spec: VoiceSpec): { voice: SpeechSynthesisVoice | n
   // Unnamed voices (Android) are usually female, so men get a lower pitch.
   if (voice) {
     const other = genderOf(voice);
-    if (spec.gender === 'f' && other === 'm') pitch *= 1.3;
-    if (spec.gender === 'm' && other !== 'm') pitch *= other === 'f' ? 0.75 : 0.85;
+    if (spec.gender === 'f' && other === 'm') pitch *= 1.45;
+    if (spec.gender === 'm' && other !== 'm') pitch *= other === 'f' ? 0.72 : 0.85;
   }
   return { voice, pitch };
 }

@@ -20,7 +20,7 @@ import { cornerButtons } from './ui/corner';
 import { offerTalents, pendingTalents } from './ui/talents';
 import { initTouch } from './engine/input';
 import { playMusic } from './engine/audio';
-import { setSpeechEnabled } from './engine/speech';
+import { missingVoiceGenders, setSpeechEnabled } from './engine/speech';
 
 export class Game implements WorldHost {
   g!: GameState;
@@ -86,6 +86,7 @@ export class Game implements WorldHost {
     this.world.start();
     this.layout();
     this.updateGoal();
+    this.voiceNotice();
     // A tutorial interrupted by a reload or quitting resumes instead of soft-locking the house door.
     if (fresh || !g.flags.intro_done) await this.world.lockWhile(this.runScript('intro'));
     else if (this.world.map.onEnter) await this.world.lockWhile(this.runScript(this.world.map.onEnter));
@@ -115,6 +116,19 @@ export class Game implements WorldHost {
       this.world.applyMood();
       this.updateGoal();
     }
+  }
+
+  /** Once per session: tell the player if men and women will sound alike, and where to fix it. */
+  private voiceNoticeShown = false;
+  private voiceNotice() {
+    if (this.voiceNoticeShown || !this.g.settings.voice) return;
+    // Voices load asynchronously; give them a moment.
+    setTimeout(() => {
+      const missing = missingVoiceGenders();
+      if (!missing.length) return;
+      this.voiceNoticeShown = true;
+      this.toast(`Only ${missing.includes('f') ? 'a male' : 'a female'} Spanish voice found — see Menú → Ajustes → Voces`);
+    }, 1500);
   }
 
   /** Refresh the objective shown in the corner. */
