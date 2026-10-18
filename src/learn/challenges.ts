@@ -9,11 +9,12 @@
 // Every challenge carries its translation, a hint you can ask for, and a short
 // rule explaining the answer — so nothing in the game is ever a mystery word.
 
-import { WORDS, withArticle, genderRule, TRICKY_GENDER, type Word } from '../data/vocab';
+import { WORDS, withArticle, genderRule, TRICKY_GENDER, FALSE_FRIENDS, SPAIN_VS_LATAM, type Word } from '../data/vocab';
 import {
-  regular,
   slot,
-  HABER,
+  conjugationHint,
+  hasTense,
+  subjunctiveEnglish,
   verbsUpToChapter,
   tensesUpToChapter,
   conjugate,
@@ -21,6 +22,7 @@ import {
   TENSES,
   TABLE_PERSONS,
   PERSONS,
+  type Level,
   type Person,
   type Tense,
   type Verb,
@@ -79,6 +81,8 @@ export interface ChallengeContext {
   recent: string[];
   preferTyping: boolean;
   listening: boolean;
+  /** Spanish level: A1 beginner, A2 intermediate (default), B1 advanced. */
+  level?: Level;
 }
 
 export const wordKey = (w: Word) => `w:${w.id}`;
@@ -105,8 +109,11 @@ function weighted<T>(items: [T, number][], rand: () => number): T {
   return items[items.length - 1][0];
 }
 
-function wordsFor(ch: number): Word[] {
-  return WORDS.filter((w) => w.ch <= ch);
+/** The words in play at this point of the story and this Spanish level. */
+export function wordsFor(ch: number, level: Level = 'a2'): Word[] {
+  if (level === 'b1') return WORDS.filter((w) => w.ch <= ch + 1);
+  if (level === 'a1') return WORDS.filter((w) => w.ch <= ch && !w.lvl && w.cat !== 'refranes' && !(w.cat === 'expresiones' && w.ch >= 3));
+  return WORDS.filter((w) => w.ch <= ch && !w.lvl);
 }
 
 const cap = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : s);
@@ -123,11 +130,13 @@ export function distractors(
   const bad = (d: Word) =>
     d.id === w.id || d.en === w.en || d.bare === w.bare || parts(d).some((p) => parts(w).includes(p));
   const ch = Math.max(chapter, 1);
+  // Advanced words only show up as wrong answers for advanced words.
+  const usable = WORDS.filter((d) => !d.lvl || w.lvl);
   const pools = [
-    WORDS.filter((d) => d.ch <= ch && d.pos === w.pos && d.cat === w.cat),
-    WORDS.filter((d) => d.ch <= ch && d.pos === w.pos),
-    WORDS.filter((d) => d.pos === w.pos),
-    WORDS.slice(),
+    usable.filter((d) => d.ch <= ch && d.pos === w.pos && d.cat === w.cat),
+    usable.filter((d) => d.ch <= ch && d.pos === w.pos),
+    usable.filter((d) => d.pos === w.pos),
+    usable.slice(),
   ];
   const out: Word[] = [];
   for (const pool of pools) {
@@ -197,7 +206,8 @@ function pickFrom<T>(ctx: ChallengeContext, pool: T[], keyFn: (x: T) => string, 
 
 // ------------------------------------------------------------- Palabrista
 export function vocabChallenge(ctx: ChallengeContext): Challenge {
-  const w = pickFrom(ctx, wordsFor(ctx.chapter), wordKey, (x) => x.ch === ctx.chapter);
+  const level = ctx.level ?? 'a2';
+  const w = pickFrom(ctx, wordsFor(ctx.chapter, level), wordKey, (x) => x.ch === ctx.chapter);
   const key = wordKey(w);
   const fresh = isNew(ctx.srs, key);
   const box = boxOf(ctx.srs, key);
@@ -212,7 +222,7 @@ export function vocabChallenge(ctx: ChallengeContext): Challenge {
     note: w.pos === 'noun' && w.gender !== 'both' && TRICKY_GENDER.has(w.id) ? genderRule(w) : undefined,
   };
   const r = ctx.rand();
-  const typingFrom = ctx.preferTyping ? 2 : 3;
+  const typingFrom = level === 'a1' ? 4 : level === 'b1' ? 1 : ctx.preferTyping ? 2 : 3;
 
   const long = w.bare.split(' ').length > 3;
   if (!fresh && box >= typingFrom) {
@@ -314,7 +324,7 @@ export function vocabChallenge(ctx: ChallengeContext): Challenge {
 }
 
 function singleWords(chapter: number, not: string): string[] {
-  return WORDS.filter((d) => d.ch <= Math.max(1, chapter) && !d.bare.includes(' ') && d.bare !== not.toLowerCase()).map(
+  return WORDS.filter((d) => d.ch <= Math.max(1, chapter) && !d.lvl && !d.bare.includes(' ') && d.bare !== not.toLowerCase()).map(
     (d) => d.bare,
   );
 }
@@ -337,20 +347,77 @@ function posHint(w: Word): string | undefined {
 }
 
 // ------------------------------------------------------------------ Mateo
-type QuickKind = 'gender' | GrammarTopic | 'truefalse' | 'picture';
+type QuickKind = 'gender' | GrammarTopic | 'truefalse' | 'picture' | 'falsos' | 'espana';
 
 export function quickChallenge(ctx: ChallengeContext, force?: QuickKind): Challenge {
-  const pool = wordsFor(ctx.chapter);
+  const level = ctx.level ?? 'a2';
+  const pool = wordsFor(ctx.chapter, level);
   const seen = pool.filter((w) => !isNew(ctx.srs, wordKey(w)));
   const nouns = pool.filter((w) => w.pos === 'noun' && (w.gender === 'm' || w.gender === 'f'));
+  const b1 = level === 'b1';
+  const a1 = level === 'a1';
   const options: [QuickKind, number][] = [
-    ['gender', 3],
-    ['serEstar', ctx.chapter >= TOPIC_CH.serEstar ? 3 : 0],
-    ['porPara', ctx.chapter >= TOPIC_CH.porPara ? 3 : 0],
+    ['gender', b1 ? 2 : 3],
+    ['serEstar', ctx.chapter >= TOPIC_CH.serEstar + (a1 ? 1 : 0) ? (b1 ? 2 : 3) : 0],
+    ['porPara', b1 || ctx.chapter >= TOPIC_CH.porPara + (a1 ? 1 : 0) ? (b1 ? 2 : a1 ? 1 : 3) : 0],
+    ['subjuntivo', b1 ? 2 : 0],
+    ['falsos', b1 ? 2 : 0],
+    ['espana', b1 ? 2 : 0],
     ['truefalse', seen.length >= 6 ? 1 : 0],
-    ['picture', 1],
+    ['picture', a1 ? 2 : 1],
   ];
   const kind = force ?? weighted(options.filter(([, wt]) => wt > 0), ctx.rand);
+
+  if (kind === 'falsos') {
+    const list = WORDS.filter((w) => FALSE_FRIENDS[w.id]);
+    const w = pickFrom(ctx, list, wordKey, () => true);
+    const [trap, trapEs] = FALSE_FRIENDS[w.id];
+    const ds = distractors(w, 2, ctx.rand, ctx.chapter).map((d) => d.en);
+    return {
+      key: wordKey(w),
+      kind: 'choice',
+      label: '¡Falso amigo! What does it mean?',
+      prompt: withArticle(w),
+      promptLang: 'es',
+      hint: w.ex ? `${w.ex[0]}  —  ${w.ex[1]}` : undefined,
+      ...choice(w.en, [trap, ...ds], ctx.rand),
+      reveal: { es: withArticle(w), en: w.en },
+      example: w.ex,
+      note: `False friend! ${withArticle(w)} = ${w.en}. “${trap}” in Spanish is “${trapEs}”.`,
+      difficulty: 1.15,
+      maxBox: 4,
+      isNew: isNew(ctx.srs, wordKey(w)),
+      fastMs: 4000,
+      srs: true,
+      speak: w.es.split('|')[0],
+    };
+  }
+
+  if (kind === 'espana') {
+    const list = WORDS.filter((w) => SPAIN_VS_LATAM[w.id] && (b1 || !w.lvl));
+    const w = pickFrom(ctx, list, (x) => `es:${x.id}`, () => true);
+    const latam = SPAIN_VS_LATAM[w.id];
+    const ds = distractors(w, 2, ctx.rand, ctx.chapter).map(withArticle);
+    return {
+      key: `es:${w.id}`,
+      kind: 'choice',
+      label: 'En España se dice…',
+      prompt: w.en,
+      promptLang: 'en',
+      sub: 'Which word would you hear in Spain?',
+      hint: `Not “${latam}” — that's Latin America.`,
+      ...choice(withArticle(w), [latam, ...ds], ctx.rand),
+      reveal: { es: withArticle(w), en: w.en },
+      example: w.ex,
+      note: `In Spain: ${withArticle(w)}. In much of Latin America: ${latam}. Both are Spanish — this game teaches Spain's.`,
+      difficulty: 1.1,
+      maxBox: 4,
+      isNew: isNew(ctx.srs, `es:${w.id}`),
+      fastMs: 4000,
+      srs: true,
+      speak: w.es.split('|')[0],
+    };
+  }
 
   if (kind === 'gender') {
     // Favour the nouns whose gender is genuinely hard to guess.
@@ -380,7 +447,7 @@ export function quickChallenge(ctx: ChallengeContext, force?: QuickKind): Challe
     };
   }
 
-  if (kind === 'serEstar' || kind === 'porPara' || kind === 'gustar') {
+  if (kind === 'serEstar' || kind === 'porPara' || kind === 'gustar' || kind === 'subjuntivo') {
     return grammarChallenge(ctx, kind);
   }
 
@@ -437,7 +504,7 @@ export function grammarChallenge(ctx: ChallengeContext, topic: GrammarTopic): Ch
   const g = pickFrom(ctx, pool, grammarKey, (x) => x.ch === ctx.chapter);
   const rule = RULES[g.rule];
   const full = g.es.replace('___', g.answer);
-  const labels: Record<GrammarTopic, string> = { serEstar: '¿Ser o estar?', porPara: '¿Por o para?', gustar: 'Gustar' };
+  const labels: Record<GrammarTopic, string> = { serEstar: '¿Ser o estar?', porPara: '¿Por o para?', gustar: 'Gustar', subjuntivo: '¿Indicativo o subjuntivo?' };
   return {
     key: grammarKey(g),
     kind: 'choice',
@@ -465,76 +532,82 @@ const PERSON_WEIGHT: Record<Person, number> = {
 
 export function verbChallenge(ctx: ChallengeContext): Challenge {
   const ch = Math.max(ctx.chapter, 2);
-  if (ctx.rand() < 0.2) return grammarChallenge(ctx, 'gustar');
+  const level = ctx.level ?? 'a2';
+  if (ctx.rand() < 0.2) return grammarChallenge(ctx, level === 'b1' && ctx.rand() < 0.5 ? 'subjuntivo' : 'gustar');
 
-  const tenses = tensesUpToChapter(ch);
-  const newest = tenses.filter((t) => TENSES[t].ch === ch);
+  const tenses = tensesUpToChapter(ch, level);
+  // Lean on what's new: this chapter's tense, or the advanced tenses at B1.
+  const newest = level === 'b1' ? tenses.filter((t) => TENSES[t].level === 'b1') : tenses.filter((t) => TENSES[t].ch === ch);
   const tense: Tense =
     newest.length && ctx.rand() < 0.55
       ? newest[Math.floor(ctx.rand() * newest.length)]
       : tenses[Math.floor(ctx.rand() * tenses.length)];
-  const pool = verbsUpToChapter(ch);
+  const t = TENSES[tense];
+  const pool = verbsUpToChapter(ch, level).filter((x) => hasTense(x, tense));
   const v = pickFrom(ctx, pool, (x) => verbKey(x, tense), (x) => x.ch === ch);
   const key = verbKey(v, tense);
-  const person = weighted(PERSONS.map((p) => [p, PERSON_WEIGHT[p]] as [Person, number]), ctx.rand);
+  const persons = t.persons ?? PERSONS;
+  const person = weighted(persons.map((p) => [p, PERSON_WEIGHT[p]] as [Person, number]), ctx.rand);
   const form = conjugate(v, person, tense);
-  const t = TENSES[tense];
   const mi = Math.floor(ctx.rand() * t.markers.length);
   const marker = t.markers[mi];
   const markerEn = t.markersEn[mi];
-  const prompt = cap(`${marker ? marker + ' ' : ''}${person} ___ (${v.inf})`);
-  const en = cap(`${markerEn ? markerEn + ' ' : ''}${englishFor(v, person, tense)}`);
+  const prompt =
+    tense === 'imperativo' ? `¡___ (${v.inf})! — ${person}` : cap(`${marker ? marker + ' ' : ''}${person} ___ (${v.inf})`);
+  const en =
+    tense === 'subjuntivo'
+      ? subjunctiveEnglish(mi, v, person)
+      : cap(`${markerEn ? markerEn + ' ' : ''}${englishFor(v, person, tense)}`);
   const box = boxOf(ctx.srs, key);
   const fresh = isNew(ctx.srs, key);
   const s = slot(person);
-  const irregular =
-    tense === 'perfecto' ? !!v.irregular.perfecto : form !== regular(v.inf, tense)[s];
-  const ending = v.inf.slice(-2);
-  const hint =
-    tense === 'perfecto'
-      ? `haber → “${HABER[s]}” + participle${irregular ? ' (irregular!)' : ` (-${ending === 'ar' ? 'ado' : 'ido'})`}`
-      : irregular
-        ? `Irregular! It starts with “${form.slice(0, Math.min(3, form.length - 1))}…”`
-        : `Regular -${ending} verb: ${TABLE_PERSONS[s]} → -${regular('x' + ending, tense)[s].slice(1)}`;
+  const irregular = !!v.irregular[tense];
+  const rows = v.forms[tense].map((f, i) => [TABLE_PERSONS[i], f] as [string, string]).filter(([, f]) => f);
   const base = {
     key,
     label: `${t.es}${irregular ? ' · irregular!' : ''}`,
     prompt,
     promptLang: 'es' as const,
     sub: en,
-    hint,
-    reveal: { es: `${person} ${form}`, en: `${en}  ·  ${v.inf} = to ${v.en.base}` },
-    note: tense === 'perfecto' ? TENSES.perfecto.rule : person === 'vosotros' ? 'Vosotros = “you all” (informal), used all over Spain.' : undefined,
-    table: {
-      title: `${v.inf} — ${t.es.toLowerCase()}`,
-      rows: v.forms[tense].map((f, i) => [TABLE_PERSONS[i], f] as [string, string]),
-      highlight: s,
-    },
+    hint: conjugationHint(v, person, tense),
+    reveal: { es: tense === 'imperativo' ? `¡${cap(form)}!` : `${person} ${form}`, en: `${en}  ·  ${v.inf} = to ${v.en.base}` },
+    note:
+      tense === 'presente' && person !== 'vosotros'
+        ? undefined
+        : tense === 'presente'
+          ? 'Vosotros = “you all” (informal), used all over Spain.'
+          : t.rule,
+    table: { title: `${v.inf} — ${t.es.toLowerCase()}`, rows, highlight: rows.findIndex(([p]) => p === TABLE_PERSONS[s]) },
     isNew: fresh,
     srs: true,
-    speak: `${person} ${form}`,
+    speak: tense === 'imperativo' ? form : `${person} ${form}`,
   };
-  const typingFrom = ctx.preferTyping ? 1 : 2;
+  const typingFrom = level === 'a1' ? 3 : level === 'b1' ? 0 : ctx.preferTyping ? 1 : 2;
   if (!fresh && box >= typingFrom) {
     return { ...base, kind: 'type', accepted: [form], difficulty: 1.3, maxBox: 5, fastMs: tense === 'perfecto' ? 9000 : 7000 };
   }
-  const sameTense = Array.from(new Set(v.forms[tense].filter((f) => f !== form)));
-  const wrong = shuffle(sameTense, ctx.rand).slice(0, 3);
-  // Perfecto vs indefinido is THE Spain past-tense decision: offer the other one as a trap.
-  const rival: Tense | undefined = tense === 'perfecto' ? 'indefinido' : tense === 'indefinido' ? 'perfecto' : undefined;
-  if (rival && tenses.includes(rival)) wrong[0] = conjugate(v, person, rival);
+  const sameTense = Array.from(new Set(v.forms[tense].filter((f) => f && f !== form)));
+  let wrong = shuffle(sameTense, ctx.rand).slice(0, 3);
+  // The classic traps: perfecto vs indefinido (Spain), indicative vs subjunctive, command vs statement.
+  const rival: Tense | undefined =
+    tense === 'perfecto' ? 'indefinido' : tense === 'indefinido' ? 'perfecto' : tense === 'subjuntivo' ? 'presente' : tense === 'condicional' ? 'futuro' : undefined;
+  if (rival && (tenses.includes(rival) || tense === 'subjuntivo')) wrong[0] = conjugate(v, person, rival);
+  if (tense === 'imperativo') {
+    const traps = [v.inf, conjugate(v, person, 'subjuntivo'), conjugate(v, person, 'presente'), ...sameTense];
+    wrong = Array.from(new Set(traps.filter((f) => f && f !== form))).slice(0, 3);
+  }
   return { ...base, kind: 'choice', ...choice(form, wrong, ctx.rand), difficulty: 1.0, maxBox: 3, fastMs: 4500 };
 }
 
 // -------------------------------------------------------------- Ultimates
 export function sentenceChallenge(ctx: ChallengeContext): Challenge {
-  const pool = sentencesUpToChapter(ctx.chapter);
+  const pool = sentencesUpToChapter(ctx.chapter, ctx.level ?? 'a2');
   const current = pool.filter((s) => s.ch === Math.max(1, ctx.chapter));
   const fresh = (current.length && ctx.rand() < 0.6 ? current : pool).filter((s) => !ctx.recent.includes(`s:${s.es}`));
   const list = fresh.length ? fresh : pool;
   const s: Sentence = list[Math.floor(ctx.rand() * list.length)];
   const tokens = tokenize(s.es);
-  const extra = WORDS.filter((w) => w.ch <= Math.max(1, ctx.chapter) && !w.bare.includes(' '))
+  const extra = WORDS.filter((w) => w.ch <= Math.max(1, ctx.chapter) && !w.lvl && !w.bare.includes(' '))
     .map((w) => tokenize(w.bare)[0])
     .filter((t) => t && !tokens.includes(t));
   const distract = shuffle(Array.from(new Set(extra)), ctx.rand).slice(0, 2);

@@ -26,13 +26,15 @@ export interface Word {
   ch: number;
   emoji?: string;
   ex?: [string, string];
+  /** Advanced words only practised at the B1 level. */
+  lvl?: 'b1';
 }
 
 type Row = [string, string, string?, string?, string?];
 
 const ALL: Word[] = [];
 
-function block(ch: number, cat: string, pos: POS, rows: Row[]) {
+function block(ch: number, cat: string, pos: POS, rows: Row[], lvl?: 'b1') {
   for (const [rawEs, en, emoji, exEs, exEn] of rows) {
     let es = rawEs;
     let forcedF = false;
@@ -79,6 +81,7 @@ function block(ch: number, cat: string, pos: POS, rows: Row[]) {
       ch,
       emoji: emoji || undefined,
       ex: exEs && exEn ? [exEs, exEn] : undefined,
+      lvl,
     });
   }
 }
@@ -466,6 +469,119 @@ block(5, 'refranes', 'phrase', [
   ['ir al grano', 'to get to the point', '', 'Vamos al grano: ¿dónde está la llave?', "Let's get to the point: where is the key?"],
   ['dar la lata', 'to pester', '', '¡Deja de dar la lata!', 'Stop pestering!'],
 ]);
+
+// ------------------------------------------------------------ Avanzado (B1)
+// Spain vs Latin America: the word you'd hear in Madrid, and the one you might
+// have learnt elsewhere.
+const SPAIN: Record<string, string> = {};
+function spain(pos: POS, rows: [string, string, string, string, string, string][]) {
+  const start = ALL.length;
+  block(1, 'España', pos, rows.map(([es, en, emoji, exEs, exEn]) => [es, en, emoji, exEs, exEn] as Row), 'b1');
+  rows.forEach(([, , , , , latam], i) => (SPAIN[ALL[start + i].id] = latam));
+}
+spain('noun', [
+  ['el ordenador', 'computer', '💻', 'Mi ordenador es muy lento.', 'My computer is very slow.', 'la computadora'],
+  ['el móvil', 'mobile phone', '📱', '¿Me das tu número de móvil?', 'Can you give me your mobile number?', 'el celular'],
+  ['el coche', 'car', '🚗', 'Vamos en coche a la playa.', "We're going to the beach by car.", 'el carro'],
+  ['el billete', 'ticket', '🎫', 'Un billete para Madrid, por favor.', 'A ticket to Madrid, please.', 'el boleto'],
+  ['el piso', 'flat, apartment', '🏢', 'Vivo en un piso pequeño.', 'I live in a small flat.', 'el departamento'],
+  ['la nevera', 'fridge', '', 'La leche está en la nevera.', 'The milk is in the fridge.', 'el refrigerador'],
+  ['el bolígrafo', 'pen', '🖊️', '¿Tienes un bolígrafo?', 'Have you got a pen?', 'la pluma'],
+  ['el jersey', 'jumper, sweater', '🧶', 'Hace frío: ponte el jersey.', "It's cold: put your jumper on.", 'el suéter'],
+  ['el ascensor', 'lift, elevator', '🛗', 'El ascensor no funciona.', "The lift isn't working.", 'el elevador'],
+  ['la tirita', 'plaster, band-aid', '🩹', 'Necesito una tirita.', 'I need a plaster.', 'la curita'],
+  ['el autobús', 'bus', '🚌', 'El autobús llega a las nueve.', 'The bus arrives at nine.', 'el camión'],
+  ['la camiseta', 'T-shirt', '👕', 'Me gusta tu camiseta.', 'I like your T-shirt.', 'la playera'],
+]);
+spain('verb', [
+  ['conducir', 'to drive', '🚗', 'No sé conducir.', "I can't drive.", 'manejar'],
+  ['aparcar', 'to park', '🅿️', 'No puedo aparcar aquí.', "I can't park here.", 'estacionar'],
+]);
+// Words already in the game that differ in Latin America.
+Object.assign(SPAIN, { zumo: 'el jugo', patata: 'la papa', melocoton: 'el durazno', coger: 'tomar', vale: 'está bien' });
+
+// False friends: they look like an English word and mean something else.
+const FALSE: Record<string, [string, string]> = {};
+function falsos(pos: POS, rows: [string, string, string, string, string, string, string][]) {
+  const start = ALL.length;
+  block(1, 'falsos amigos', pos, rows.map(([es, en, emoji, exEs, exEn]) => [es, en, emoji, exEs, exEn] as Row), 'b1');
+  rows.forEach(([, , , , , trap, trapEs], i) => (FALSE[ALL[start + i].id] = [trap, trapEs]));
+}
+falsos('adj', [
+  ['embarazada', 'pregnant', '🤰', 'Mi hermana está embarazada.', 'My sister is pregnant.', 'embarrassed', 'avergonzado/a'],
+  ['constipado|constipada', 'having a cold', '🤧', 'Estoy constipado: no puedo respirar.', "I've got a cold: I can't breathe.", 'constipated', 'estreñido/a'],
+  ['sensible', 'sensitive', '', 'Lola es muy sensible.', 'Lola is very sensitive.', 'sensible', 'sensato/a'],
+  ['actual', 'current, present-day', '', 'El problema actual es el Silencio.', 'The current problem is the Silence.', 'actual (real)', 'real, verdadero'],
+]);
+falsos('noun', [
+  ['el éxito', 'success', '🏆', '¡La fiesta fue un éxito!', 'The party was a success!', 'exit', 'la salida'],
+  ['la carpeta', 'folder', '📁', 'Los papeles están en la carpeta.', 'The papers are in the folder.', 'carpet', 'la alfombra'],
+  ['la librería', 'bookshop', '📚', 'Compro libros en la librería.', 'I buy books at the bookshop.', 'library', 'la biblioteca'],
+  ['la fábrica', 'factory', '🏭', 'Mi padre trabaja en una fábrica.', 'My father works in a factory.', 'fabric', 'la tela'],
+  ['la ropa', 'clothes', '👚', 'Tengo la ropa mojada.', 'My clothes are wet.', 'rope', 'la cuerda'],
+  ['el suceso', 'event, incident', '📰', 'Fue un suceso muy extraño.', 'It was a very strange incident.', 'success', 'el éxito'],
+  ['la lectura', 'reading', '📖', 'La lectura es mi pasión.', 'Reading is my passion.', 'lecture', 'la conferencia'],
+  ['el pariente', 'relative', '', 'Tengo parientes en Sevilla.', 'I have relatives in Seville.', 'parent', 'el padre / la madre'],
+]);
+falsos('verb', [
+  ['realizar', 'to carry out, to make', '', 'Vamos a realizar un viaje.', "We're going to make a trip.", 'to realise', 'darse cuenta'],
+  ['asistir', 'to attend', '', 'Voy a asistir a la reunión.', "I'm going to attend the meeting.", 'to assist', 'ayudar'],
+  ['pretender', 'to intend, to try to', '', '¿Qué pretendes hacer?', 'What are you trying to do?', 'to pretend', 'fingir'],
+  ['introducir', 'to insert, to put in', '', 'Introduce la llave en la puerta.', 'Put the key in the door.', 'to introduce (someone)', 'presentar'],
+]);
+
+// How people really talk in Spain.
+block(1, 'coloquial', 'verb', [
+  ['flipar', 'to be amazed', '🤯', '¡Flipo con tu guitarra!', "I'm blown away by your guitar!"],
+  ['currar', 'to work (colloquial)', '', 'Mañana curro todo el día.', "Tomorrow I'm working all day."],
+  ['tapear', 'to go for tapas', '🍢', 'Esta noche vamos a tapear.', "Tonight we're going out for tapas."],
+], 'b1');
+block(1, 'coloquial', 'noun', [
+  ['la pasta', 'money (colloquial) · also pasta', '💸', 'No tengo pasta.', "I'm broke."],
+  ['el finde', 'the weekend (colloquial)', '', '¿Qué haces este finde?', 'What are you doing this weekend?'],
+  ['la caña', 'small draught beer', '🍺', 'Una caña y una tapa, por favor.', 'A small beer and a tapa, please.'],
+  ['el guiri', 'foreign tourist (colloquial)', '', 'La playa está llena de guiris.', 'The beach is full of tourists.'],
+], 'b1');
+block(1, 'coloquial', 'adj', [
+  ['majo|maja', 'nice, friendly', '', 'Tu abuela es muy maja.', 'Your grandma is really nice.'],
+  ['chulo|chula', 'cool, nice-looking', '😎', '¡Qué chula es tu guitarra!', 'Your guitar is so cool!'],
+  ['cutre', 'shabby, tacky', '', 'Este bar es un poco cutre.', 'This bar is a bit tacky.'],
+], 'b1');
+block(1, 'coloquial', 'phrase', [
+  ['mogollón', 'loads, a lot', '', 'Hay mogollón de gente.', 'There are loads of people.'],
+  ['¡qué fuerte!', "no way! that's crazy!", '😱', '¿El Callado es su hermano? ¡Qué fuerte!', 'El Callado is her brother? No way!'],
+  ['¡ostras!', 'wow! / oh no! (mild)', '', '¡Ostras! ¡Se me ha olvidado el pan!', 'Oh no! I forgot the bread!'],
+  ['¡anda ya!', 'come off it!', '', '¿Un gato que habla? ¡Anda ya!', 'A talking cat? Come off it!'],
+  ['¡tío!', 'mate! dude!', '', '¡Tío, qué guay!', 'Dude, how cool!'],
+  ['pasarlo bomba', 'to have a great time', '🎉', '¡En la fiesta lo pasamos bomba!', 'We had a blast at the party!'],
+  ['no pegar ojo', 'to not sleep a wink', '😴', 'Anoche no pegué ojo.', "I didn't sleep a wink last night."],
+], 'b1');
+
+// Everyday B1 topics: work, health, opinions, linking words.
+block(1, 'el día a día', 'noun', [
+  ['el trabajo', 'work, job', '💼', 'Busco trabajo en Madrid.', "I'm looking for work in Madrid."],
+  ['la reunión', 'meeting', '', 'Tengo una reunión a las diez.', 'I have a meeting at ten.'],
+  ['el sueldo', 'salary', '💶', 'El sueldo no es muy alto.', "The salary isn't very high."],
+  ['la entrevista', 'interview', '', 'Mañana tengo una entrevista de trabajo.', 'Tomorrow I have a job interview.'],
+  ['el jefe|la jefa', 'boss', '', 'Mi jefa es muy maja.', 'My boss is really nice.'],
+  ['la salud', 'health', '', 'Lo más importante es la salud.', 'The most important thing is your health.'],
+  ['el dolor de cabeza', 'headache', '🤕', 'Tengo dolor de cabeza.', 'I have a headache.'],
+  ['la farmacia', "chemist's, pharmacy", '💊', 'La farmacia está cerrada.', "The chemist's is closed."],
+  ['la cita', 'appointment / date', '📅', 'Tengo cita con el médico.', 'I have a doctor’s appointment.'],
+  ['la ventaja', 'advantage', '', 'Vivir en el pueblo tiene ventajas.', 'Living in the village has advantages.'],
+], 'b1');
+block(1, 'el día a día', 'phrase', [
+  ['sin embargo', 'however', '', 'Es caro. Sin embargo, me gusta.', "It's expensive. However, I like it."],
+  ['aunque', 'although', '', 'Aunque llueve, vamos a la playa.', "Although it's raining, we're going to the beach."],
+  ['por lo tanto', 'therefore', '', 'Estoy cansado; por lo tanto, me voy a casa.', "I'm tired; therefore, I'm going home."],
+  ['en cambio', 'on the other hand', '', 'Mateo come mucho; Lola, en cambio, come poco.', 'Mateo eats a lot; Lola, on the other hand, eats little.'],
+  ['darse cuenta', 'to realise', '💡', 'No me di cuenta del error.', "I didn't realise the mistake."],
+], 'b1');
+
+/** Spain word → the Latin American one (for "En España se dice…"). */
+export const SPAIN_VS_LATAM: Readonly<Record<string, string>> = SPAIN;
+/** False friend → [English look-alike, how to say that look-alike]. */
+export const FALSE_FRIENDS: Readonly<Record<string, [string, string]>> = FALSE;
 
 export const WORDS: readonly Word[] = ALL;
 export const WORD_BY_ID: ReadonlyMap<string, Word> = new Map(ALL.map((w) => [w.id, w]));

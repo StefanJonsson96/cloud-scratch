@@ -296,7 +296,7 @@ function words(game: Game, el: HTMLElement) {
     detail,
     list,
   );
-  const known = WORDS.filter((w) => w.ch <= g.chapter);
+  const known = WORDS.filter((w) => w.ch <= g.chapter && (!w.lvl || g.settings.level === 'b1'));
   const render = () => {
     clear(list);
     const q = search.value.trim().toLowerCase();
@@ -344,8 +344,8 @@ function words(game: Game, el: HTMLElement) {
 function verbs(game: Game, el: HTMLElement) {
   const g = game.g;
   const ch = Math.max(2, g.chapter);
-  const tenses = tensesUpToChapter(ch);
-  const list = verbsUpToChapter(ch);
+  const tenses = tensesUpToChapter(ch, g.settings.level);
+  const list = verbsUpToChapter(ch, g.settings.level);
   el.append(
     h('p', { class: 'muted' }, 'Full conjugation tables, Spain style (with vosotros). New tenses unlock as the story goes on.'),
     ...tenses.map((t) => h('div', { class: 'rule' }, h('h4', null, `${TENSES[t].es} — ${TENSES[t].en}`), h('div', null, TENSES[t].rule))),
@@ -362,7 +362,7 @@ function verbs(game: Game, el: HTMLElement) {
         'table',
         { class: 'conj' },
         h('tr', null, h('th', null, ''), ...tenses.map((t) => h('th', null, TENSES[t].es))),
-        ...TABLE_PERSONS.map((p, i) => h('tr', null, h('th', null, p), ...tenses.map((t) => h('td', { lang: 'es' }, v.forms[t][i])))),
+        ...TABLE_PERSONS.map((p, i) => h('tr', null, h('th', null, p), ...tenses.map((t) => h('td', { lang: 'es' }, v.forms[t][i] || '—')))),
       ),
     );
   };
@@ -386,6 +386,11 @@ function grammar(game: Game, el: HTMLElement) {
   if (g.chapter >= TOPIC_CH.porPara) notes.push([RULES.por.title, RULES.por.text], [RULES.para.title, RULES.para.text]);
   notes.push(['“Ir a” + infinitive', 'The easy future: voy a comer (I’m going to eat). Every enemy uses it to announce its next move: «El cangrejo va a pellizcar a Mateo».']);
   if (g.chapter >= 4) notes.push(['Perfecto vs indefinido (Spain)', 'In Spain, use the perfecto for things that happened today / this week / this year: «Hoy he comido paella». Use the indefinido for finished time: «Ayer comí paella». (Much of Latin America uses the indefinido for both.)']);
+  if (g.settings.level === 'b1') {
+    for (const k of ['subjWish', 'subjDoubt', 'subjEmotion', 'subjFuture', 'subjPurpose', 'subjUnknown', 'indicFact']) notes.push([RULES[k].title, RULES[k].text]);
+    notes.push(['Falsos amigos · False friends', 'embarazada = pregnant (not embarrassed: avergonzado) · constipado = has a cold · éxito = success (exit: salida) · librería = bookshop (library: biblioteca) · carpeta = folder · realizar = carry out (realise: darse cuenta) · asistir = attend.']);
+    notes.push(['España vs Latinoamérica', 'Spain says ordenador, móvil, coche, conducir, zumo, patata, billete, piso, vale. Much of Latin America says computadora, celular, carro, manejar, jugo, papa, boleto, departamento.']);
+  }
   if (g.chapter >= 5) notes.push(['Indefinido vs imperfecto', 'Indefinido = one finished event (Ayer fui a la playa). Imperfecto = habits and descriptions, “used to” (De pequeño iba a la playa cada verano).']);
   el.append(...notes.map(([t, b]) => h('div', { class: 'rule' }, h('h4', null, t), h('div', null, b))));
 }
@@ -471,6 +476,7 @@ const repaso: View = (game, el) => {
         recent: game.recent,
         preferTyping: g.settings.typingFocus,
         listening: g.settings.voice && speechAvailable(),
+        level: g.settings.level,
       });
       game.recent.push(ch.key);
       if (game.recent.length > 12) game.recent.shift();
@@ -479,6 +485,7 @@ const repaso: View = (game, el) => {
         voice: g.settings.voice,
         timed: g.settings.speedBonus,
         freeHint: g.talents.includes('memoria'),
+        accentsOptional: g.settings.level === 'a1',
       });
       if (ch.srs) record(g.srs, ch.key, r.grade, Date.now(), ch.maxBox);
       g.stats.answered++;

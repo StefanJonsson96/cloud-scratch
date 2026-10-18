@@ -2,7 +2,7 @@
 // ser vs estar, por vs para, and the "backwards" verb gustar.
 // Every item carries an English translation and a rule of thumb.
 
-export type GrammarTopic = 'serEstar' | 'porPara' | 'gustar';
+export type GrammarTopic = 'serEstar' | 'porPara' | 'gustar' | 'subjuntivo';
 
 export interface GrammarItem {
   id: string;
@@ -44,6 +44,34 @@ export const RULES: Record<string, { title: string; text: string }> = {
   para: {
     title: 'PARA — the goal',
     text: 'Purpose (para aprender), recipient (para ti), destination (sale para Madrid), deadline (para el lunes), opinion (para mí…).',
+  },
+  subjWish: {
+    title: 'Wishes take the SUBJUNCTIVE',
+    text: 'When one person wants, asks or hopes that ANOTHER does something: «Quiero que vengas», «Espero que estéis bien», «Ojalá haga sol». (Same person? Use the infinitive: «Quiero venir».)',
+  },
+  subjDoubt: {
+    title: 'Doubt takes the SUBJUNCTIVE',
+    text: '«No creo que…», «No pienso que…», «Dudo que…», «Es posible que…» → subjunctive: «No creo que sea verdad». But «Creo que…» and «Pienso que…» state a belief → indicative: «Creo que es verdad».',
+  },
+  subjEmotion: {
+    title: 'Feelings take the SUBJUNCTIVE',
+    text: 'Reacting with an emotion to what someone else does: «Me alegro de que estés aquí», «Me molesta que llegues tarde», «Es una pena que no vengas».',
+  },
+  subjFuture: {
+    title: 'CUANDO + future → SUBJUNCTIVE',
+    text: 'When it hasn’t happened yet: «Cuando llegues, llámame». For habits or facts, use the indicative: «Siempre te llamo cuando llego».',
+  },
+  subjPurpose: {
+    title: 'PARA QUE → SUBJUNCTIVE',
+    text: '«Para que» (so that) is always followed by the subjunctive: «Te lo explico para que lo entiendas».',
+  },
+  subjUnknown: {
+    title: 'Something you’re looking for → SUBJUNCTIVE',
+    text: 'If it may not exist yet: «Busco un piso que tenga terraza». If it exists: «Tengo un piso que tiene terraza».',
+  },
+  indicFact: {
+    title: 'Facts and beliefs → INDICATIVE',
+    text: '«Sé que…», «Es verdad que…», «Creo que…», «Está claro que…» present something as true, so they take the normal indicative: «Sé que tienes razón».',
   },
   gustar: {
     title: 'GUSTAR works backwards',
@@ -162,6 +190,33 @@ LIKERS.forEach((who, i) => {
   });
 });
 
+// Indicative or subjunctive? (B1)
+function sj(es: string, en: string, answer: string, wrong: string, rule: keyof typeof RULES) {
+  ITEMS.push({ id: `sj${n++}`, topic: 'subjuntivo', ch: 1, es, en, answer, wrong: [wrong], rule });
+}
+sj('Quiero que tú ___ a mi fiesta.', 'I want you to come to my party.', 'vengas', 'vienes', 'subjWish');
+sj('Espero que vosotros ___ bien.', 'I hope you all are well.', 'estéis', 'estáis', 'subjWish');
+sj('Ojalá ___ sol mañana.', 'I hope it’s sunny tomorrow.', 'haga', 'hace', 'subjWish');
+sj('Mi madre quiere que yo ___ la verdad.', 'My mother wants me to tell the truth.', 'diga', 'digo', 'subjWish');
+sj('Os pido que ___ silencio.', 'I’m asking you all to be quiet.', 'hagáis', 'hacéis', 'subjWish');
+sj('No creo que ___ verdad.', 'I don’t think it’s true.', 'sea', 'es', 'subjDoubt');
+sj('Creo que ___ verdad.', 'I think it’s true.', 'es', 'sea', 'indicFact');
+sj('Es posible que ___ mañana.', 'It might rain tomorrow.', 'llueva', 'llueve', 'subjDoubt');
+sj('Dudo que Mateo ___ hambre ahora.', 'I doubt Mateo is hungry now.', 'tenga', 'tiene', 'subjDoubt');
+sj('Pienso que ___ una buena idea.', 'I think it’s a good idea.', 'es', 'sea', 'indicFact');
+sj('No pienso que ___ una buena idea.', 'I don’t think it’s a good idea.', 'sea', 'es', 'subjDoubt');
+sj('Sé que tú ___ razón.', 'I know you’re right.', 'tienes', 'tengas', 'indicFact');
+sj('Es verdad que Lola ___ muy bien.', 'It’s true that Lola sings very well.', 'canta', 'cante', 'indicFact');
+sj('Me alegro de que ___ aquí.', 'I’m glad you’re here.', 'estés', 'estás', 'subjEmotion');
+sj('Es una pena que no ___ venir.', 'It’s a shame you can’t come.', 'puedas', 'puedes', 'subjEmotion');
+sj('Cuando ___ a casa, llámame.', 'When you get home, call me.', 'llegues', 'llegas', 'subjFuture');
+sj('Siempre me llamas cuando ___ a casa.', 'You always call me when you get home.', 'llegas', 'llegues', 'subjFuture');
+sj('Te llamo cuando ___ del trabajo.', 'I’ll call you when I leave work.', 'salga', 'salgo', 'subjFuture');
+sj('Te lo explico para que lo ___.', 'I’m explaining it so that you understand it.', 'entiendas', 'entiendes', 'subjPurpose');
+sj('Busco un piso que ___ terraza.', 'I’m looking for a flat that has a terrace.', 'tenga', 'tiene', 'subjUnknown');
+sj('Tengo un piso que ___ terraza.', 'I have a flat that has a terrace.', 'tiene', 'tenga', 'subjUnknown');
+sj('¿Conoces a alguien que ___ alemán?', 'Do you know anyone who speaks German?', 'hable', 'habla', 'subjUnknown');
+
 export const GRAMMAR: readonly GrammarItem[] = ITEMS;
 
 export function grammarUpToChapter(ch: number, topic?: GrammarTopic): GrammarItem[] {
@@ -169,4 +224,4 @@ export function grammarUpToChapter(ch: number, topic?: GrammarTopic): GrammarIte
 }
 
 /** Chapter in which each topic first appears. */
-export const TOPIC_CH: Record<GrammarTopic, number> = { serEstar: 1, gustar: 2, porPara: 3 };
+export const TOPIC_CH: Record<GrammarTopic, number> = { serEstar: 1, gustar: 2, porPara: 3, subjuntivo: 1 };

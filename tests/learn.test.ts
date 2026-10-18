@@ -9,7 +9,7 @@ import {
   type ChallengeContext,
   type ChallengeStyle,
 } from '../src/learn/challenges';
-import { WORDS, getWord } from '../src/data/vocab';
+import { WORDS, getWord, SPAIN_VS_LATAM, FALSE_FRIENDS } from '../src/data/vocab';
 import { VERBS, VERB_BY_INF, conjugate, englishFor, regular, participle } from '../src/data/verbs';
 import { GRAMMAR } from '../src/data/grammar';
 import { SENTENCES, tokenize } from '../src/data/sentences';
@@ -252,5 +252,107 @@ describe('challenge generation', () => {
       if (ch.key === key) typed = ch.kind === 'type';
     }
     expect(typed).toBe(true);
+  });
+});
+
+describe('advanced (B1) verb forms', () => {
+  const f = (inf: string, p: Parameters<typeof conjugate>[1], t: Parameters<typeof conjugate>[2]) => conjugate(VERB_BY_INF.get(inf)!, p, t);
+
+  it('builds the future and conditional, with irregular stems', () => {
+    expect(f('hablar', 'yo', 'futuro')).toBe('hablaré');
+    expect(f('tener', 'nosotros', 'futuro')).toBe('tendremos');
+    expect(f('hacer', 'vosotros', 'futuro')).toBe('haréis');
+    expect(f('decir', 'ellos', 'futuro')).toBe('dirán');
+    expect(f('poder', 'tú', 'condicional')).toBe('podrías');
+    expect(f('vivir', 'nosotros', 'condicional')).toBe('viviríamos');
+  });
+
+  it('builds the present subjunctive from the yo form', () => {
+    expect(f('hablar', 'yo', 'subjuntivo')).toBe('hable');
+    expect(f('comer', 'vosotros', 'subjuntivo')).toBe('comáis');
+    expect(f('tener', 'tú', 'subjuntivo')).toBe('tengas');
+    expect(f('hacer', 'ellos', 'subjuntivo')).toBe('hagan');
+    expect(f('conocer', 'yo', 'subjuntivo')).toBe('conozca');
+    expect(f('ser', 'él', 'subjuntivo')).toBe('sea');
+    expect(f('ir', 'nosotros', 'subjuntivo')).toBe('vayamos');
+    expect(f('estar', 'vosotros', 'subjuntivo')).toBe('estéis');
+    expect(f('dormir', 'nosotros', 'subjuntivo')).toBe('durmamos');
+    expect(f('pensar', 'nosotros', 'subjuntivo')).toBe('pensemos');
+    expect(f('tocar', 'yo', 'subjuntivo')).toBe('toque');
+    expect(f('llegar', 'tú', 'subjuntivo')).toBe('llegues');
+  });
+
+  it('builds tú and vosotros commands', () => {
+    expect(f('hablar', 'tú', 'imperativo')).toBe('habla');
+    expect(f('hablar', 'vosotros', 'imperativo')).toBe('hablad');
+    expect(f('tener', 'tú', 'imperativo')).toBe('ten');
+    expect(f('hacer', 'tú', 'imperativo')).toBe('haz');
+    expect(f('ir', 'tú', 'imperativo')).toBe('ve');
+    expect(f('ir', 'vosotros', 'imperativo')).toBe('id');
+    expect(f('ser', 'tú', 'imperativo')).toBe('sé');
+    expect(f('dormir', 'tú', 'imperativo')).toBe('duerme');
+  });
+
+  it('every verb has every B1 form it can have', () => {
+    for (const v of VERBS) {
+      for (const t of ['futuro', 'condicional', 'subjuntivo'] as const) expect(v.forms[t].every(Boolean), `${v.inf} ${t}`).toBe(true);
+    }
+  });
+});
+
+describe('Spanish levels', () => {
+  const styles: ChallengeStyle[] = ['vocab', 'quick', 'verb', 'sentence'];
+  const run = (level: 'a1' | 'a2' | 'b1') => {
+    const out: ReturnType<typeof makeChallenge>[] = [];
+    for (let ch = 0; ch <= 5; ch++) {
+      const c: ChallengeContext = { srs: newSrs(), chapter: ch, rand: rng(ch * 31 + 7), recent: [], preferTyping: false, listening: true, level };
+      for (let i = 0; i < 160; i++) {
+        const x = makeChallenge(styles[i % styles.length], c);
+        c.recent.push(x.key);
+        if (x.kind === 'choice') {
+          expect(new Set(x.options).size, `${x.key} ${JSON.stringify(x.options)}`).toBe(x.options!.length);
+          expect(x.answer).toBeGreaterThanOrEqual(0);
+          for (const o of x.options!) expect(o, x.key).toBeTruthy();
+        } else if (x.kind === 'type') {
+          expect(x.accepted!.every(Boolean), x.key).toBe(true);
+        }
+        if (x.srs) record(c.srs, x.key, i % 6 === 0 ? 'wrong' : 'correct');
+        out.push(x);
+      }
+    }
+    return out;
+  };
+  const b1Tense = /^v:(futuro|condicional|subjuntivo|imperativo):/;
+
+  it('B1 practises the advanced tenses, false friends and Spain words', () => {
+    const keys = run('b1').map((x) => x.key);
+    expect(keys.some((k) => b1Tense.test(k))).toBe(true);
+    expect(keys.some((k) => k.startsWith('es:'))).toBe(true);
+    expect(keys.some((k) => k.startsWith('gr:sj'))).toBe(true);
+  });
+
+  it('A1 and A2 never use B1 material', () => {
+    const b1Words = new Set(WORDS.filter((w) => w.lvl).map((w) => `w:${w.id}`));
+    for (const level of ['a1', 'a2'] as const) {
+      for (const x of run(level)) {
+        expect(b1Tense.test(x.key), x.key).toBe(false);
+        expect(b1Words.has(x.key), x.key).toBe(false);
+        expect(x.key.startsWith('gr:sj') || x.key.startsWith('es:'), x.key).toBe(false);
+      }
+    }
+  });
+
+  it('A1 types less than B1', () => {
+    const typed = (level: 'a1' | 'b1') => run(level).filter((x) => x.kind === 'type').length;
+    expect(typed('a1')).toBeLessThan(typed('b1'));
+  });
+
+  it('commands are only asked for tú and vosotros', () => {
+    for (const x of run('b1').filter((c) => c.key.startsWith('v:imperativo:'))) expect(x.prompt).toMatch(/— (tú|vosotros)$/);
+  });
+
+  it('every Spain/LatAm pair and false friend points at a real word', () => {
+    for (const id of Object.keys(SPAIN_VS_LATAM)) expect(WORDS.some((w) => w.id === id), id).toBe(true);
+    for (const id of Object.keys(FALSE_FRIENDS)) expect(WORDS.some((w) => w.id === id), id).toBe(true);
   });
 });

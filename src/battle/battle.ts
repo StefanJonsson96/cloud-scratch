@@ -341,6 +341,7 @@ function nextChallenge(ctx: BattleContext, style: Parameters<typeof makeChalleng
     recent: ctx.recent,
     preferTyping: g.settings.typingFocus,
     listening: g.settings.voice && speechAvailable(),
+    level: g.settings.level,
   });
   ctx.recent.push(ch.key);
   if (ctx.recent.length > 12) ctx.recent.shift();
@@ -356,7 +357,7 @@ async function challenge(ctx: BattleContext, view: BattleView, actor: Unit, ch: 
   return runChallenge(view.layer, ch, {
     title,
     stakes: stakes ?? `×${right} power if right${timed ? ' · ⚡ answer fast for ×' + (ch.difficulty * 1.25).toFixed(2).replace(/\.?0+$/, '') : ''}`,
-    accentsOptional: anyTilde,
+    accentsOptional: anyTilde || g.settings.level === 'a1',
     slowTimer: acc?.slowTimer ?? 1,
     voice: g.settings.voice,
     timed,

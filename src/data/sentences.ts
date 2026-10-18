@@ -7,6 +7,8 @@ export interface Sentence {
   ch: number;
   /** Other accepted orders, written like `es`. */
   alt?: string[];
+  /** Advanced sentences only used at the B1 level. */
+  lvl?: 'b1';
 }
 
 const S: Sentence[] = [];
@@ -78,10 +80,30 @@ add(5, [
   ['Eres muy valiente.', 'You are very brave.'],
 ]);
 
+// Advanced (B1): subjunctive, future, conditional, commands.
+for (const [es, en, alt] of [
+  ['Espero que tengáis un buen viaje.', 'I hope you all have a good trip.'],
+  ['Ojalá haga sol mañana.', "I hope it's sunny tomorrow."],
+  ['Cuando llegues, llámame.', 'When you arrive, call me.'],
+  ['No creo que sea verdad.', "I don't think it's true."],
+  ['Mañana iremos a la playa.', "Tomorrow we'll go to the beach.", ['Iremos a la playa mañana.']],
+  ['Me gustaría un café con leche.', "I'd like a white coffee."],
+  ['¿Podrías ayudarme, por favor?', 'Could you help me, please?'],
+  ['Venid a mi casa esta noche.', 'Come (you all) to my house tonight.', ['Esta noche venid a mi casa.']],
+  ['Quiero que me digas la verdad.', 'I want you to tell me the truth.'],
+  ['Si tengo tiempo, te llamaré.', "If I have time, I'll call you.", ['Te llamaré si tengo tiempo.']],
+  ['Es importante que practiques cada día.', "It's important that you practise every day."],
+  ['¡No me tomes el pelo!', "Don't pull my leg!"],
+] as [string, string, string[]?][]) S.push({ es, en, ch: 1, alt, lvl: 'b1' });
+
 export const SENTENCES: readonly Sentence[] = S;
 
-export function sentencesUpToChapter(ch: number): Sentence[] {
-  return S.filter((s) => s.ch <= Math.max(1, ch));
+export function sentencesUpToChapter(ch: number, level: 'a1' | 'a2' | 'b1' = 'a2'): Sentence[] {
+  const pool = S.filter((s) => s.ch <= Math.max(1, ch) && (level === 'b1' || !s.lvl));
+  if (level !== 'a1') return pool;
+  // Beginners build short sentences.
+  const short = pool.filter((s) => tokenize(s.es).length <= 6);
+  return short.length >= 3 ? short : pool;
 }
 
 const PROPER = new Set(['rosa', 'mateo', 'lola']);

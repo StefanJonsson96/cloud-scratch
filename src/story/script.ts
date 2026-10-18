@@ -129,6 +129,7 @@ export class Script {
             recent: this.game.recent,
             preferTyping: this.g.settings.typingFocus,
             listening: this.g.settings.voice && speechAvailable(),
+            level: this.g.settings.level,
           })
         : style;
     this.game.recent.push(ch.key);
@@ -137,6 +138,7 @@ export class Script {
       voice: this.g.settings.voice,
       timed: this.g.settings.speedBonus,
       freeHint: this.g.talents.includes('memoria'),
+      accentsOptional: this.g.settings.level === 'a1',
     });
     if (ch.srs) record(this.g.srs, ch.key, r.grade, Date.now(), ch.maxBox);
     this.g.stats.answered++;
