@@ -102,7 +102,13 @@ function grass(c: Ctx, r: () => number) {
   }
 }
 
-function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => void> {
+/** Neighbour mask bits: which sides continue the same tile (for edges). */
+export const UP = 1;
+export const RIGHT = 2;
+export const DOWN = 4;
+export const LEFT = 8;
+
+function drawers(): Record<string, (c: Ctx, r: () => number, frame: number, mask: number) => void> {
   return {
     grass,
     tallgrass(c, r) {
@@ -222,7 +228,7 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
         px(c, 1, y + 3, P.e, 14, 1);
       }
     },
-    water(c, r, frame) {
+    water(c, r, frame, mask) {
       px(c, 0, 0, P['9'], 16, 16);
       for (let i = 0; i < 6; i++) px(c, Math.floor(r() * 16), Math.floor(r() * 16), P['8']);
       const o = frame ? 3 : 0;
@@ -230,6 +236,15 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
         px(c, (2 + o + y) % 16, y, P.a, 4, 1);
         px(c, (10 + o + y) % 16, y + 3, P.a, 3, 1);
       }
+      // Foam where the water meets land.
+      const foam = frame ? P.b : P.c;
+      if (!(mask & UP)) {
+        px(c, 0, 0, foam, 16, 2);
+        px(c, 2 + o, 2, P.b, 3, 1);
+      }
+      if (!(mask & DOWN)) px(c, 0, 14, P.a, 16, 2);
+      if (!(mask & LEFT)) px(c, 0, 0, P.b, 1, 16);
+      if (!(mask & RIGHT)) px(c, 15, 0, P.b, 1, 16);
     },
     tree(c, r) {
       grass(c, r);
@@ -330,7 +345,7 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
       }
     },
     table(c, r) {
-      drawers().floor(c, r, 0);
+      drawers().floor(c, r, 0, 15);
       px(c, 1, 3, P.i, 14, 9);
       px(c, 1, 3, P.g, 14, 7);
       px(c, 2, 12, P.i, 2, 3);
@@ -338,7 +353,7 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
       px(c, 6, 4, P.c, 4, 3);
     },
     bed(c, r) {
-      drawers().floor(c, r, 0);
+      drawers().floor(c, r, 0, 15);
       px(c, 1, 1, P.i, 14, 15);
       px(c, 2, 2, P.c, 12, 4);
       px(c, 2, 6, P['9'], 12, 9);
@@ -364,7 +379,7 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
       px(c, 2, 12, P['2'], 12, 4);
     },
     barrel(c, r) {
-      drawers().path(c, r, 0);
+      drawers().path(c, r, 0, 15);
       px(c, 3, 2, P.g, 10, 13);
       px(c, 2, 4, P.g, 12, 9);
       px(c, 2, 5, P.i, 12, 1);
@@ -372,7 +387,7 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
       px(c, 5, 2, P.h, 2, 13);
     },
     lamppost(c, r) {
-      drawers().path(c, r, 0);
+      drawers().path(c, r, 0, 15);
       px(c, 7, 4, P['0'], 2, 12);
       px(c, 5, 0, P['0'], 6, 5);
       px(c, 6, 1, P['4'], 4, 3);
@@ -386,7 +401,7 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
       px(c, 4, 7, P.i, 6, 1);
     },
     chest(c, r) {
-      drawers().floor(c, r, 0);
+      drawers().floor(c, r, 0, 15);
       px(c, 2, 4, P.i, 12, 11);
       px(c, 3, 5, P.g, 10, 9);
       px(c, 3, 8, P.i, 10, 1);
@@ -402,12 +417,23 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
       px(c, 7, 10, P['4'], 2, 2);
       px(c, 11, 10, P['6'], 2, 2);
     },
-    fountain(c) {
-      px(c, 0, 0, P.d, 16, 16);
-      px(c, 1, 3, P.e, 14, 12);
-      px(c, 2, 4, P.a, 12, 10);
-      px(c, 7, 1, P.u, 2, 8);
-      px(c, 6, 0, P.b, 4, 2);
+    fountain(c, _r, frame, mask) {
+      px(c, 0, 0, P.a, 16, 16);
+      px(c, (frame ? 4 : 9), 6, P.b, 3, 1);
+      px(c, (frame ? 9 : 3), 11, P.b, 2, 1);
+      // Stone rim on the outside edges of the basin.
+      if (!(mask & UP)) px(c, 0, 0, P.d, 16, 3);
+      if (!(mask & DOWN)) {
+        px(c, 0, 12, P.d, 16, 4);
+        px(c, 0, 15, P.e, 16, 1);
+      }
+      if (!(mask & LEFT)) px(c, 0, 0, P.d, 3, 16);
+      if (!(mask & RIGHT)) px(c, 13, 0, P.d, 3, 16);
+      // A quarter of the central pedestal sits in the inner corner of each tile.
+      const cx = mask & RIGHT ? 13 : mask & LEFT ? 0 : 6;
+      const cy = mask & DOWN ? 12 : mask & UP ? 0 : 5;
+      px(c, cx, cy, P.u, 3, 4);
+      px(c, cx + (mask & RIGHT ? 1 : 0), cy - (mask & DOWN ? 3 : 0), P.c, 2, 3);
     },
     gate(c) {
       px(c, 0, 0, P.f, 16, 16);
@@ -421,7 +447,7 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
       px(c, 7, 1, P.v, 2, 2);
     },
     pot(c, r) {
-      drawers().floor(c, r, 0);
+      drawers().floor(c, r, 0, 15);
       px(c, 4, 4, P.s, 8, 11);
       px(c, 3, 6, P.s, 10, 7);
       px(c, 5, 3, P['3'], 6, 2);
@@ -435,16 +461,17 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number) => v
 
 const DRAW = drawers();
 
-export function tileCanvas(ch: string, x: number, y: number, frame = 0): HTMLCanvasElement {
+export function tileCanvas(ch: string, x: number, y: number, frame = 0, mask = 15): HTMLCanvasElement {
   const info = tileInfo(ch);
   const variant = (x * 7 + y * 13) % 4;
-  const k = `${info.name}:${variant}:${info.animated ? frame : 0}`;
+  const animated = info.animated || ch === 'O';
+  const k = `${info.name}:${variant}:${animated ? frame : 0}:${mask}`;
   let c = cache.get(k);
   if (c) return c;
   c = document.createElement('canvas');
   c.width = c.height = TILE;
   const ctx = c.getContext('2d')!;
-  (DRAW[info.name] ?? DRAW.void)(ctx, rng(variant * 977 + info.name.length * 131 + 7), frame);
+  (DRAW[info.name] ?? DRAW.void)(ctx, rng(variant * 977 + info.name.length * 131 + 7), frame, mask);
   cache.set(k, c);
   return c;
 }

@@ -1,5 +1,5 @@
 import './style.css';
-import { initInput } from './engine/input';
+import { initInput, inputDebug } from './engine/input';
 import { initSpeech } from './engine/speech';
 import { Game } from './game';
 import { showTitle } from './ui/title';
@@ -25,4 +25,5 @@ game.onQuit = () => void title();
 void title();
 
 // Debug hooks for automated play-testing.
-(window as unknown as { __game: Game }).__game = game;
+(window as unknown as { __game: Game; __input: typeof inputDebug }).__game = game;
+(window as unknown as { __input: typeof inputDebug }).__input = inputDebug;

@@ -593,6 +593,10 @@ select:focus {
   border-color: var(--saffron);
 }
 
+#grimorio-search {
+  width: 100%;
+}
+
 textarea {
   width: 100%;
   min-height: 90px;
@@ -1473,6 +1477,15 @@ textarea {
   color: var(--muted);
 }
 
+.res-cheer {
+  font-size: 1.05em;
+}
+
+.res-cheer b {
+  color: var(--saffron);
+  font-family: var(--font-display);
+}
+
 .res-lvl {
   color: var(--good);
   font-weight: 600;
@@ -1976,6 +1989,7 @@ textarea {
 }
 
 .word {
+  text-align: left;
   background: var(--night-2);
   border: 1px solid var(--line);
   border-radius: 6px;

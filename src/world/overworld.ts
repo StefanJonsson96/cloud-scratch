@@ -1,6 +1,6 @@
 // The overworld: tile maps, walking, NPCs, warps, triggers and random encounters.
 
-import { TILE, tileInfo, tileCanvas } from './tiles';
+import { TILE, tileInfo, tileCanvas, UP, RIGHT, DOWN, LEFT } from './tiles';
 import { sprite, greySprite, hasSprite } from '../engine/sprites';
 import { heldDirection, isRunning, pushLayer } from '../engine/input';
 import { sfx } from '../engine/audio';
@@ -354,7 +354,12 @@ export class Overworld {
           c.drawImage(tileCanvas(under, tx, ty, frame), tx * TILE - camX, ty * TILE - camY);
           this.drawOpenChest(tx * TILE - camX, ty * TILE - camY);
         } else {
-          c.drawImage(tileCanvas(ch, tx, ty, frame), tx * TILE - camX, ty * TILE - camY);
+          let mask = 15;
+          if (ch === '~' || ch === 'O') {
+            const same = (t: string) => t === ch || (ch === '~' && (t === '=' || t === ' '));
+            mask = (same(this.tileAt(tx, ty - 1)) ? UP : 0) | (same(this.tileAt(tx + 1, ty)) ? RIGHT : 0) | (same(this.tileAt(tx, ty + 1)) ? DOWN : 0) | (same(this.tileAt(tx - 1, ty)) ? LEFT : 0);
+          }
+          c.drawImage(tileCanvas(ch, tx, ty, frame, mask), tx * TILE - camX, ty * TILE - camY);
         }
       }
     }

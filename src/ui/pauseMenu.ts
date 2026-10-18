@@ -35,7 +35,7 @@ export function openPauseMenu(game: Game, start: Tab = 'equipo'): Promise<void> 
       h(
         'div',
         { class: 'row', style: { justifyContent: 'space-between' } },
-        h('h2', null, 'Menú', h('small', null, `${g.euros} € · ${minutes(g)} min · 🔥 ${dayStreak(g.stats.days)} días`)),
+        h('h2', null, 'Menú', h('small', null, `${g.euros} € · ${minutes(g)} min · 🔥 ${days(dayStreak(g.stats.days))}`)),
         h('button', { class: 'btn', onclick: () => close() }, '✕ Cerrar'),
       ),
       tabs,
@@ -81,6 +81,10 @@ export function openPauseMenu(game: Game, start: Tab = 'equipo'): Promise<void> 
     }
     show(start);
   });
+}
+
+function days(n: number) {
+  return `${n} ${n === 1 ? 'día' : 'días'}`;
 }
 
 function minutes(g: GameState) {
@@ -396,7 +400,7 @@ function progress(game: Game, el: HTMLElement) {
       h('span', null, 'Battles won'),
       h('span', null, `${g.stats.wins}/${g.stats.battles}`),
       h('span', null, 'Day streak'),
-      h('span', null, `🔥 ${dayStreak(g.stats.days)}`),
+      h('span', null, `🔥 ${days(dayStreak(g.stats.days))}`),
       h('span', null, 'Play time'),
       h('span', null, `${minutes(g)} min`),
     ),

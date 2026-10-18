@@ -253,4 +253,8 @@ export const GLOSSARY: [string, string][] = [
   ['voto', 'vow'],
   ['vuelva', 'comes back (volver, subjunctive)'],
   ['ánimo', 'keep going! / cheer up!'],
+  ['olé', 'bravo! (flamenco cheer)'],
+  ['ya', 'already · ¡Toma ya! = take that!'],
+  ['tenemos', 'we have (tener)'],
+  ['sido', 'been (ser, participle) · ha sido = it has been'],
 ];

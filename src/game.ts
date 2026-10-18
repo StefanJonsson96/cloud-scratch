@@ -37,7 +37,17 @@ export class Game implements WorldHost {
     app.append(this.screen);
     initTouch(app);
     this.overlayHost = document.body;
-    const menuBtn = h('button', { class: 'hud-btn', title: 'Menu (M / Esc)', onclick: () => this.world.lockWhile(this.openMenu()) }, '☰ Menú');
+    const menuBtn = h(
+      'button',
+      {
+        class: 'hud-btn',
+        title: 'Menu (M / Esc)',
+        onclick: () => {
+          if (!this.world.locked) void this.world.lockWhile(this.openMenu());
+        },
+      },
+      '☰ Menú',
+    );
     this.hud.append(h('div', { class: 'hud-place' }), menuBtn);
     window.addEventListener('resize', () => this.layout());
     window.visualViewport?.addEventListener('resize', () => this.layout());

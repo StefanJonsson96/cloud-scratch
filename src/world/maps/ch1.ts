@@ -51,8 +51,8 @@ export const puerto: MapDef = {
     'T...:......hvDvh.....:....B..T',
     'T:::::::::::::::::::::::::::::',
     'T..........:.........:.......T',
-    'T..........:..OOO...f:.f...f.T',
-    'T....L...f.:..OOO....:.......T',
+    'T..........:..OO....f:.f...f.T',
+    'T....L...f.:..OO.....:.......T',
     '::::::::::::::::::::::::.....T',
     'T..SSS.......:...........L...T',
     'T............:...rrrrrr......T',
@@ -97,10 +97,8 @@ export const puerto: MapDef = {
     { x: 8, y: 4, script: 'sign:puerto' },
     { x: 14, y: 8, script: 'fuente' },
     { x: 15, y: 8, script: 'fuente' },
-    { x: 16, y: 8, script: 'fuente' },
     { x: 14, y: 9, script: 'fuente' },
     { x: 15, y: 9, script: 'fuente' },
-    { x: 16, y: 9, script: 'fuente' },
   ],
 };
 

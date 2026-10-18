@@ -468,7 +468,9 @@ export function intentText(e: Unit, a: EnemyAction, targets: Unit[]): { es: stri
   const all = a.target === 'all';
   const tEs = all ? 'todos' : (targets[0]?.name ?? '');
   const tEn = all ? 'everyone' : (targets[0]?.name ?? '');
-  const subjEn = `The ${ENEMIES[e.id].en.replace(/^The /, '')}${e.name.match(/ [A-H]$/)?.[0] ?? ''}`;
+  const def = ENEMIES[e.id];
+  const noun = def.en.replace(/^The /, '');
+  const subjEn = `The ${def.boss ? noun : noun.toLowerCase()}${e.name.match(/ [A-H]$/)?.[0] ?? ''}`;
   const es = a.es.replace('{N}', e.subject).replace('{T}', tEs);
   const fixStart = (x: string) => x.replace(/^¡el /, '¡El ').replace(/^¡la /, '¡La ');
   return { es: fixStart(es), en: a.enText.replace('{N}', subjEn).replace('{T}', tEn) };

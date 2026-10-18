@@ -325,15 +325,20 @@ export class BattleView {
     clear(this.cmd);
     const skills = skillsFor(actor.id as MemberId, actor.level);
     this.cmd.append(h('div', { class: 'cmd-title' }, `${SKILL_MENU[actor.id as MemberId].es} · ${MEMBERS[actor.id as MemberId].styleEn} challenge`));
-    const items: MenuItem[] = skills.map((sk) => ({
-      label: `${ELEMENTS[sk.element].icon} ${sk.name}`,
-      right: `${sk.mp} PM`,
-      sub: `${sk.en} — ${sk.desc}`,
-      disabled: actor.mp < sk.mp,
-      title: actor.mp < sk.mp ? 'Not enough PM (magic points). Defend to recover some.' : sk.desc,
-    }));
+    const items: MenuItem[] = skills.map((sk) => {
+      const noTarget = this.candidates(sk.target, actor).length === 0;
+      const noMp = actor.mp < sk.mp;
+      return {
+        label: `${ELEMENTS[sk.element].icon} ${sk.name}`,
+        right: `${sk.mp} PM`,
+        sub: `${sk.en} — ${noTarget ? (sk.target === 'deadAlly' ? 'nobody has fallen' : 'no one to target') : sk.desc}`,
+        disabled: noMp || noTarget,
+        title: noMp ? 'Not enough PM (magic points). Defend to recover some.' : sk.desc,
+      };
+    });
+    items.push({ label: '↩ Volver', sub: 'Back', className: 'back-item' });
     const i = await menu(this.cmd, items, { cancel: true, className: 'skills' });
-    if (i === null) return null;
+    if (i === null || i >= skills.length) return null;
     const skill = skills[i];
     if (skill.target === 'allEnemies' || skill.target === 'allAllies' || skill.target === 'self') return { kind: 'skill', skill };
     const t = await this.pickTarget(skill.target, actor, skill.name);
@@ -346,32 +351,44 @@ export class BattleView {
     this.cmd.append(h('div', { class: 'cmd-title' }, 'Objetos · Items'));
     const i = await menu(
       this.cmd,
-      list.map(([id, n]) => ({ label: `${ITEMS[id].icon} ${ITEMS[id].name}`, right: `×${n}`, sub: `${ITEMS[id].en} — ${ITEMS[id].desc}` })),
+      [
+        ...list.map(([id, n]) => {
+          const reviveless = ITEMS[id].kind === 'revive' && this.candidates('deadAlly', actor).length === 0;
+          return {
+            label: `${ITEMS[id].icon} ${ITEMS[id].name}`,
+            right: `×${n}`,
+            sub: `${ITEMS[id].en} — ${reviveless ? 'nobody has fallen' : ITEMS[id].desc}`,
+            disabled: reviveless,
+          };
+        }),
+        { label: '↩ Volver', sub: 'Back', className: 'back-item' },
+      ],
       { cancel: true, className: 'skills' },
     );
-    if (i === null) return null;
+    if (i === null || i >= list.length) return null;
     const item = ITEMS[list[i][0]];
     if (item.kind === 'healAll') return { kind: 'item', item: item.id, target: actor.uid };
     const t = await this.pickTarget(item.kind === 'revive' ? 'deadAlly' : 'ally', actor, item.name);
     return t ? { kind: 'item', item: item.id, target: t } : this.chooseItem(actor);
   }
 
-  /** Let the player pick a target by tapping it or with the arrow keys. */
-  pickTarget(kind: TargetKind, actor: Unit, what: string): Promise<string | null> {
-    let cands: Unit[];
+  private candidates(kind: TargetKind, actor: Unit): Unit[] {
     switch (kind) {
       case 'enemy':
-        cands = livingEnemies(this.s);
-        break;
+      case 'allEnemies':
+        return livingEnemies(this.s);
       case 'deadAlly':
-        cands = party(this.s).filter((u) => !alive(u));
-        break;
+        return party(this.s).filter((u) => !alive(u));
       case 'otherAlly':
-        cands = livingParty(this.s).filter((u) => u.uid !== actor.uid);
-        break;
+        return livingParty(this.s).filter((u) => u.uid !== actor.uid);
       default:
-        cands = livingParty(this.s);
+        return livingParty(this.s);
     }
+  }
+
+  /** Let the player pick a target by tapping it or with the arrow keys. */
+  pickTarget(kind: TargetKind, actor: Unit, what: string): Promise<string | null> {
+    const cands = this.candidates(kind, actor);
     clear(this.cmd);
     const enemySide = kind === 'enemy';
     this.cmd.append(
@@ -421,7 +438,7 @@ export class BattleView {
         } else if (a === 'right' || a === 'down') {
           focus(i + 1);
           sfx('blip');
-        } else if (a === 'confirm' && cands.length) done(cands[i].uid);
+        } else if (a === 'confirm') done(cands.length ? cands[i].uid : null);
         else if (a === 'cancel') done(null);
         else if (a.startsWith('num')) {
           const n = Number(a.slice(3)) - 1;
@@ -560,10 +577,12 @@ export class BattleView {
   async victory(r: { xp: number; euros: number; drops: string[]; recovered: string[]; ups: LevelUp[]; practiced: Practiced[] }) {
     this.log('¡Victoria!', 'Victory!');
     const right = r.practiced.filter((p) => p.grade === 'fast' || p.grade === 'correct').length;
+    const cheer = this.cheer();
     const panel = h(
       'div',
       { class: 'b-result win' },
       h('h2', null, '¡Victoria!', h('small', null, 'Victory')),
+      cheer ? h('div', { class: 'res-cheer' }, h('b', null, `${cheer[0]}: `), spanish(cheer[1]), h('span', { class: 'log-en' }, cheer[2])) : null,
       h(
         'div',
         { class: 'res-row' },
@@ -599,6 +618,33 @@ export class BattleView {
     this.layer.append(panel);
     await wait(250);
     await waitConfirm(panel);
+  }
+
+  /** A short victory shout in colloquial Spain Spanish, now and then. */
+  private cheer(): [string, string, string] | null {
+    const living = party(this.s).filter(alive);
+    if (!living.length || Math.random() > 0.55) return null;
+    const lines: Record<string, [string, string][]> = {
+      hero: [
+        ['¡Las palabras son poder!', 'Words are power!'],
+        ['¡Qué guay!', 'How cool!'],
+        ['¡Vamos bien!', "We're doing well!"],
+      ],
+      mateo: [
+        ['¡Toma ya!', 'Take that!'],
+        ['¡Uf! Ahora tengo hambre.', "Phew! Now I'm hungry."],
+        ['¡Ha sido pan comido!', 'That was a piece of cake!'],
+      ],
+      lola: [
+        ['¡Olé!', 'Olé! (Bravo!)'],
+        ['¡Qué arte tenemos!', 'We’ve got such flair!'],
+        ['¡Madre mía, qué equipo!', 'Oh my goodness, what a team!'],
+      ],
+    };
+    const u = living[Math.floor(Math.random() * living.length)];
+    const pool = lines[u.id] ?? lines.hero;
+    const [es, en] = pool[Math.floor(Math.random() * pool.length)];
+    return [u.name, es, en];
   }
 
   async defeat(noGameOver: boolean): Promise<'retry' | 'giveup'> {

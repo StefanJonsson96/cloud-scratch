@@ -82,6 +82,11 @@ export function isRunning(): boolean {
   return runHeld;
 }
 
+/** Snapshot for debugging and automated play-tests. */
+export function inputDebug() {
+  return { held: [...held], layers: layers.length, active: document.activeElement?.tagName };
+}
+
 export function initInput() {
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Shift') runHeld = true;
