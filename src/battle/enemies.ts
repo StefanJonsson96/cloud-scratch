@@ -395,7 +395,7 @@ enemy({
 });
 enemy({
   id: 'golem', name: 'Gólem', art: 'el', en: 'The Stone Golem', sprite: 'golem', boss: true, statusResist: 0.25,
-  hp: 980, atk: 31, def: 26, spd: 7, weak: ['agua', 'rayo'], resist: ['fisico', 'fuego'], xp: 460, euros: 300,
+  hp: 900, atk: 28, def: 26, spd: 7, weak: ['agua', 'rayo'], resist: ['fisico', 'fuego'], xp: 460, euros: 300,
   desc: ['El guardián del templo. Nadie le ha dicho que la guerra terminó.', 'Guardian of the temple. No one told it the war is over.'],
   actions: [
     A({ id: 'golpe', name: 'Puñetazo', en: 'Punch', weight: 3, power: 1.1, es: '{N} va a golpear a {T}.', enText: '{N} is going to punch {T}.' }),
@@ -484,7 +484,7 @@ enemy({
 });
 enemy({
   id: 'callado', name: 'Callado', art: 'el', en: 'The Silent One', sprite: 'callado', boss: true, statusResist: 0.2,
-  hp: 1500, atk: 37, def: 22, spd: 14, weak: ['luz'], resist: ['sombra'], xp: 0, euros: 0,
+  hp: 1380, atk: 33, def: 22, spd: 14, weak: ['luz'], resist: ['sombra'], xp: 0, euros: 0,
   desc: ['Antes era un Palabrista. Perdió su voz… y ahora quiere el silencio para todos.', 'Once a Palabrista. He lost his voice… and now wants silence for everyone.'],
   actions: [
     A({ id: 'golpe', name: 'Golpe mudo', en: 'Mute Strike', weight: 3, element: 'sombra', power: 1.2, es: '{N} va a atacar a {T}.', enText: '{N} is going to attack {T}.' }),

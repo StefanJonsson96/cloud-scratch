@@ -647,7 +647,7 @@ export class BattleView {
     return [u.name, es, en];
   }
 
-  async defeat(noGameOver: boolean): Promise<'retry' | 'giveup'> {
+  async defeat(noGameOver: boolean, animo: number): Promise<'retry' | 'giveup'> {
     const panel = h(
       'div',
       { class: 'b-result lose' },
@@ -655,7 +655,7 @@ export class BattleView {
       h('p', null, spanish('No pasa nada. ¡Venga, otra vez!'), h('span', { class: 'log-en' }, "No worries. Come on, once more!")),
     );
     this.layer.append(panel);
-    const opts: MenuItem[] = [{ label: '🔁 Intentar de nuevo', sub: 'Retry this battle from the start' }];
+    const opts: MenuItem[] = [{ label: '🔁 Intentar de nuevo', sub: `Retry from the start — ¡Ánimo! enemies −${animo * 10}% attack` }];
     if (!noGameOver) opts.push({ label: '🏠 Volver a casa', sub: 'Wake up at the last place you rested' });
     const r = await menu(panel, opts);
     return r === 1 ? 'giveup' : 'retry';

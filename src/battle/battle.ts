@@ -97,10 +97,10 @@ export async function runBattle(ctx: BattleContext, setup: BattleSetup): Promise
   playMusic(setup.music ?? 'battle');
   sfx('encounter');
   try {
-    for (;;) {
-      const { result, view } = await fight(ctx, setup);
+    for (let tries = 0; ; tries++) {
+      const { result, view } = await fight(ctx, setup, Math.min(ANIMO_MAX, tries));
       if (result !== 'lose') return result;
-      const choice = await view.defeat(!!setup.noGameOver);
+      const choice = await view.defeat(!!setup.noGameOver, Math.min(ANIMO_MAX, tries + 1));
       view.destroy();
       if (choice === 'retry') {
         const snap = JSON.parse(before);
@@ -115,13 +115,20 @@ export async function runBattle(ctx: BattleContext, setup: BattleSetup): Promise
   }
 }
 
-async function fight(ctx: BattleContext, setup: BattleSetup): Promise<{ result: BattleOutcome; view: BattleView }> {
+/** Retries of a lost battle get "¡Ánimo!": each one weakens the enemies a little more, up to this many. */
+const ANIMO_MAX = 3;
+
+async function fight(ctx: BattleContext, setup: BattleSetup, animo = 0): Promise<{ result: BattleOutcome; view: BattleView }> {
   const g = ctx.g;
   const party = g.party.map((m) => partyUnit(m, g.heroName));
   const s = createBattle(party, setup.enemies, ctx.rand, g.inventory, setup.canFlee ?? true);
   for (const e of enemies(s)) {
     if (setup.hp?.[e.id]) e.hp = e.maxHp = setup.hp[e.id];
     if (g.settings.easy) e.atk = Math.round(e.atk * 0.7);
+    if (animo) {
+      e.atk = Math.round(e.atk * (1 - 0.1 * animo));
+      e.hp = e.maxHp = Math.round(e.maxHp * (1 - 0.08 * animo));
+    }
     for (const [id, turns] of setup.start?.enemies ?? []) e.statuses.push({ id, turns });
   }
   for (const u of s.units.filter((x) => x.side === 'party' && x.hp > 0)) {
@@ -138,6 +145,7 @@ async function fight(ctx: BattleContext, setup: BattleSetup): Promise<{ result: 
   };
 
   await view.intro(setup.intro ?? introText(setup.enemies));
+  if (animo) await view.message({ es: '¡Ánimo! Esta vez los enemigos están más débiles.', en: `Encouragement! This time the enemies are weaker (−${animo * 10}% attack).` }, 1600);
   await tip('start');
 
   let result: BattleOutcome | null = null;
