@@ -327,6 +327,32 @@ export class Overworld {
   }
 
   // -------------------------------------------------------------- render
+  /** Tile the objective marker points at (set by the game), or null. */
+  marker: [number, number] | null = null;
+
+  private drawMarker(camX: number, camY: number) {
+    if (!this.marker) return;
+    const [mx, my] = this.marker;
+    if (mx === this.px && my === this.py) return;
+    const c = this.ctx;
+    const x = mx * TILE - camX + TILE / 2;
+    const y = my * TILE - camY - 7 + Math.round(Math.sin(this.time * 4) * 2);
+    c.fillStyle = '#1a1c2c';
+    c.beginPath();
+    c.moveTo(x - 7, y - 6);
+    c.lineTo(x + 7, y - 6);
+    c.lineTo(x, y + 4);
+    c.closePath();
+    c.fill();
+    c.fillStyle = '#f4b942';
+    c.beginPath();
+    c.moveTo(x - 5, y - 4.8);
+    c.lineTo(x + 5, y - 4.8);
+    c.lineTo(x, y + 2);
+    c.closePath();
+    c.fill();
+  }
+
   render() {
     const c = this.ctx;
     const W = this.canvas.width;
@@ -377,6 +403,7 @@ export class Overworld {
     const pf = this.moving ? (this.stepCount % 2 ? 1 : 2) : 0;
     ents.push({ y: ppy - camY, draw: () => this.drawChar('hero', this.dir, pf, ppx - camX, ppy - camY, false) });
     ents.sort((a, b) => a.y - b.y).forEach((e) => e.draw());
+    if (this.g.settings.marker !== false) this.drawMarker(camX, camY);
 
     if (this.map.dark) {
       const cx = ppx - camX + TILE / 2;

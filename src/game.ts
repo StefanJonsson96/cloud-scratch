@@ -14,7 +14,7 @@ import { setLookupHandler } from './ui/spanish';
 import { openPauseMenu } from './ui/pauseMenu';
 import { runBattle, type BattleOutcome, type BattleSetup } from './battle/battle';
 import { fullHeal, save, type GameState } from './state';
-import { currentGoal } from './story/goals';
+import { currentGoal, markerTile } from './story/goals';
 import { spanish } from './ui/spanish';
 import { cornerButtons } from './ui/corner';
 import { offerTalents, pendingTalents } from './ui/talents';
@@ -120,6 +120,7 @@ export class Game implements WorldHost {
   /** Refresh the objective shown in the corner. */
   updateGoal() {
     const goal = this.g ? currentGoal(this.g) : null;
+    this.world.marker = this.g && this.world.map ? markerTile(this.g, this.world.map.id, MAPS, goal) : null;
     this.goalEl.hidden = !goal;
     if (!goal) return;
     const key = goal.es;

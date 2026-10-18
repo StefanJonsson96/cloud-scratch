@@ -35,6 +35,8 @@ export interface Settings {
   autoVoice: boolean;
   /** Timer bar in challenges with a bonus for fast answers. Off = no time pressure. */
   speedBonus: boolean;
+  /** Show an arrow on the map pointing at the current objective. */
+  marker: boolean;
   textSpeed: 'normal' | 'fast' | 'instant';
   /** Random encounter frequency. */
   encounters: 'normal' | 'low';
@@ -79,6 +81,7 @@ export const DEFAULT_SETTINGS: Settings = {
   voice: true,
   autoVoice: true,
   speedBonus: false,
+  marker: true,
   textSpeed: 'normal',
   encounters: 'normal',
   difficulty: 'normal',

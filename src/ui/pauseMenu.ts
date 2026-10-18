@@ -548,6 +548,10 @@ const ajustes: View = (game, el, rerender, close) => {
       [false, 'Off'],
     ]),
     h('div', { class: 'switch' }, h('div', null, 'Volumen · Volume', h('small', null, 'Also in the 🎚️ button in the corner. Saved on this device.')), volumeSliders()),
+    seg('marker', 'Marcador · Objective marker', 'A yellow arrow on the map shows where to go next (or which exit leads there).', [
+      [true, 'On'],
+      [false, 'Off'],
+    ]),
     seg('speedBonus', 'Bonus de rapidez · Speed bonus', 'Off: take all the time you need. On: a timer bar — answer before it runs out for ×1.25 power.', [
       [false, 'Off'],
       [true, 'On'],

@@ -6,7 +6,7 @@ import { TILES, tileInfo } from '../src/world/tiles';
 import { ENEMIES } from '../src/battle/enemies';
 import { ITEMS, ACCESSORIES } from '../src/data/items';
 import { unknownWords } from '../src/learn/dictionary';
-import { currentGoal } from '../src/story/goals';
+import { currentGoal, markerTile } from '../src/story/goals';
 import type { MapDef } from '../src/world/types';
 import type { GameState } from '../src/state';
 
@@ -169,6 +169,21 @@ describe('objectives', () => {
       if (['ramon_gift', 'tomas_story'].includes(ORDER[i - 1])) continue;
       if (texts[i] === 'Toca el cristal.' && texts[i - 1] === 'Toca el cristal.') continue;
       expect(texts[i], `after ${ORDER[i - 1]}`).not.toBe(texts[i - 1]);
+    }
+  });
+
+  it('every objective points somewhere, reachable from the previous one', () => {
+    let from = 'casa_abuela';
+    for (const [i, g] of stages.entries()) {
+      const goal = currentGoal(g);
+      if (!goal?.at) continue;
+      const [map, x, y] = goal.at;
+      const m = MAPS[map];
+      expect(m, `${goal.es} → ${map}`).toBeDefined();
+      expect(y < m.rows.length && x < m.rows[0].length, `${goal.es} at ${x},${y}`).toBe(true);
+      const g2 = { ...g, settings: { marker: true } } as unknown as GameState;
+      expect(markerTile(g2, from, MAPS, goal), `after ${ORDER[i - 1] ?? 'start'}: no route ${from} → ${map}`).not.toBeNull();
+      from = map;
     }
   });
 
