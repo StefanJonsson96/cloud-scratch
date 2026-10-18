@@ -49,6 +49,7 @@ describe('answer checking', () => {
 
   it('keeps articles that are part of the answer', () => {
     expect(checkTyped('la cuenta por favor', ['la cuenta, por favor']).grade).toBe('correct');
+    expect(checkTyped('me pone', ['¿me pone…?']).grade).toBe('correct');
   });
 
   it('computes edit distance', () => {

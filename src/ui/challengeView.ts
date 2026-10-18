@@ -105,7 +105,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
           'button',
           { class: 'cc-option no-advance', onclick: () => pickOption(i) },
           h('span', { class: 'cc-key' }, String(i + 1)),
-          h('span', { class: 'cc-opt-text', lang: ch.promptLang === 'en' || ch.label.startsWith('¿') || ch.kind === 'choice' ? undefined : 'es' }, opt),
+          h('span', { class: 'cc-opt-text' }, opt),
         );
         grid.append(b);
         focusables.push(b);
@@ -244,8 +244,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
           if (cur >= 0) pickOption(cur);
           return true;
         }
-        const cols = ch.options!.length === 2 ? 2 : 2;
-        const delta = a === 'left' ? -1 : a === 'right' ? 1 : a === 'up' ? -cols : cols;
+        const delta = a === 'left' ? -1 : a === 'right' ? 1 : a === 'up' ? -2 : 2;
         const next = cur < 0 ? 0 : (cur + delta + focusables.length) % focusables.length;
         focusables[next]?.focus();
       }
