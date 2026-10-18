@@ -223,6 +223,7 @@ block(2, 'la comida', 'noun', [
   ['la miel', 'honey', '🍯', 'La miel es dulce.', 'Honey is sweet.'],
   ['la tapa', 'tapa (small dish)', '', 'Vamos de tapas esta noche.', "Let's go out for tapas tonight."],
   ['el euro', 'euro', '💶', 'Son tres euros con cincuenta.', "That's three euros fifty."],
+  ['la moneda', 'coin', '🪙', 'Tengo tres monedas.', 'I have three coins.'],
   ['el mercado', 'market', '', 'El mercado está cerrado.', 'The market is closed.'],
   ['la tienda', 'shop', '🏪', 'La tienda abre a las nueve.', 'The shop opens at nine.'],
   ['la cocina', 'kitchen', '', 'Lola está en la cocina.', 'Lola is in the kitchen.'],

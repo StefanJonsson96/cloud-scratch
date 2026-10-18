@@ -71,7 +71,7 @@ function enemy(e: EnemyDef) {
 // ================================================================ Prólogo / Costa
 enemy({
   id: 'niebla', name: 'niebla', art: 'la', en: 'Mist', sprite: 'niebla',
-  hp: 18, atk: 6, def: 2, spd: 9, weak: ['luz', 'fuego', 'viento'], resist: ['sombra'], xp: 6, euros: 3,
+  hp: 18, atk: 5, def: 2, spd: 9, weak: ['luz', 'fuego', 'viento'], resist: ['sombra'], xp: 7, euros: 3,
   desc: ['Un trozo del Silencio. Es frío y gris.', 'A scrap of the Silence. Cold and grey.'],
   actions: [
     A({ id: 'toque', name: 'Toque frío', en: 'Cold Touch', weight: 3, es: '{N} va a tocar a {T}.', enText: '{N} is going to touch {T}.' }),
@@ -510,7 +510,7 @@ enemy({
 /** Training dummy for the tutorial and the practice arena: harmless. */
 enemy({
   id: 'muneco', name: 'muñeco de paja', art: 'el', en: 'Straw Dummy', sprite: 'muneco', statusResist: 1,
-  hp: 999, atk: 0, def: 0, spd: 5, weak: [], resist: [], xp: 0, euros: 0,
+  hp: 999, atk: 0, def: 0, spd: 5, weak: [], resist: [], xp: 16, euros: 0,
   desc: ['El muñeco de práctica de la abuela. No hace nada.', "Grandma's practice dummy. It does nothing."],
   actions: [
     A({ id: 'nada', name: 'Nada', en: 'Nothing', target: 'self', kind: 'buff', power: 0, es: '{N} no va a hacer nada.', enText: '{N} is going to do nothing.', icon: '😶' }),

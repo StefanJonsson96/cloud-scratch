@@ -491,6 +491,21 @@ export function chooseIntent(s: BattleState, e: Unit) {
   e.intent = { actionId: action.id, targets: targets.map((t) => t.uid), es: text.es, en: text.en, icon: action.icon };
 }
 
+/** If an enemy's planned target has fallen, aim at someone else (same move). */
+export function retarget(s: BattleState, e: Unit) {
+  const it = e.intent;
+  if (!it) return;
+  const def = ENEMIES[e.id];
+  const a = def.actions.find((x) => x.id === it.actionId);
+  if (!a || a.target !== 'one') return;
+  if (it.targets.every((uid) => alive(unit(s, uid)))) return;
+  const living = livingParty(s);
+  if (!living.length) return;
+  const t = pickWeighted(s, partyTargetWeights(s));
+  const text = intentText(e, a, [t]);
+  e.intent = { ...it, targets: [t.uid], es: text.es, en: text.en };
+}
+
 function nextLetterUnit(s: BattleState, defId: string): Unit {
   const def = ENEMIES[defId];
   const same = enemies(s).filter((u) => u.id === defId);
