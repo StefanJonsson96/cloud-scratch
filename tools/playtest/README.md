@@ -10,7 +10,8 @@ the goal doesn't change after many tries, it stops and reports where it got stuc
 npm run build; npx vite preview --port 4173 &
 node tools/playtest/goalbot.mjs                       # the whole game
 node tools/playtest/goalbot.mjs --until gloton        # stop when a story flag is set
-node tools/playtest/goalbot.mjs --from save.json      # start from a saved game (the JSON in localStorage)
+node tools/playtest/goalbot.mjs --until fin --save act1.json   # play Act I and keep the save…
+node tools/playtest/goalbot.mjs --from act1.json      # …then start the next run from it
 node tools/playtest/goalbot.mjs --wrong 0.3 --shots shots/   # more mistakes; a screenshot per objective
 ```
 

@@ -88,7 +88,7 @@ const LEGS: Record<'pants' | 'skirt', Record<Dir, string[][]>> = {
   },
 };
 
-interface CharDef {
+export interface CharDef {
   map: Record<string, string>;
   skirt?: boolean;
   /** Pixels drawn over the template, per direction ("." = keep). */
@@ -106,7 +106,7 @@ function overlay(base: string[], over?: string[]): string[] {
   });
 }
 
-function defineCharacter(name: string, c: CharDef) {
+export function defineCharacter(name: string, c: CharDef) {
   for (const dir of ['down', 'up', 'left'] as Dir[]) {
     for (let f = 0; f < 3; f++) {
       const legs = LEGS[c.skirt ? 'skirt' : 'pants'][dir][f];

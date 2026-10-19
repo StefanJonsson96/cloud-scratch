@@ -507,6 +507,86 @@ enemy({
   ],
 });
 
+// ================================================================ Act II · La Mancha
+enemy({
+  id: 'oveja_negra', name: 'oveja negra', art: 'la', en: 'Black Sheep', sprite: 'oveja_negra',
+  hp: 150, atk: 33, def: 18, spd: 12, weak: ['fuego', 'rayo'], resist: [], xp: 70, euros: 30,
+  drops: [{ item: 'queso_manchego', chance: 0.15 }],
+  desc: ['La oveja negra del rebaño. Si la cuentas, te duermes.', 'The black sheep of the flock. Count it and you fall asleep.'],
+  actions: [
+    A({ id: 'embestida', name: 'Embestida', en: 'Ram', weight: 3, power: 1.1, es: '{N} va a embestir a {T}.', enText: '{N} is going to ram {T}.' }),
+    A({
+      id: 'balido', name: '¡Beee!', en: 'Baa!', weight: 2, target: 'all', kind: 'status', power: 0.3,
+      status: { id: 'dormido', turns: 2, chance: 0.3 }, es: '{N} va a balar: ¡beee! Una oveja, dos ovejas…', enText: '{N} is going to bleat: baa! One sheep, two sheep…', icon: '💤',
+    }),
+  ],
+});
+enemy({
+  id: 'aspa', name: 'aspa', art: 'el', en: 'Windmill Sail', sprite: 'aspa',
+  hp: 135, atk: 35, def: 16, spd: 18, weak: ['fuego'], resist: ['viento'], xp: 68, euros: 28,
+  desc: ['Un aspa de molino que gira sola. Es femenina, pero se dice «el aspa», como «el agua».', 'A windmill sail spinning on its own. It’s feminine, but you say “el aspa”, like “el agua”.'],
+  actions: [
+    A({ id: 'giro', name: 'Giro', en: 'Spin', weight: 3, es: '{N} va a girar contra {T}.', enText: '{N} is going to spin into {T}.' }),
+    A({
+      id: 'remolino', name: 'Remolino', en: 'Whirlwind', weight: 2, target: 'all', element: 'viento', power: 0.7,
+      status: { id: 'lento', turns: 2, chance: 0.25 }, es: '{N} va a levantar un remolino.', enText: '{N} is going to whip up a whirlwind.', icon: '🌪️',
+    }),
+  ],
+});
+enemy({
+  id: 'polvo', name: 'polvo', art: 'el', en: 'Dust Devil', sprite: 'polvo',
+  hp: 120, atk: 34, def: 14, spd: 20, weak: ['agua', 'hielo'], resist: ['fisico', 'viento'], xp: 66, euros: 26,
+  desc: ['El polvo del camino, con mal humor. Se te mete en los ojos.', 'The dust of the road, in a bad mood. It gets in your eyes.'],
+  actions: [
+    A({ id: 'arena', name: 'Polvareda', en: 'Dust Cloud', weight: 3, element: 'tierra', es: '{N} va a echar polvo a {T}.', enText: '{N} is going to throw dust at {T}.', icon: '🟫' }),
+    A({
+      id: 'cegar', name: 'Cegar', en: 'Blind', weight: 2, kind: 'status', element: 'tierra', power: 0.4,
+      status: { id: 'debil', turns: 2, chance: 0.6 }, es: '{N} va a meterse en los ojos de {T}.', enText: "{N} is going to get in {T}'s eyes.", icon: '🌀',
+    }),
+  ],
+});
+enemy({
+  id: 'borrador', name: 'borrador', art: 'el', en: 'Eraser', sprite: 'borrador',
+  hp: 165, atk: 34, def: 20, spd: 13, weak: ['luz', 'fuego'], resist: ['sombra'], xp: 78, euros: 34,
+  drops: [{ item: 'horchata', chance: 0.3 }],
+  desc: ['Un sirviente de la Dama Gris. Todo lo que toca, se olvida.', 'A servant of the Grey Lady. Whatever it touches is forgotten.'],
+  actions: [
+    A({ id: 'golpe', name: 'Golpe gris', en: 'Grey Strike', weight: 3, element: 'sombra', es: '{N} va a golpear a {T}.', enText: '{N} is going to hit {T}.' }),
+    A({
+      id: 'borrar', name: 'Borrar', en: 'Erase', weight: 2, kind: 'status', element: 'sombra', power: 0.4, status: { id: 'mudo', turns: 2, chance: 0.6 },
+      es: '{N} va a borrar las palabras de {T}.', enText: "{N} is going to erase {T}'s words.", icon: '🤐',
+    }),
+    A({
+      id: 'goma', name: 'Goma nueva', en: 'Fresh Rubber', target: 'self', kind: 'heal', heal: 0.15, when: 'hurt',
+      es: '{N} va a recomponerse.', enText: '{N} is going to pull itself back together.', icon: '💚',
+    }),
+  ],
+});
+enemy({
+  id: 'gigante', name: 'Gigante', art: 'el', en: 'The Giant', sprite: 'gigante', boss: true, statusResist: 0.25,
+  hp: 1500, atk: 36, def: 24, spd: 9, weak: ['fuego', 'rayo'], resist: ['viento', 'tierra'], xp: 620, euros: 360,
+  desc: ['«No son molinos, son gigantes», decía Don Quijote. Esta vez, tenía razón.', '“They aren’t windmills, they’re giants,” said Don Quixote. This time, he was right.'],
+  actions: [
+    A({ id: 'aspazo', name: 'Aspazo', en: 'Sail Smash', weight: 3, power: 1.15, es: '{N} va a golpear a {T} con un aspa.', enText: '{N} is going to smash {T} with a sail.' }),
+    A({
+      id: 'harina', name: 'Nube de harina', en: 'Flour Cloud', weight: 2, target: 'all', kind: 'status', power: 0.35,
+      status: { id: 'debil', turns: 2, chance: 0.45 }, es: '{N} va a soltar una nube de harina.', enText: '{N} is going to release a cloud of flour.', icon: '🌫️',
+    }),
+    A({
+      id: 'girar', name: 'Girar y girar', en: 'Wind Up', weight: 2, target: 'self', kind: 'charge', next: 'gran_giro',
+      es: '{N} empieza a girar cada vez más rápido…', enText: '{N} starts spinning faster and faster…', icon: '⚠️',
+    }),
+    A({
+      id: 'gran_giro', name: 'Gran Giro', en: 'Great Spin', chargedOnly: true, target: 'all', element: 'viento', power: 1.7,
+      es: '¡{N} va a golpear a todos con sus cuatro brazos!', enText: '{N} is going to hit everyone with its four arms!', icon: '💥',
+    }),
+    A({
+      id: 'llamar', name: 'Aspas sueltas', en: 'Loose Sails', target: 'self', kind: 'summon', summon: 'aspa', when: 'canSummon',
+      es: '{N} va a soltar un aspa.', enText: '{N} is going to throw off a sail.', icon: '📣',
+    }),
+  ],
+});
+
 /** Training dummy for the tutorial and the practice arena: harmless. */
 enemy({
   id: 'muneco', name: 'muñeco de paja', art: 'el', en: 'Straw Dummy', sprite: 'muneco', statusResist: 1,

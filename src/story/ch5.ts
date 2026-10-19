@@ -178,15 +178,15 @@ async function credits(s: Script) {
   const panel = h(
     'div',
     { class: 'chapter-card' },
-    h('div', { class: 'ch-num' }, 'Fin'),
-    h('div', { class: 'ch-title' }, '¡Gracias por jugar!'),
-    h('div', { class: 'ch-en' }, 'Thank you for playing Palabrista.'),
+    h('div', { class: 'ch-num' }, 'Fin del Acto I'),
+    h('div', { class: 'ch-title' }, '¡Continuará!'),
+    h('div', { class: 'ch-en' }, 'End of Act I — the story continues. Talk to Abuela when you are ready.'),
     h(
       'div',
       { class: 'ch-learn' },
       `${words} words practised · ${mastered} things mastered · ${g.stats.answered} answers (${acc}% right) · ${Math.round(g.stats.playMs / 60000)} minutes · 🔥 ${dayStreak(g.stats.days)}-day streak`,
     ),
-    h('div', { class: 'ch-learn' }, 'The coast is yours to explore. Keep your Spanish sharp with the Repaso in the menu, the practice dummy at Abuela’s house, and the monsters that still roam the wild. ¡Hasta pronto!'),
+    h('div', { class: 'ch-learn' }, 'The coast is yours to explore. Keep your Spanish sharp with the Repaso in the menu, the practice dummy at Abuela’s house, and the monsters that still roam the wild.'),
     h('div', { class: 'cc-continue' }, 'Enter / tap ▶'),
   );
   document.body.append(panel);
@@ -196,6 +196,10 @@ async function credits(s: Script) {
 }
 
 script('abuela_fin', async (s) => {
+  if (!s.has('act2')) {
+    await s.run('act2_start');
+    return;
+  }
   await s.say('abuela', '¿Sabes? Las palabras son poder… pero son más poderosas cuando se comparten.', 'You know what? Words are power… but they are most powerful when they are shared.');
   await s.say('abuela', 'Sigue practicando, ¿vale? ¡Un Palabrista nunca deja de aprender!', 'Keep practising, okay? A Palabrista never stops learning!');
 });

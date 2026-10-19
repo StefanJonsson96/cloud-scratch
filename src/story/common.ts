@@ -7,12 +7,16 @@ import { distractors, verbKey, type Challenge } from '../learn/challenges';
 
 const SIGNS: Record<string, [string, string]> = {
   puerto: ['Puerto Alegre. Población: 52 personas y un gato.', 'Happy Harbour. Population: 52 people and one cat.'],
+  estacion: ['Estación de tren. Trenes a toda España.', 'Train station. Trains to all of Spain.'],
   playa: ['Al oeste: el faro. ¡Ojo con las medusas!', 'West: the lighthouse. Watch out for the jellyfish!'],
   camino: ['Este: San Sabor, el pueblo del mercado. Oeste: Puerto Alegre.', 'East: San Sabor, the market town. West: Puerto Alegre.'],
   sansabor: ['San Sabor. ¡El mejor mercado de la costa!', 'San Sabor. The best market on the coast!'],
   bosque: ['El Bosque Susurrante. No salgas del camino.', "The Whispering Forest. Don't leave the path."],
   montana: ['Monte Eco. El templo está arriba. ¡Abrígate!', 'Mount Echo. The temple is up top. Wrap up warm!'],
   torre: ['La Torre Muda. Aquí no se habla.', 'The Mute Tower. No talking here.'],
+  villamolinos: ['Villamolinos. Aquí se hace el mejor queso de La Mancha.', 'Windmill Town. The best cheese in La Mancha is made here.'],
+  estacion_mancha: ['Estación de Villamolinos. Trenes a Madrid y a toda España.', 'Villamolinos station. Trains to Madrid and all of Spain.'],
+  llanura: ['Norte: el cerro de los molinos. Oeste: Villamolinos.', 'North: the windmill ridge. West: Villamolinos.'],
 };
 
 script('sign', async (s) => {

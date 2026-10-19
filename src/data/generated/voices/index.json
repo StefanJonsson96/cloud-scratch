@@ -7,6 +7,10 @@
 "words",
 "7c0090a552"
 ],
+"f:a lo mejor tiene razón esta vez a lo mejor sí": [
+"ch6",
+"a8ae8132ea"
+],
 "f:a mí también": [
 "ch2",
 "2681b12d15"
@@ -14,6 +18,10 @@
 "f:a quién tenemos que invitar": [
 "sentences",
 "9581425c31"
+],
+"f:a ver de qué animal es la leche del queso manchego": [
+"ch6",
+"22f4ae7f2e"
 ],
 "f:abrir": [
 "words",
@@ -79,6 +87,10 @@
 "words",
 "bfb94d3ab5"
 ],
+"f:así no empiezan los cuentos otra vez": [
+"ch6",
+"5a484f2dd7"
+],
 "f:aunque": [
 "words",
 "a3457e9a7f"
@@ -90,6 +102,14 @@
 "f:auuuuu": [
 "ch3",
 "6876c1db90"
+],
+"f:ay mirad mi grimorio": [
+"act2",
+"fe22fc9e99"
+],
+"f:ay mis ovejas se han perdido tres en la llanura": [
+"ch6",
+"845777a5a4"
 ],
 "f:ay vendo vendo no recuerdo el nombre de mi fruta": [
 "ch2",
@@ -194,6 +214,10 @@
 "f:buenos días ya estáis como nuevos": [
 "script",
 "e3870e2cc6"
+],
+"f:cada tierra tiene una palabra madre la palabra de su corazón": [
+"act2",
+"7133e4e28d"
 ],
 "f:caliente": [
 "words",
@@ -395,6 +419,10 @@
 "words",
 "a664e0fd75"
 ],
+"f:dentro del cristal duerme una palabra sueño": [
+"ch6",
+"339c68e0e1"
+],
 "f:después de aquella noche bruno no pudo hablar nunca más nadie lo entendía se sentía muy solo": [
 "ch5",
 "91262ebf10"
@@ -419,6 +447,10 @@
 "words",
 "60615ff6cc"
 ],
+"f:dos en casa solo falta una": [
+"ch6",
+"45ab1890b2"
+],
 "f:dudo que": [
 "words",
 "ea37feb854"
@@ -442,6 +474,10 @@
 "f:eh adónde vas primero a practicar con el muñeco": [
 "ch1",
 "3eb245e0c5"
+],
+"f:eh vosotros sois los palabristas por fin": [
+"ch6",
+"82c9e1ae86"
 ],
 "f:el abanico": [
 "words",
@@ -1063,6 +1099,10 @@
 "sentences",
 "aab9e42f7b"
 ],
+"f:es una bacía de barbero tío": [
+"ch6",
+"5e252d15e8"
+],
 "f:escuchad el mercado canta otra vez": [
 "ch2",
 "e8846be6b7"
@@ -1079,6 +1119,10 @@
 "ch2",
 "71905f4f86"
 ],
+"f:esperad primero hablad con mi tío él sabe dónde están los gigantes": [
+"ch6",
+"d15c46a773"
+],
 "f:espinas grises susurran tres flores tres colores": [
 "ch3",
 "d10d2a689f"
@@ -1086,6 +1130,18 @@
 "f:esta noche voy a mirar la luna gracias": [
 "ch1",
 "3834b51da2"
+],
+"f:esta noche voy a soñar con caballeros me cuentas otro mañana": [
+"ch6",
+"24895642d9"
+],
+"f:estación de tren trenes a toda españa": [
+"common",
+"f033332848"
+],
+"f:estación de villamolinos trenes a madrid y a toda españa": [
+"common",
+"085a3d1113"
 ],
 "f:estamos viviendo con nuestro tío": [
 "sentences",
@@ -1130,6 +1186,10 @@
 "f:está empezando a hacer frío": [
 "sentences",
 "9298c752a5"
+],
+"f:están en la llanura al este del pueblo hablad con ellas con cariño": [
+"ch6",
+"5d305ef21f"
 ],
 "f:feliz": [
 "words",
@@ -1263,6 +1323,10 @@
 "words",
 "668ff9e1fb"
 ],
+"f:ja ja eso dice todo el pueblo hablad con él está en la plaza delante de su casa": [
+"ch6",
+"d565d4047e"
+],
 "f:jaja esto una guitarra española qué gracia": [
 "ch2",
 "b1376bfbb7"
@@ -1354,6 +1418,10 @@
 "f:la casa": [
 "words",
 "617738b8fa"
+],
+"f:la casa de don alonso libros de caballeros por todas partes": [
+"ch6",
+"50719f177d"
 ],
 "f:la catedral": [
 "words",
@@ -1479,6 +1547,10 @@
 "words",
 "c664acf78a"
 ],
+"f:la gente duerme pero se levanta cansada y triste y los molinos ya no giran": [
+"ch6",
+"c85c1fca5d"
+],
 "f:la guitarra": [
 "words",
 "807c7c2cdb"
@@ -1567,6 +1639,10 @@
 "words",
 "4691750924"
 ],
+"f:la mancha llanuras de trigo hasta el horizonte y molinos quietos": [
+"act2",
+"deb6d5c9a3"
+],
 "f:la mano": [
 "words",
 "329fd41294"
@@ -1651,6 +1727,10 @@
 "words",
 "7aa71213fc"
 ],
+"f:la oveja no quiere venir": [
+"ch6",
+"e50b77b8bf"
+],
 "f:la palabra": [
 "words",
 "3ff83d5cd8"
@@ -1706,6 +1786,10 @@
 "f:la página": [
 "words",
 "09da227554"
+],
+"f:la radio dice": [
+"act2",
+"d2b5204fb1"
 ],
 "f:la rana": [
 "words",
@@ -1803,6 +1887,10 @@
 "words",
 "412c8de7a4"
 ],
+"f:la venta": [
+"ch6",
+"be16a0694a"
+],
 "f:la ventaja": [
 "words",
 "b52b859456"
@@ -1815,9 +1903,21 @@
 "words",
 "f9b5971b11"
 ],
+"f:las aspas giran con el viento": [
+"ch6",
+"997ebca91a"
+],
+"f:las palabras se borran primero una luego otra": [
+"act2",
+"d92349eefa"
+],
 "f:las palabras son poder recupéralas la torre muda al norte": [
 "ch1",
 "181fc828fe"
+],
+"f:las páginas se quedan en blanco": [
+"act2",
+"ae268a5fb5"
 ],
 "f:le dijeron eso a ella": [
 "sentences",
@@ -1859,6 +1959,14 @@
 "ch1",
 "62649af0e4"
 ],
+"f:los cuentos en español empiezan siempre igual lo sabes": [
+"ch6",
+"9c9fa9085d"
+],
+"f:los molinos empiezan a girar": [
+"ch6",
+"f70ad608cf"
+],
 "f:luchar": [
 "words",
 "84220c107a"
@@ -1895,6 +2003,10 @@
 "words",
 "0140a9df75"
 ],
+"f:mateo": [
+"ch6",
+"41e0644a90"
+],
 "f:mañana": [
 "words",
 "aa30d4b952"
@@ -1910,6 +2022,10 @@
 "f:me apetece": [
 "words",
 "c2607ee763"
+],
+"f:me cuentas un cuento mi abuelo ya no se acuerda de ninguno": [
+"ch6",
+"9ae609e0ae"
 ],
 "f:me dijeron que no ganarían": [
 "sentences",
@@ -1938,6 +2054,10 @@
 "f:me llamo": [
 "words",
 "93cbaacd3a"
+],
+"f:me llamo sancha desde hace una semana nadie sueña en villamolinos": [
+"ch6",
+"9745427e3f"
 ],
 "f:me me me gusta no recuerdo qué me gusta": [
 "ch2",
@@ -1971,9 +2091,25 @@
 "ch1",
 "366b73c387"
 ],
+"f:mi tío dice que soy su escudera yo digo que soy su sobrina y que alguien tiene que cuidarlo": [
+"ch6",
+"117f63fb2f"
+],
+"f:mi tío está allí delante de la casa grande habla mucho pero escuchadlo": [
+"ch6",
+"85aaef2126"
+],
+"f:mi tío está escribiendo su historia dice que yo salgo en el capítulo dos": [
+"ch6",
+"09813fc271"
+],
 "f:mira lo que has hecho": [
 "sentences",
 "841e28a754"
+],
+"f:mirad el color vuelve a la llanura": [
+"ch6",
+"6a59f9d593"
 ],
 "f:mirad lo que habéis hecho": [
 "sentences",
@@ -1982,6 +2118,10 @@
 "f:mirad sus lobeznos": [
 "ch3",
 "e05eb5de5c"
+],
+"f:mis ovejas están en casa esta noche las cuento y a dormir": [
+"ch6",
+"8ca6a908d3"
 ],
 "f:mmm casi pero algo vuelve ya lo practicaremos juntos": [
 "ch2",
@@ -2006,6 +2146,10 @@
 "f:morado": [
 "words",
 "bc358a0a29"
+],
+"f:muy bien de oveja manchega toma uno de regalo": [
+"ch6",
+"553f13df45"
 ],
 "f:muy bien eres un buen alumno tienes talento": [
 "ch1",
@@ -2107,6 +2251,10 @@
 "ch2",
 "01bf150210"
 ],
+"f:no no de oveja las ovejas de la llanura": [
+"ch6",
+"63126d9e26"
+],
 "f:no no es esa lo siento": [
 "common",
 "a32b892b8d"
@@ -2171,9 +2319,17 @@
 "sentences",
 "5b9d400799"
 ],
+"f:norte el cerro de los molinos oeste villamolinos": [
+"common",
+"ab048664f4"
+],
 "f:nos conocimos en la universidad": [
 "sentences",
 "ad1bf3f34f"
+],
+"f:noticias de la mancha los molinos no giran y nadie recuerda sus sueños": [
+"act2",
+"6051b0ef29"
 ],
 "f:nuestra casa es vuestra casa": [
 "sentences",
@@ -2335,6 +2491,10 @@
 "ch1",
 "afce5cf678"
 ],
+"f:puerto alegre huele a mar y a casa": [
+"act2",
+"05a57eaabc"
+],
 "f:puerto alegre población 52 personas y un gato": [
 "common",
 "e455822747"
@@ -2362,6 +2522,10 @@
 "f:quedarse de piedra": [
 "words",
 "772d6c6ee2"
+],
+"f:queso manchego el mejor queso del mundo": [
+"ch6",
+"bd240e3272"
 ],
 "f:quien busca encuentra": [
 "words",
@@ -2434,6 +2598,10 @@
 "f:qué guay": [
 "words",
 "1a7bf983c3"
+],
+"f:qué le dices a la oveja": [
+"ch6",
+"211893344b"
 ],
 "f:qué le vas a dar": [
 "sentences",
@@ -2515,9 +2683,17 @@
 "ch5",
 "01ba4d1c7b"
 ],
+"f:salamanca las piedras doradas brillan al sol": [
+"act2",
+"b4db0fedfd"
+],
 "f:san sabor el mejor mercado de la costa": [
 "common",
 "c43800db90"
+],
+"f:santiago de compostela llueve claro": [
+"act2",
+"0cc917c537"
 ],
 "f:seis": [
 "words",
@@ -2534,6 +2710,14 @@
 "f:ser pan comido": [
 "words",
 "3efa0a1322"
+],
+"f:sevilla hace un calor de mil demonios": [
+"act2",
+"65ab834a29"
+],
+"f:si la dama se lleva las palabras madre españa se quedará muda": [
+"act2",
+"518eb269d1"
 ],
 "f:si no entiendes algo toca las palabras o pulsa en": [
 "ch1",
@@ -2554,6 +2738,10 @@
 "f:sin embargo": [
 "words",
 "aa6c3ec52e"
+],
+"f:sin sueños se han olvidado del camino a casa me ayudáis": [
+"ch6",
+"fc3a634401"
 ],
 "f:sin él me sentía perdida": [
 "sentences",
@@ -2586,6 +2774,10 @@
 "f:sí": [
 "words",
 "edcb5160cd"
+],
+"f:sí y los sueños han vuelto al pueblo": [
+"ch6",
+"fe527bf7dd"
 ],
 "f:sólo mira cómo lo hago": [
 "sentences",
@@ -2639,6 +2831,10 @@
 "words",
 "d20ca01e4d"
 ],
+"f:tenía razón mi tío tenía razón eran gigantes": [
+"ch6",
+"f627fabc0c"
+],
 "f:tiene algún problema con eso": [
 "sentences",
 "90e0674937"
@@ -2671,6 +2867,10 @@
 "ch1",
 "1dadf55340"
 ],
+"f:tomad billetes de tren para todos la estación está en el norte del pueblo": [
+"act2",
+"5fbd7831d0"
+],
 "f:tomad para el camino un buen café da energía": [
 "ch2",
 "8195c6a81a"
@@ -2691,6 +2891,10 @@
 "words",
 "92e8348d10"
 ],
+"f:tío son molinos": [
+"ch6",
+"20a237d77d"
+],
 "f:tú siempre tienes hambre mateo": [
 "ch5",
 "099bde1516"
@@ -2703,9 +2907,21 @@
 "ch1",
 "41903ab31d"
 ],
+"f:un banco de madera": [
+"act2",
+"fc662ca8c8"
+],
 "f:un bar de tapas huele a tortilla y a café": [
 "ch2",
 "9d48deff83"
+],
+"f:un borrador": [
+"ch6",
+"c8afd2d78c"
+],
+"f:un molino las aspas no se mueven": [
+"ch6",
+"02399d6168"
 ],
 "f:un oso escribió la historia": [
 "sentences",
@@ -2722,6 +2938,14 @@
 "f:un recuerdo": [
 "ch5",
 "4ce8eceb62"
+],
+"f:una dos tres están todas muchísimas gracias": [
+"ch6",
+"0a8aecb457"
+],
+"f:una fiesta sin fuego eso no puede ser al tren": [
+"ch6",
+"6e2427a0eb"
 ],
 "f:una flor amarilla parece un pequeño sol": [
 "ch3",
@@ -2755,6 +2979,10 @@
 "ch1",
 "7360152d12"
 ],
+"f:una puerta de madera con un acertijo": [
+"ch6",
+"665df0828e"
+],
 "f:una puerta negra con letras de plata": [
 "ch5",
 "952bceccdc"
@@ -2763,17 +2991,33 @@
 "ch4",
 "cf4f06f7d9"
 ],
+"f:una ya está en casa faltan dos": [
+"ch6",
+"f9a8606da9"
+],
 "f:uno": [
 "words",
 "9932bc62ff"
+],
+"f:unos días después de la fiesta": [
+"act2",
+"b8aea60409"
 ],
 "f:vale": [
 "words",
 "672108b6d3"
 ],
+"f:valencia huele a pólvora y a azahar": [
+"act2",
+"987866eebd"
+],
 "f:valiente": [
 "words",
 "54e443141a"
+],
+"f:vamos a contárselo a don alonso": [
+"ch6",
+"4f97a5576c"
 ],
 "f:vaya": [
 "words",
@@ -2815,6 +3059,10 @@
 "words",
 "ffdc21fd71"
 ],
+"f:villamolinos aquí se hace el mejor queso de la mancha": [
+"common",
+"32411f0b2a"
+],
 "f:vives también en esta calle": [
 "sentences",
 "0d0dffb284"
@@ -2831,6 +3079,10 @@
 "sentences",
 "75a8b93383"
 ],
+"f:voy a madrid todos los trenes pasan por madrid sabes": [
+"act2",
+"1008d4e107"
+],
 "f:voy con vosotros": [
 "ch2",
 "612f0f7ce6"
@@ -2842,6 +3094,22 @@
 "f:y ahora tengo hambre puedes ir a la tienda de doña carmen necesito pan": [
 "ch1",
 "cadb74cb12"
+],
+"f:y después a sevilla mi familia está allí": [
+"act2",
+"97a3dc810f"
+],
+"f:y llamadme todos los días": [
+"act2",
+"4542b6264a"
+],
+"f:y mi tío don alonso dice que los molinos son gigantes": [
+"ch6",
+"d1d5580b2d"
+],
+"f:y qué quiere ahora": [
+"act2",
+"1f0cfe48aa"
 ],
 "f:y tú estás hecha polvo": [
 "ch4",
@@ -2858,6 +3126,10 @@
 "f:y yo a ti hermano bienvenido a casa": [
 "ch5",
 "764dcf93ff"
+],
+"f:ya sabes si no puedes dormir cuenta ovejas": [
+"ch6",
+"a2607f79e8"
 ],
 "f:ya tienes el pan qué rápido ven ven": [
 "ch1",
@@ -2879,6 +3151,10 @@
 "sentences",
 "ad4fef0b6a"
 ],
+"f:zzz gracias": [
+"ch6",
+"2092500e7a"
+],
 "f:él escribió a sus padres": [
 "sentences",
 "2cd17fbdcd"
@@ -2890,6 +3166,10 @@
 "f:érase una vez": [
 "words",
 "ea7090b860"
+],
+"f:érase una vez un caballero que vivía en la mancha tenía un caballo muy flaco": [
+"ch6",
+"63ea52c852"
 ],
 "m2:a nadie le caes bien": [
 "sentences",
@@ -2907,9 +3187,21 @@
 "sentences",
 "09f3c39a2d"
 ],
+"m2:al cerro nobles amigos está al norte de la llanura allí esperan los gigantes": [
+"ch6",
+"63f412dc10"
+],
 "m2:allí está el faro qué oscuro está": [
 "ch1",
 "af867599a9"
+],
+"m2:anoche soñé con un caballo blanco y una dama hermosa qué sueño tan bonito": [
+"ch6",
+"5c2b2b690b"
+],
+"m2:aquí estoy creíais que iba a quedarme en casa": [
+"ch6",
+"6b412c8e40"
 ],
 "m2:aquí no conoces a nadie": [
 "sentences",
@@ -2922,6 +3214,14 @@
 "m2:ay qué bonitos": [
 "ch3",
 "e2cf632ba1"
+],
+"m2:bienvenidos a la venta don alonso dice que es un castillo ja ja": [
+"ch6",
+"d98ad32726"
+],
+"m2:bienvenidos nobles caballeros soy don alonso caballero andante": [
+"ch6",
+"ecf9fbb88b"
 ],
 "m2:cada casa tenía un jardín": [
 "sentences",
@@ -2951,6 +3251,10 @@
 "sentences",
 "1482b6f3d0"
 ],
+"m2:cuatro brazos y viento mira a tu alrededor": [
+"ch6",
+"396151399e"
+],
 "m2:cuándo quieres que te llame": [
 "sentences",
 "15cfa4bc13"
@@ -2966,6 +3270,10 @@
 "m2:cómo quieres que lo sepa": [
 "sentences",
 "fc3210b928"
+],
+"m2:de repente oí un ruido me levanté miré por la ventana y vi a una dama gris sobre el cerro": [
+"ch6",
+"eb78c647af"
 ],
 "m2:dónde están tus hijos ahora": [
 "sentences",
@@ -2995,6 +3303,10 @@
 "ch4",
 "30f621aa65"
 ],
+"m2:el trigo claro muelo el trigo y hago harina toma por tu ayuda": [
+"ch6",
+"9073fa815b"
+],
 "m2:ella me enseñó su jardín": [
 "sentences",
 "054aee7779"
@@ -3015,6 +3327,10 @@
 "ch1",
 "2f65592857"
 ],
+"m2:en un lugar de la mancha de cuyo nombre no quiero acordarme ah qué buen principio": [
+"ch6",
+"d63c50f278"
+],
 "m2:es enorme ese gólem es pan comido bueno quizás no": [
 "ch4",
 "69111df160"
@@ -3022,6 +3338,14 @@
 "m2:es esta la que buscáis": [
 "sentences",
 "7cf11a86d5"
+],
+"m2:es un yelmo": [
+"ch6",
+"57b3bc1656"
+],
+"m2:escuchad mi historia hace una semana era de noche y yo dormía": [
+"ch6",
+"677ce354b5"
 ],
 "m2:ese no es tu libro": [
 "sentences",
@@ -3051,6 +3375,10 @@
 "ch1",
 "b7c4940878"
 ],
+"m2:exacto tenéis alma de juglares tomad para el camino": [
+"ch6",
+"81e1225d74"
+],
 "m2:exacto tomad dos cafés yo ya no puedo más": [
 "ch4",
 "758421834e"
@@ -3058,6 +3386,10 @@
 "m2:genial vamos": [
 "ch1",
 "58a5dbe538"
+],
+"m2:gigantes tu tío está como una cabra": [
+"ch6",
+"5bce45625a"
 ],
 "m2:gracias por el faro todo el pueblo habla otra vez": [
 "ch1",
@@ -3111,6 +3443,10 @@
 "sentences",
 "974ea56fc4"
 ],
+"m2:llevaba un libro enorme lo abrió y los molinos se movieron se convirtieron en gigantes": [
+"ch6",
+"e96b61c267"
+],
 "m2:lo dices porque tienes miedo": [
 "sentences",
 "69fc41a501"
@@ -3122,6 +3458,10 @@
 "m2:lo hemos conseguido toca el cristal": [
 "ch1",
 "a197757c82"
+],
+"m2:lo sabía gigantes y vosotros los vencisteis": [
+"ch6",
+"81fd919d62"
 ],
 "m2:luego vamos a pescar vale": [
 "ch1",
@@ -3166,6 +3506,10 @@
 "m2:mi mi flota en el agua tiene una vela cómo se llama": [
 "ch1",
 "d7ef1a6092"
+],
+"m2:mi molino muele muele cómo se llama no me acuerdo": [
+"ch6",
+"6231a9c787"
 ],
 "m2:mi pan mis palabras gracias de verdad tomad paella para el viaje": [
 "ch2",
@@ -3271,6 +3615,10 @@
 "sentences",
 "ec1b6128f6"
 ],
+"m2:no no yo estaba durmiendo cuando pasó dormía la escena": [
+"ch6",
+"3a6f703cd1"
+],
 "m2:no pude encontrar dónde estaba": [
 "sentences",
 "05b7f37f4d"
@@ -3315,6 +3663,10 @@
 "sentences",
 "8781bbdd59"
 ],
+"m2:non fuyades cobardes y viles criaturas que un solo caballero es el que os acomete": [
+"ch6",
+"e9514b7a52"
+],
 "m2:nos hemos quedado sin patatas": [
 "sentences",
 "cae7bc0426"
@@ -3347,6 +3699,10 @@
 "ch2",
 "fb5e0ccf11"
 ],
+"m2:otra vez el silencio": [
+"act2",
+"aca2622caa"
+],
 "m2:pan recién hecho calentito": [
 "ch2",
 "74c193b5d5"
@@ -3374,6 +3730,14 @@
 "m2:pues cierra la puerta jaja algo caliente un café": [
 "ch2",
 "cc9da9633a"
+],
+"m2:pues vamos a la mancha a qué esperamos": [
+"act2",
+"89d2a1d45c"
+],
+"m2:que no sancha son gigantes están en el cerro al norte de la llanura": [
+"ch6",
+"7b7f8cb815"
 ],
 "m2:querría invitarte a la fiesta": [
 "sentences",
@@ -3447,6 +3811,10 @@
 "ch3",
 "3e5b5867ca"
 ],
+"m2:sin viento mi molino no muele el trigo pero por lo menos recuerdo la palabra": [
+"ch6",
+"9a8e8de4c5"
+],
 "m2:somos un buen equipo": [
 "ch1",
 "b3b87c1cb9"
@@ -3462,6 +3830,10 @@
 "m2:sé que no me quieren": [
 "sentences",
 "08f4830d75"
+],
+"m2:sí y los sueños han vuelto al pueblo": [
+"ch6",
+"df57ea1adc"
 ],
 "m2:también me gusta beber leche": [
 "sentences",
@@ -3507,6 +3879,10 @@
 "ch5",
 "39ebfc11c7"
 ],
+"m2:tomad mi tesoro el yelmo de mambrino es de oro puro": [
+"ch6",
+"19e5cabef1"
+],
 "m2:tu abuela también madre mía": [
 "ch1",
 "9a38a97b9d"
@@ -3518,6 +3894,14 @@
 "m2:uf y ahora tengo hambre yo": [
 "ch2",
 "a84d820c81"
+],
+"m2:vale retiro lo de la cabra": [
+"ch6",
+"cc9845a03f"
+],
+"m2:vamos a contárselo a don alonso": [
+"ch6",
+"a25f3f133d"
 ],
 "m2:vamos a luchar juntos": [
 "ch5",
@@ -3543,9 +3927,21 @@
 "ch3",
 "833208416a"
 ],
+"m2:y ahora voy a escribir mi historia érase una vez en un lugar de la mancha": [
+"ch6",
+"6520640e31"
+],
+"m2:y desde aquella noche nadie sueña los gigantes se comen los sueños del pueblo": [
+"ch6",
+"9b97128ac1"
+],
 "m2:y la paella tengo hambre": [
 "ch5",
 "ef89eb2dd6"
+],
+"m2:y la próxima parada": [
+"ch6",
+"a605d78be5"
 ],
 "m2:y yo estoy hecho polvo y tengo hambre": [
 "ch4",
@@ -3554,6 +3950,10 @@
 "m2:ya si no habéis tomado nada jaja": [
 "ch2",
 "f6126f16e6"
+],
+"m2:yo me quedo aquí guardando el camino adelante amigos": [
+"ch6",
+"7ec5042e5d"
 ],
 "m2:yo también pero vamos juntos vale": [
 "ch1",
@@ -3570,6 +3970,10 @@
 "m2:él no sabe qué hacer": [
 "sentences",
 "e65d7c2139"
+],
+"m2:érase una vez un caballero que vivía en la mancha tenía un caballo muy flaco": [
+"ch6",
+"8df3a138f4"
 ],
 "m:ahora el gólem del templo le obedece bloquea la puerta de la torre": [
 "ch4",
@@ -3591,6 +3995,10 @@
 "ch4",
 "6bff9efd0d"
 ],
+"m:buenos días para subir al tren hablad con el tren es muy fácil": [
+"act2",
+"43a82d4b72"
+],
 "m:buenos días ya estáis como nuevos": [
 "script",
 "4382d35440"
@@ -3603,21 +4011,45 @@
 "ch1",
 "d9c217650f"
 ],
+"m:cuidado en el cerro esa luz gris no me gusta nada": [
+"ch6",
+"042170652d"
+],
+"m:dentro vivía una mujer hecha de palabras olvidadas la dama gris": [
+"act2",
+"2438055267"
+],
 "m:el bosque está al norte pero ahora es peligroso no pasa nadie": [
 "ch2",
 "c462dbb9b9"
+],
+"m:el libro del olvido es ella": [
+"ch6",
+"826810a97f"
 ],
 "m:el silencio viene del norte id por el camino del este a san sabor": [
 "ch1",
 "e41d5c2f46"
 ],
+"m:ella me enseñó el silencio yo estaba triste y solo y acepté": [
+"act2",
+"ac004836bd"
+],
 "m:era el hermano pequeño de rosa": [
 "ch4",
 "7d9190bf9f"
 ],
+"m:es una página del libro del olvido ella le ha dado vida": [
+"ch6",
+"cf19718bba"
+],
 "m:escuchad los gestos de mis hermanos ellos os abrirán la puerta": [
 "ch4",
 "54f13d4bb9"
+],
+"m:eso es ni siempre ni nunca de vez en cuando toma para el camino": [
+"ch6",
+"9009945266"
 ],
 "m:eso es tomad una cosa para el camino": [
 "ch3",
@@ -3635,6 +4067,10 @@
 "ch5",
 "9998388e4a"
 ],
+"m:hace cuarenta años yo estudiaba en salamanca": [
+"act2",
+"c0df56da96"
+],
 "m:hace muchos años un joven palabrista vino a este templo se llamaba bruno": [
 "ch4",
 "78fd7316a2"
@@ -3647,13 +4083,25 @@
 "ch1",
 "935dff10be"
 ],
+"m:la dama gris ha estado aquí lo noto en el aire": [
+"ch6",
+"1bd61c56a5"
+],
 "m:la loba gris era la guardiana del bosque pero el silencio se llevó a sus lobeznos": [
 "ch3",
 "d8acfb8b72"
 ],
+"m:la palabra madre de la mancha pero cuidado sueño tiene dos caras": [
+"ch6",
+"6f2e62c5c5"
+],
 "m:la puerta de la torre está abierta bruno os espera arriba": [
 "ch4",
 "f60f1257d1"
+],
+"m:llevo cuarenta años en esta llanura de vez en cuando por la noche veo una luz gris en el cerro": [
+"ch6",
+"2b9e2680d6"
 ],
 "m:lo siento lo siento mucho": [
 "ch5",
@@ -3675,13 +4123,33 @@
 "ch5",
 "df312b0fee"
 ],
+"m:no de vez en cuando es a veces no siempre": [
+"ch6",
+"f1620cffb7"
+],
+"m:no esto es peor esto es el olvido": [
+"act2",
+"70301cb87d"
+],
 "m:no no es esa lo siento": [
 "common",
 "99e430a742"
 ],
+"m:qué significa de vez en cuando": [
+"ch6",
+"0902831cbd"
+],
 "m:rosa te he echado mucho de menos": [
 "ch5",
 "c6f9b4dcf9"
+],
+"m:tengo sueño es tengo ganas de dormir es lo que tenéis todos aquí": [
+"ch6",
+"e32cd581db"
+],
+"m:todas las palabras de españa para su libro para siempre": [
+"act2",
+"9eae87ce4a"
 ],
 "m:toma esta concha era de mi abuelo protege a los viajeros": [
 "ch1",
@@ -3695,13 +4163,29 @@
 "ch4",
 "fcd8f55db6"
 ],
+"m:una noche en la vieja biblioteca encontré un libro gris": [
+"act2",
+"7d4789b3a1"
+],
 "m:una noche hubo una tormenta terrible rosa cayó al mar": [
 "ch4",
 "c6e24302f7"
 ],
+"m:una palabra madre salvada quedan cuatro": [
+"ch6",
+"8f15e6c42e"
+],
+"m:valencia allí empiezan las fallas pero dicen que el fuego no quiere arder": [
+"ch6",
+"3d3136b103"
+],
 "m:vino aquí para aprender el silencio pero el silencio no le dio paz le dio rabia": [
 "ch4",
 "e79c510258"
+],
+"m:voy con vosotros os debo cuarenta años de palabras": [
+"act2",
+"f1fe2b1ba1"
 ],
 "m:yo hablo poco mis hermanos no hablan nada hacen voto de silencio": [
 "ch4",

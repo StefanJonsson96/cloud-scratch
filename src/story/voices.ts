@@ -56,6 +56,18 @@ export const CAST_VOICES: Record<string, CastVoice> = {
   paco: c('paco', 'm', 'm2', 1.0, 0.95),
   lenador: c('lenador', 'm', 'm', 0.9, 0.75, 0.9),
   alpinista: c('alpinista', 'm', 'm2', 1.02),
+  // Act II
+  revisor: c('revisor', 'm', 'm', 1.0, 0.95),
+  viajera: c('viajera', 'f', 'f', 1.04, 1.05),
+  // Don Alonso shouts a lot: the steadier male voice keeps him sounding like an old man.
+  alonso: c('alonso', 'm', 'm2', 0.88, 0.8, 0.9),
+  sancha: c('sancha', 'f', 'f', 1.02, 1.05),
+  quesera: c('quesera', 'f', 'f', 0.97, 0.95),
+  pastora: c('pastora', 'f', 'f', 1.06, 1.1),
+  molinero: c('molinero', 'm', 'm2', 0.94, 0.9),
+  pablito: c('pablito', 'm', 'f', 1.15, 1.5, 1.08),
+  posadero: c('posadero', 'm', 'm2', 0.92, 0.9),
+  pastor: c('pastor', 'm', 'm', 0.9, 0.8, 0.9),
 };
 
 /** Narration and system messages. */

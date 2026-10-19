@@ -3,6 +3,7 @@
 
 import type { GameState } from '../state';
 import type { MapDef } from '../world/types';
+import { STOP_BY_ID } from '../world/stops';
 
 export interface Goal {
   es: string;
@@ -76,17 +77,32 @@ export function currentGoal(g: GameState): Goal | null {
   if (!f('gate_torre2')) return { es: 'Abre la segunda puerta.', en: 'Open the second door.', at: ['torre2', 10, 3] };
   if (!f('final')) return { es: 'Sube a la cima. El Callado te espera.', en: 'Climb to the top. El Callado is waiting.', at: ['cima', 8, 3] };
   if (!f('fin')) return null;
-  return { es: '¡Fin! Habla con todos en Puerto Alegre.', en: 'The End! Talk to everyone back in Puerto Alegre.' };
+
+  // Act II
+  if (!f('act2')) return { es: 'Habla con la abuela en la plaza.', en: 'Talk to everyone at the festival — then to Grandma, in the square.', at: ['puerto', 14, 11] };
+  if (!f('ch6')) return { es: 'Toma el tren a La Mancha.', en: 'Go to the station (north of the village) and take the train to La Mancha.', at: ['villamolinos', 4, 9] };
+
+  // Chapter 6
+  if (!f('alonso_met')) return { es: 'Busca a Don Alonso en la plaza.', en: 'Find Don Alonso in the village square, in front of his house.', at: ['villamolinos', 27, 11] };
+  if (!f('gate_cerro')) return { es: 'Cruza la llanura y abre la puerta del cerro.', en: 'Cross the plain (east of the village) and open the gate up on the ridge.', at: ['cerro', 13, 14] };
+  if (!f('gigante')) return { es: 'Sube al molino grande.', en: 'Climb to the biggest windmill.', at: ['cerro', 13, 5] };
+  if (!f('mancha_word')) return { es: 'Toca el cristal.', en: 'Touch the crystal.', at: ['cerro', 15, 5] };
+  if (!f('mancha_reward')) return { es: 'Vuelve con Don Alonso.', en: 'Go back and tell Don Alonso.', at: ['villamolinos', 27, 11] };
+  return { es: '¡Continuará!', en: 'To be continued: Valencia is coming soon.' };
 }
 
 /**
  * Where to put the objective marker on the current map: on the target itself,
- * or on the first exit of the shortest open route towards it.
+ * or on the first exit of the shortest open route towards it — or, when the
+ * target is in another region, on the way to this region's train.
  */
 export function markerTile(g: GameState, mapId: string, maps: Record<string, MapDef>, goal = currentGoal(g)): [number, number] | null {
   if (!goal?.at) return null;
   const [target, tx, ty] = goal.at;
   if (target === mapId) return [tx, ty];
+  const here = maps[mapId]?.region ?? 'puerto';
+  const there = maps[target]?.region ?? 'puerto';
+  if (here !== there && STOP_BY_ID[here]) return markerTile(g, mapId, maps, { ...goal, at: STOP_BY_ID[here].board });
   const prev = new Map<string, { from: string; x: number; y: number } | null>([[mapId, null]]);
   const queue = [mapId];
   while (queue.length) {

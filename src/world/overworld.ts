@@ -398,12 +398,13 @@ export class Overworld {
       const ny = (n.fromY + (n.y - n.fromY) * k) * TILE - camY;
       const f = k < 1 ? (n.step % 2 ? 1 : 2) : 0;
       const grey = n.def.grey?.(this.g) ?? false;
-      ents.push({ y: ny, draw: () => this.drawChar(n.def.sprite, n.dir, f, nx, ny, grey, n.def.still) });
+      ents.push({ y: ny, draw: () => (n.def.deco ? this.drawDeco(n.def.sprite, nx, ny, grey) : this.drawChar(n.def.sprite, n.dir, f, nx, ny, grey, n.def.still)) });
     }
     const pf = this.moving ? (this.stepCount % 2 ? 1 : 2) : 0;
     ents.push({ y: ppy - camY, draw: () => this.drawChar('hero', this.dir, pf, ppx - camX, ppy - camY, false) });
     ents.sort((a, b) => a.y - b.y).forEach((e) => e.draw());
     if (this.g.settings.marker !== false) this.drawMarker(camX, camY);
+    if (this.map.weather) this.drawWeather(this.map.weather, W, H);
 
     if (this.map.dark) {
       const cx = ppx - camX + TILE / 2;
@@ -435,6 +436,42 @@ export class Overworld {
     const img = grey ? greySprite(name) : sprite(name);
     const bob = still ? Math.round(Math.sin(this.time * 3) * 1.5) : 0;
     c.drawImage(img, Math.round(x - (img.width - 16) / 2), Math.round(y) - 1 + bob - (img.height - 16));
+  }
+
+  /** Big scenery sprites, standing on their tile. */
+  private drawDeco(name: string, x: number, y: number, grey: boolean) {
+    const img = grey ? greySprite(name) : sprite(name);
+    this.ctx.drawImage(img, Math.round(x - (img.width - 16) / 2), Math.round(y) - (img.height - 16));
+  }
+
+  private drawWeather(kind: 'rain' | 'embers' | 'petals', W: number, H: number) {
+    const c = this.ctx;
+    const t = this.time;
+    const n = kind === 'rain' ? 90 : 40;
+    for (let i = 0; i < n; i++) {
+      // Each particle loops on its own track; positions come from the index, not state.
+      const sx = (i * 97.3) % W;
+      const speed = kind === 'rain' ? 260 + (i % 7) * 20 : 18 + (i % 5) * 6;
+      const p = ((t * speed + i * 53) % (H + 40)) - 20;
+      if (kind === 'rain') {
+        const x = (sx - p * 0.25 + W) % W;
+        c.fillStyle = 'rgba(180,200,230,0.55)';
+        c.fillRect(Math.round(x), Math.round(p), 1, 6);
+      } else if (kind === 'embers') {
+        const x = sx + Math.sin(t * 2 + i) * 6;
+        const y = H - p;
+        c.fillStyle = i % 3 ? 'rgba(255,170,60,0.8)' : 'rgba(255,230,120,0.9)';
+        c.fillRect(Math.round(x), Math.round(y), 2, 2);
+      } else {
+        const x = sx + Math.sin(t + i) * 10;
+        c.fillStyle = i % 2 ? 'rgba(255,190,220,0.85)' : 'rgba(255,255,255,0.8)';
+        c.fillRect(Math.round(x), Math.round(p), 2, 1);
+      }
+    }
+    if (kind === 'rain') {
+      c.fillStyle = 'rgba(60,70,100,0.18)';
+      c.fillRect(0, 0, W, H);
+    }
   }
 
   private drawOpenChest(x: number, y: number) {

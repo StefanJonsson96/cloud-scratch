@@ -19,6 +19,10 @@ import { spanish } from '../ui/spanish';
 import { agree } from './agree';
 import { CAST_VOICES, heroVoice } from './voices';
 import { preloadVoices } from '../engine/voiceover';
+import { currentGoal } from './goals';
+import { MAPS } from '../world/maps';
+import type { Stop } from '../world/stops';
+import { chooseTrip } from '../ui/travel';
 
 export type ScriptFn = (s: Script) => Promise<void>;
 export const SCRIPTS: Record<string, ScriptFn> = {};
@@ -61,6 +65,17 @@ export const CAST: Record<string, Speaker> = {
   Paco: { name: 'Paco', voice: CAST_VOICES.paco },
   Leñador: { name: 'Leñador', voice: CAST_VOICES.lenador },
   Alpinista: { name: 'Alpinista', voice: CAST_VOICES.alpinista },
+  // Act II
+  revisor: { name: 'El revisor', face: 'revisor', voice: CAST_VOICES.revisor },
+  viajera: { name: 'Una viajera', face: 'vecina2', voice: CAST_VOICES.viajera },
+  alonso: { name: 'Don Alonso', face: 'alonso', voice: CAST_VOICES.alonso },
+  sancha: { name: 'Sancha', face: 'sancha', voice: CAST_VOICES.sancha },
+  quesera: { name: 'La quesera', face: 'quesera', voice: CAST_VOICES.quesera },
+  pastora: { name: 'La pastora', face: 'pastora', voice: CAST_VOICES.pastora },
+  molinero: { name: 'El molinero', face: 'molinero', voice: CAST_VOICES.molinero },
+  pablito: { name: 'Pablito', face: 'pablito', voice: CAST_VOICES.pablito },
+  posadero: { name: 'El ventero', face: 'posadero', voice: CAST_VOICES.posadero },
+  pastor: { name: 'El pastor', face: 'pastor', voice: CAST_VOICES.pastor },
 };
 
 export class Script {
@@ -115,6 +130,24 @@ export class Script {
 
   end() {
     this.game.dialogue.close();
+  }
+
+  /** Continue with another script (same speaker, same place). */
+  async run(id: string) {
+    const fn = SCRIPTS[id];
+    if (!fn) throw new Error(`Missing script: ${id}`);
+    await fn(this);
+  }
+
+  /** Take the train from this station; returns where we went (or null to stay). */
+  async travel(here: string): Promise<Stop | null> {
+    this.end();
+    const goal = currentGoal(this.g);
+    const wanted = goal?.at ? (MAPS[goal.at[0]]?.region ?? 'puerto') : undefined;
+    const stop = await chooseTrip(this.game.overlayHost, this.g, here, wanted !== here ? wanted : undefined);
+    if (!stop) return null;
+    await this.warp(stop.map, stop.x, stop.y, stop.dir);
+    return stop;
   }
 
   /** A standalone Spanish challenge (puzzles, lessons). */

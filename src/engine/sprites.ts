@@ -57,6 +57,11 @@ export function hasSprite(name: string) {
   return defs.has(name);
 }
 
+/** Every defined sprite (for the gallery page in tools/). */
+export function spriteNames(): string[] {
+  return [...defs.keys()];
+}
+
 /** Resolve a sprite to a grid of CSS colours (null = transparent). */
 export function pixels(def: SpriteDef): (string | null)[][] {
   const h = def.rows.length;

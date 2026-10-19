@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sprite gallery</title>
+    <style>
+      body { background: #3a4466; color: #f4f4f4; font: 12px sans-serif; display: flex; flex-wrap: wrap; gap: 14px; padding: 14px; }
+      figure { margin: 0; text-align: center; }
+      canvas { image-rendering: pixelated; background: #38b764; display: block; }
+    </style>
+  </head>
+  <body>
+    <!-- Every sprite, at 4×. Open with the dev server: npx vite, then /tools/gallery/ (?only=prefix to filter). -->
+    <script type="module">
+      import '/src/art/characters.ts';
+      import '/src/art/enemies.ts';
+      import '/src/art/objects.ts';
+      import '/src/art/scenery.ts';
+      import '/src/art/cast2.ts';
+      import '/src/art/enemies2.ts';
+      import { sprite, spriteNames } from '/src/engine/sprites.ts';
+      const only = new URLSearchParams(location.search).get('only');
+      for (const name of spriteNames()) {
+        if (only && !only.split(',').some((p) => name.startsWith(p))) continue;
+        if (/_(up|left)_|_[12]$/.test(name)) continue;
+        const img = sprite(name);
+        const c = document.createElement('canvas');
+        c.width = img.width * 4;
+        c.height = img.height * 4;
+        const x = c.getContext('2d');
+        x.imageSmoothingEnabled = false;
+        x.drawImage(img, 0, 0, c.width, c.height);
+        const fig = document.createElement('figure');
+        fig.append(c, Object.assign(document.createElement('figcaption'), { textContent: name }));
+        document.body.append(fig);
+      }
+    </script>
+  </body>
+</html>

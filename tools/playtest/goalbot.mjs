@@ -8,12 +8,12 @@
 //
 //   npm run build && npx vite preview --port 4173 &
 //   node tools/playtest/goalbot.mjs [--url http://localhost:4173/] [--wrong 0.15]
-//        [--until <flag>] [--from save.json] [--minutes 60] [--shots dir]
+//        [--until <flag>] [--from save.json] [--save out.json] [--minutes 60] [--shots dir]
 //
 // Needs Playwright with a Chromium (`npx playwright install chromium`), or set
 // PLAYWRIGHT_MODULE to its index.mjs and CHROMIUM to a browser binary.
 
-import { readFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 const args = Object.fromEntries(
   process.argv.slice(2).reduce((acc, a, i, all) => (a.startsWith('--') ? [...acc, [a.slice(2), all[i + 1]?.startsWith('--') ? 'true' : (all[i + 1] ?? 'true')]] : acc), []),
@@ -108,7 +108,8 @@ async function step(page) {
       dlgOpts: document.querySelectorAll('.dialogue .dlg-options .menu-item').length,
       dlg: vis('.dialogue'),
       card: !!document.querySelector('.chapter-card'),
-      shop: !!document.querySelector('.overlay .panel:not(.talent-panel) .menu'),
+      travel: !!document.querySelector('.travel-panel .menu'),
+      shop: !!document.querySelector('.overlay .panel:not(.talent-panel):not(.travel-panel) .menu'),
       overlay: !!document.querySelector('.overlay'),
     };
   });
@@ -143,6 +144,8 @@ async function step(page) {
     return 'option';
   }
   if (s.dlg) return press(page, 'Enter', 'dialogue', 200);
+  // The train: the objective's station is selected already.
+  if (s.travel) return press(page, 'Enter', 'train', 400);
   if (s.shop) return press(page, 'Escape', 'shop');
   if (s.battle) {
     await page.waitForTimeout(300);
@@ -247,6 +250,7 @@ async function info(page) {
     const goal = document.querySelector('.hud-goal');
     return {
       goal: goal && !goal.hidden ? goal.dataset.key : null,
+      goalAt: !!goal?.dataset.at,
       marker: w.marker,
       map: w.map.id,
       x: w.px,
@@ -297,7 +301,7 @@ while (Date.now() - t0 < MINUTES * 60000) {
   await untilIdle(page);
   const s = await info(page);
   if (UNTIL && s.flags[UNTIL]) { result = `reached ${UNTIL}`; break; }
-  if (s.flags.fin && !s.goal) { result = 'finished'; break; }
+  if (s.flags.fin && (!s.goal || !s.goalAt)) { result = `finished: ${s.goal ?? 'the end'}`; break; }
   if (s.goal !== last) {
     log(`🎯 ${s.goal ?? '(none)'}   [${s.map} ${s.x},${s.y} · ch${s.chapter} · ${s.party}]`);
     if (SHOTS) await page.screenshot({ path: `${SHOTS}/${String(++shot).padStart(3, '0')}.png` });
@@ -326,6 +330,8 @@ while (Date.now() - t0 < MINUTES * 60000) {
   }
 }
 const end = await info(page);
+// Keep the game where the run ended, to start the next run from (--from).
+if (args.save) writeFileSync(args.save, await page.evaluate(() => JSON.stringify(window.__game.g)));
 console.log(`\nResult: ${result}`);
 console.log(`Chapter ${end.chapter} · ${end.party} · ${stats.answered} answers (${stats.wrong} wrong on purpose) · ${stats.defeats.length} defeats · ${Math.round((Date.now() - t0) / 60000)} min`);
 if (stats.defeats.length) console.log('Defeats:', stats.defeats.join(' | '));

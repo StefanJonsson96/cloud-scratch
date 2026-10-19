@@ -3,6 +3,9 @@
 import { defineHero } from './art/characters';
 import './art/enemies';
 import './art/objects';
+import './art/scenery';
+import './art/cast2';
+import './art/enemies2';
 import { Overworld, type NpcInstance, type WorldHost } from './world/overworld';
 import { MAPS } from './world/maps';
 import type { MapDef } from './world/types';
@@ -144,6 +147,7 @@ export class Game implements WorldHost {
     const key = goal.es;
     if (this.goalEl.dataset.key === key) return;
     this.goalEl.dataset.key = key;
+    this.goalEl.dataset.at = goal.at?.join(',') ?? '';
     this.goalEl.replaceChildren(
       h('span', { class: 'goal-icon', 'aria-hidden': 'true' }, '🎯'),
       h('div', { class: 'goal-text' }, spanish(goal.es), h('small', null, goal.en)),

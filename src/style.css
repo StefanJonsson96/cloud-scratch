@@ -837,6 +837,9 @@ textarea {
 .bg-torre {
   background: radial-gradient(ellipse at 50% 40%, #3e2a4f 0%, #120c1c 75%);
 }
+.bg-mancha {
+  background: linear-gradient(180deg, #4f86d0 0%, #b8d8f0 47%, #e8c070 48%, #c9963c 72%, #8b5a3c 100%);
+}
 .bg-cima {
   background: radial-gradient(ellipse at 50% 30%, #5d275d 0%, #1a1028 60%, #05040a 100%);
 }

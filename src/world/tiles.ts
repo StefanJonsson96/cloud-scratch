@@ -63,6 +63,19 @@ export const TILES: Record<string, TileInfo> = {
   A: { solid: true, name: 'altar' },
   V: { solid: true, name: 'pot' },
   ' ': { solid: true, name: 'void' },
+  // Act II
+  H: { solid: true, name: 'rails' },
+  '%': { solid: true, name: 'grass' },
+  Z: { solid: false, encounter: true, name: 'wheat' },
+  a: { solid: false, name: 'dryearth' },
+  N: { solid: true, name: 'orangetree' },
+  E: { solid: true, name: 'palm' },
+  e: { solid: false, name: 'azulejo' },
+  i: { solid: true, name: 'column' },
+  g: { solid: true, name: 'whitewall' },
+  q: { solid: false, name: 'moss' },
+  l: { solid: false, encounter: true, name: 'fern' },
+  j: { solid: false, name: 'parquet' },
 };
 
 export function tileInfo(ch: string): TileInfo {
@@ -455,6 +468,107 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number, mask
     },
     void(c) {
       px(c, 0, 0, P['0'], 16, 16);
+    },
+    // ------------------------------------------------------------ Act II
+    rails(c, r) {
+      speckle(c, r, P.e, [[P.d, 14], [P.f, 10]]);
+      for (let y = 1; y < 16; y += 4) px(c, 0, y, P.i, 16, 2);
+      px(c, 0, 4, P.u, 16, 1);
+      px(c, 0, 11, P.u, 16, 1);
+      px(c, 0, 5, P.f, 16, 1);
+      px(c, 0, 12, P.f, 16, 1);
+    },
+    wheat(c, r) {
+      speckle(c, r, P.n, [[P.h, 10], [P.m, 8]]);
+      for (let i = 0; i < 5; i++) {
+        const x = 1 + i * 3;
+        const y = 3 + Math.floor(r() * 5);
+        px(c, x, y, P.n, 1, 8);
+        px(c, x, y - 2, P['4'], 2, 3);
+        px(c, x + 1, y + 3, P.g, 1, 1);
+      }
+    },
+    dryearth(c, r) {
+      speckle(c, r, P.h, [[P.n, 12], [P.g, 6], [P.m, 4]]);
+      const x = Math.floor(r() * 10) + 2;
+      px(c, x, 6, P.g, 3, 1);
+      px(c, x + 2, 7, P.g, 2, 1);
+    },
+    orangetree(c, r) {
+      grass(c, r);
+      px(c, 7, 11, P.i, 2, 4);
+      px(c, 2, 2, P.q, 12, 9);
+      px(c, 3, 1, P.q, 10, 11);
+      px(c, 3, 2, P['6'], 9, 7);
+      for (const [x, y] of [[4, 4], [9, 3], [6, 7], [11, 7], [3, 8]]) {
+        px(c, x, y, P['3'], 2, 2);
+        px(c, x, y, P['4'], 1, 1);
+      }
+      px(c, 2, 12, 'rgba(0,0,0,0.2)', 12, 2);
+    },
+    palm(c, r) {
+      speckle(c, r, P.m, [[P.n, 8], [P.v, 4]]);
+      px(c, 7, 5, P.g, 2, 11);
+      px(c, 7, 7, P.i, 2, 1);
+      px(c, 7, 11, P.i, 2, 1);
+      px(c, 2, 2, P['6'], 5, 2);
+      px(c, 9, 2, P['6'], 5, 2);
+      px(c, 1, 4, P.q, 3, 2);
+      px(c, 12, 4, P.q, 3, 2);
+      px(c, 5, 1, P['5'], 6, 3);
+      px(c, 6, 4, P['3'], 2, 2);
+    },
+    azulejo(c) {
+      px(c, 0, 0, P.c, 16, 16);
+      for (const [x, y] of [[0, 0], [8, 8]]) {
+        px(c, x, y, P['9'], 8, 8);
+        px(c, x + 2, y + 2, P.a, 4, 4);
+        px(c, x + 3, y + 3, P['4'], 2, 2);
+      }
+      for (const [x, y] of [[8, 0], [0, 8]]) {
+        px(c, x + 3, y + 1, P['9'], 2, 6);
+        px(c, x + 1, y + 3, P['9'], 6, 2);
+      }
+    },
+    column(c) {
+      drawers().azulejo(c, () => 0, 0, 15);
+      px(c, 5, 0, P.u, 6, 16);
+      px(c, 6, 0, P.c, 3, 16);
+      px(c, 4, 0, P.d, 8, 2);
+      px(c, 4, 14, P.d, 8, 2);
+    },
+    whitewall(c) {
+      px(c, 0, 0, P.c, 16, 16);
+      px(c, 0, 0, P.u, 16, 1);
+      px(c, 0, 11, P['9'], 16, 5);
+      for (let x = 1; x < 16; x += 4) px(c, x, 12, P.a, 2, 2);
+      px(c, 0, 11, P['8'], 16, 1);
+    },
+    moss(c, r) {
+      px(c, 0, 0, P.e, 16, 16);
+      for (const [x, y, w, h] of [[0, 0, 7, 7], [8, 0, 8, 7], [0, 8, 9, 8], [10, 8, 6, 8]]) px(c, x + 1, y + 1, P.d, w - 1, h - 1);
+      for (let i = 0; i < 9; i++) px(c, Math.floor(r() * 16), Math.floor(r() * 16), P['6']);
+      for (let i = 0; i < 5; i++) px(c, Math.floor(r() * 16), Math.floor(r() * 16), P.q);
+    },
+    fern(c, r) {
+      speckle(c, r, P.q, [[P['6'], 10], [P['7'], 6]]);
+      for (let i = 0; i < 3; i++) {
+        const x = 2 + i * 5;
+        const y = 4 + Math.floor(r() * 4);
+        px(c, x, y, P['6'], 1, 7);
+        px(c, x - 2, y + 2, P['6'], 2, 1);
+        px(c, x + 1, y + 3, P['6'], 2, 1);
+        px(c, x - 2, y + 5, P['5'], 2, 1);
+      }
+    },
+    parquet(c) {
+      px(c, 0, 0, P.g, 16, 16);
+      for (let y = 0; y < 16; y += 4) {
+        px(c, 0, y, P.i, 16, 1);
+        px(c, (y % 8) ? 3 : 9, y, P.i, 1, 4);
+      }
+      px(c, 0, 2, P.r, 16, 1);
+      px(c, 0, 10, P.r, 16, 1);
     },
   };
 }

@@ -25,6 +25,8 @@ item({ id: 'paella', name: 'Paella', en: 'Paella', kind: 'healAll', amount: 70, 
 item({ id: 'horchata', name: 'Horchata', en: 'Tiger-nut milk', kind: 'mp', amount: 15, price: 25, icon: '🥛', desc: 'Restores 15 MP. A Valencian classic.' });
 item({ id: 'te', name: 'Manzanilla', en: 'Chamomile tea', kind: 'cure', amount: 0, price: 12, icon: '🍵', desc: 'Cures poison, burns, sleep, slow, weakness and silence.' });
 item({ id: 'cafe', name: 'Café solo', en: 'Espresso', kind: 'haste', amount: 5, price: 18, icon: '☕', desc: 'Makes an ally FAST and restores 5 MP.' });
+item({ id: 'queso_manchego', name: 'Queso manchego', en: 'Manchego cheese', kind: 'heal', amount: 240, price: 70, icon: '🧀', desc: 'Restores 240 HP. Sheep’s milk cheese from La Mancha.' });
+item({ id: 'pisto', name: 'Pisto manchego', en: 'Pisto (vegetable stew)', kind: 'healAll', amount: 130, price: 110, icon: '🍲', desc: 'Restores 130 HP to the whole party.' });
 item({ id: 'pluma', name: 'Pluma dorada', en: 'Golden feather', kind: 'revive', amount: 0.5, price: 90, icon: '🪶', desc: 'Revives a fallen ally with half HP.' });
 
 export interface AccessoryDef {
@@ -54,6 +56,8 @@ acc({ id: 'anillo', name: 'Anillo de fuerza', en: 'Ring of Strength', icon: '�
 acc({ id: 'gafas', name: 'Gafas del sabio', en: "Sage's Glasses", icon: '👓', bonus: { mag: 5, maxMp: 8 }, desc: '+5 MAG, +8 MP.' });
 acc({ id: 'pluma_ligera', name: 'Pluma ligera', en: 'Light Feather', icon: '🪶', bonus: { spd: 4 }, desc: '+4 SPD.' });
 acc({ id: 'abanico', name: 'Abanico', en: 'Fan', icon: '🪭', bonus: { spd: 2, mag: 3 }, desc: 'A flamenco fan. +2 SPD, +3 MAG.' });
+acc({ id: 'yelmo', name: 'Yelmo de Mambrino', en: "Mambrino's Helmet", icon: '🪖', bonus: { def: 6, maxHp: 25 }, desc: 'Don Quijote’s “golden helmet” (a barber’s basin). +6 DEF, +25 HP.' });
+acc({ id: 'molinillo', name: 'Molinillo', en: 'Pinwheel', icon: '🌀', bonus: { spd: 3, mag: 3 }, desc: 'A toy windmill. +3 SPD, +3 MAG.' });
 acc({ id: 'corazon', name: 'Corazón valiente', en: 'Brave Heart', icon: '❤️‍🔥', racha: 2, desc: 'Start every battle with 2 Racha.' });
 
 export function itemLabel(id: string): string {

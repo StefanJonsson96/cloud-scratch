@@ -15,6 +15,8 @@ export interface NpcDef {
   grey?: (g: GameState) => boolean;
   /** Non-character sprite (e.g. a glowing word crystal); no walking frames. */
   still?: boolean;
+  /** Scenery (a windmill, a train): drawn as is, no bobbing, no shadow. */
+  deco?: boolean;
 }
 
 export interface WarpDef {
@@ -72,4 +74,8 @@ export interface MapDef {
   /** Script run every time the map is entered. */
   onEnter?: string;
   dark?: boolean;
+  /** Which train station serves this map (see world/stops.ts); Act I's coast is 'puerto'. */
+  region?: string;
+  /** Particles over the map: Galician rain, Fallas embers, falling petals. */
+  weather?: 'rain' | 'embers' | 'petals';
 }

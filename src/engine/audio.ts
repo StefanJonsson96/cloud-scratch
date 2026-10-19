@@ -322,6 +322,14 @@ const TRACKS: Record<string, Track> = {
     bass: 'D3 . A2 . D3 . A2 . G2 . D3 . G2 . D3 . A2 . E3 . A2 . E3 . D3 . A2 . D3 . F#3 . D3 . A2 . D3 . A2 . G2 . D3 . G2 . D3 . A2 . E3 . A2 . E3 . D3 . A2 . D3 . . .',
     perc: 'k . h . s . h . k . h . s . h h k . h . s . h . k . h . s . h . k . h . s . h . k . h . s . h h k . h . s . h . k . h . s s s s',
   },
+  // La Mancha: a seguidilla manchega in 3/4, with castanets.
+  mancha: {
+    bpm: 150,
+    div: 2,
+    lead: 'A4 - D5 - F#5 - E5 D5 C#5 - A4 - B4 - G5 - F#5 E5 F#5 - - - . . A5 - G5 F#5 E5 D5 C#5 - E5 - A4 - B4 C#5 D5 - E5 C#5 D5 - - - . . F#5 - A5 - F#5 D5 E5 - G5 - E5 C#5 D5 - F#5 - D5 B4 C#5 - - - A4 . B4 - D5 - B4 G4 A4 - C#5 - A4 E4 G4 F#4 E4 - C#4 - D4 - - - . .',
+    bass: 'D3 . A2 . A2 . A2 . E3 . E3 . G2 . D3 . D3 . D3 . A2 . D3 . D3 . A2 . A2 . A2 . E3 . C#3 . G2 . A2 . A2 . D3 . A2 . D2 . D3 . A2 . A2 . A2 . E3 . E3 . B2 . F#3 . F#3 . A2 . E3 . A2 . G2 . D3 . D3 . A2 . E3 . E3 . A2 . E3 . C#3 . D3 . A2 . D2 .',
+    perc: 'k . c h c h k . c h c h k . c h c h k . c h c c k . c h c h k . c h c h k . c h c h k . c c c c k . c h c h k . c h c h k . c h c h k . c h c c k . c h c h k . c h c h k . c h c h k . c c c c',
+  },
   // Caves, cellars and towers.
   dungeon: {
     bpm: 92,
