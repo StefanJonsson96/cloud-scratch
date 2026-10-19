@@ -35,7 +35,7 @@ import { record } from '../learn/srs';
 import type { Grade } from '../learn/check';
 import { ACCESSORIES } from '../data/items';
 import { grantXp, todayKey, type GameState } from '../state';
-import { speechAvailable } from '../engine/speech';
+import { listeningAvailable } from '../engine/speech';
 import { playMusic, currentMusic, sfx } from '../engine/audio';
 import { runChallenge } from '../ui/challengeView';
 
@@ -340,7 +340,7 @@ function nextChallenge(ctx: BattleContext, style: Parameters<typeof makeChalleng
     rand: ctx.rand,
     recent: ctx.recent,
     preferTyping: g.settings.typingFocus,
-    listening: g.settings.voice && speechAvailable(),
+    listening: g.settings.voice && listeningAvailable(),
     level: g.settings.level,
   });
   ctx.recent.push(ch.key);

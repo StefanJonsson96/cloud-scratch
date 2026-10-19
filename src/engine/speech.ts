@@ -167,6 +167,11 @@ export function stopSpeaking() {
   if ('speechSynthesis' in window) speechSynthesis.cancel();
 }
 
+/** Whether listening challenges can be played: recordings are on, or the browser has a Spanish voice. */
+export function listeningAvailable(): boolean {
+  return choice.recorded !== false || speechAvailable();
+}
+
 /** Whether a line can be heard: it has a recording, or the browser has a Spanish voice. */
 export function canSpeak(text: string, spec: VoiceSpec = NARRATOR): boolean {
   return (choice.recorded !== false && hasRecording(text, spec)) || speechAvailable();

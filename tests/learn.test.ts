@@ -215,7 +215,7 @@ describe('spaced repetition', () => {
 });
 
 describe('challenge generation', () => {
-  const styles: ChallengeStyle[] = ['vocab', 'quick', 'verb', 'sentence'];
+  const styles: ChallengeStyle[] = ['vocab', 'quick', 'verb', 'sentence', 'listen'];
 
   function ctx(seed: number, chapter: number): ChallengeContext {
     return { srs: newSrs(), chapter, rand: rng(seed), recent: [], preferTyping: false, listening: true };
@@ -310,7 +310,7 @@ describe('advanced (B1) verb forms', () => {
 });
 
 describe('Spanish levels', () => {
-  const styles: ChallengeStyle[] = ['vocab', 'quick', 'verb', 'sentence'];
+  const styles: ChallengeStyle[] = ['vocab', 'quick', 'verb', 'sentence', 'listen'];
   const run = (level: 'a1' | 'a2' | 'b1') => {
     const out: ReturnType<typeof makeChallenge>[] = [];
     for (let ch = 0; ch <= 5; ch++) {

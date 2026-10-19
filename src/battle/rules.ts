@@ -769,6 +769,11 @@ export function executeUltimate(s: BattleState, u: Unit, targetUid: string | und
         applyStatus(s, t, 'rapido', 3, 1, ev);
       }
       break;
+    case 'bruno':
+      ev.push({ t: 'action', uid: u.uid, name: '¡Palabra Viva!', en: 'Living Word!', element: 'luz' });
+      for (const t of livingEnemies(s)) hit(s, u, t, { power: 2.0, stat: 'mag', element: 'luz', mult }, ev);
+      for (const t of livingParty(s)) applyStatus(s, t, 'escudo', 3, 1, ev);
+      break;
   }
   return ev;
 }

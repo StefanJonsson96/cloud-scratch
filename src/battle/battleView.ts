@@ -47,6 +47,7 @@ const SKILL_MENU: Record<MemberId, { es: string; en: string; icon: string }> = {
   hero: { es: 'Palabras', en: 'Words', icon: '✨' },
   mateo: { es: 'Técnicas', en: 'Techniques', icon: '💪' },
   lola: { es: 'Canciones', en: 'Songs', icon: '🎵' },
+  bruno: { es: 'Memoria', en: 'Memory', icon: '🌙' },
 };
 
 export class BattleView {

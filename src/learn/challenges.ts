@@ -31,8 +31,9 @@ import { sentencesUpToChapter, tokenize, type Sentence } from '../data/sentences
 import { grammarUpToChapter, RULES, TOPIC_CH, type GrammarItem, type GrammarTopic } from '../data/grammar';
 import { boxOf, isNew, pick, type SrsState } from './srs';
 import type { Variant } from '../data/types';
+import { sentenceVoice } from '../story/voices';
 
-export type ChallengeStyle = 'vocab' | 'quick' | 'verb' | 'sentence';
+export type ChallengeStyle = 'vocab' | 'quick' | 'verb' | 'sentence' | 'listen';
 export type ChallengeKind = 'choice' | 'type' | 'order';
 
 export interface Challenge {
@@ -48,6 +49,8 @@ export interface Challenge {
   hint?: string;
   /** Spanish text read aloud (automatically, for listening challenges). */
   speak?: string;
+  /** Who reads it (default: the narrator). */
+  voice?: { gender: 'f' | 'm'; id?: string };
   listening?: boolean;
   emojiOptions?: boolean;
   options?: string[];
@@ -372,7 +375,8 @@ export function quickChallenge(ctx: ChallengeContext, force?: QuickKind): Challe
     ['gender', b1 ? 2 : 3],
     ['serEstar', ctx.chapter >= TOPIC_CH.serEstar + (a1 ? 1 : 0) ? (b1 ? 2 : 3) : 0],
     ['porPara', b1 || ctx.chapter >= TOPIC_CH.porPara + (a1 ? 1 : 0) ? (b1 ? 2 : a1 ? 1 : 3) : 0],
-    ['subjuntivo', b1 ? 2 : 0],
+    // Act II brings the subjunctive to A2 in Galicia (chapter 9).
+    ['subjuntivo', b1 || (!a1 && ctx.chapter >= 9) ? 2 : 0],
     ['falsos', b1 ? 2 : 0],
     ['espana', b1 ? 2 : 0],
     ['truefalse', seen.length >= 6 ? 1 : 0],
@@ -545,7 +549,8 @@ const PERSON_WEIGHT: Record<Person, number> = {
 export function verbChallenge(ctx: ChallengeContext): Challenge {
   const ch = Math.max(ctx.chapter, 2);
   const level = ctx.level ?? 'a2';
-  if (ctx.rand() < 0.2) return grammarChallenge(ctx, level === 'b1' && ctx.rand() < 0.5 ? 'subjuntivo' : 'gustar');
+  const subj = level === 'b1' || (level === 'a2' && ctx.chapter >= 9);
+  if (ctx.rand() < 0.2) return grammarChallenge(ctx, subj && ctx.rand() < 0.5 ? 'subjuntivo' : 'gustar');
 
   const tenses = tensesUpToChapter(ch, level);
   // Lean on what's new: this chapter's tense, or the advanced tenses at B1.
@@ -639,6 +644,7 @@ export function sentenceChallenge(ctx: ChallengeContext): Challenge {
     fastMs: 15000,
     srs: false,
     speak: s.es,
+    voice: sentenceVoice(s.es),
   };
 }
 
@@ -652,7 +658,67 @@ export function makeChallenge(style: ChallengeStyle, ctx: ChallengeContext): Cha
       return verbChallenge(ctx);
     case 'sentence':
       return sentenceChallenge(ctx);
+    case 'listen':
+      return listenChallenge(ctx);
   }
+}
+
+// ------------------------------------------------------------------ Bruno
+/**
+ * Listening — the skill apps train least. Hear a real sentence (recorded, read
+ * by a woman or a man) and pick what it means; once it's familiar, build it
+ * from word tiles by ear. Without any voice it becomes a reading question.
+ */
+export function listenChallenge(ctx: ChallengeContext): Challenge {
+  const pool = sentencesUpToChapter(ctx.chapter, ctx.level ?? 'a2');
+  const s = pickFrom(ctx, pool, (x) => `l:${x.es}`, (x) => x.ch === Math.max(1, ctx.chapter));
+  const key = `l:${s.es}`;
+  const fresh = isNew(ctx.srs, key);
+  const box = boxOf(ctx.srs, key);
+  const base = {
+    key,
+    reveal: { es: s.es, en: s.en },
+    isNew: fresh,
+    srs: true,
+    speak: s.es,
+    voice: sentenceVoice(s.es),
+  };
+  if (!ctx.listening) {
+    const others = shuffle(pool.filter((x) => x.en !== s.en), ctx.rand).slice(0, 3).map((x) => x.en);
+    return { ...base, kind: 'choice', label: 'What does it mean?', prompt: s.es, promptLang: 'es', ...choice(s.en, others, ctx.rand), difficulty: 1.0, maxBox: 3, fastMs: 6000 };
+  }
+  if (!fresh && box >= 2) {
+    const tokens = tokenize(s.es);
+    const extra = shuffle(pool.flatMap((x) => tokenize(x.es)).filter((t) => !tokens.includes(t)), ctx.rand);
+    return {
+      ...base,
+      kind: 'order',
+      label: 'Listen — build what you hear',
+      prompt: '🔊',
+      promptLang: 'es',
+      listening: true,
+      hint: s.en,
+      tiles: shuffle([...tokens, ...Array.from(new Set(extra)).slice(0, 2)], ctx.rand),
+      solutions: [tokens],
+      difficulty: 1.3,
+      maxBox: 5,
+      fastMs: 14000,
+    };
+  }
+  const others = shuffle(pool.filter((x) => x.en !== s.en && x.es !== s.es), ctx.rand).slice(0, 3).map((x) => x.en);
+  return {
+    ...base,
+    kind: 'choice',
+    label: fresh ? 'New! Listen — what did they say?' : 'Listen — what did they say?',
+    prompt: '🔊',
+    promptLang: 'es',
+    listening: true,
+    hint: s.es,
+    ...choice(s.en, others, ctx.rand),
+    difficulty: 1.15,
+    maxBox: 2,
+    fastMs: 7000,
+  };
 }
 
 /** Check a tile ordering against the accepted solutions. */

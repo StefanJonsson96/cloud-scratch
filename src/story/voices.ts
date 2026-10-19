@@ -64,11 +64,23 @@ export const NARRATOR_VOICE: CastVoice = c('narrator', 'f', 'f', 1.0);
 /** The hero sounds like the gender the player chose. */
 export const heroVoice = (gender: 'f' | 'm'): CastVoice => c('hero', gender, gender === 'f' ? 'f' : 'm2', 1.0);
 
+/**
+ * Who reads a practice sentence (listening challenges, Palabra Final): half of
+ * them a woman, half a man, always the same one for the same sentence.
+ */
+export function sentenceVoice(es: string): { gender: 'f' | 'm'; id: string } {
+  let h = 0;
+  for (const ch of es) h = (h * 31 + ch.charCodeAt(0)) | 0;
+  return Math.abs(h) % 2 ? { gender: 'm', id: 'sentence-m' } : { gender: 'f', id: 'sentence-f' };
+}
+
 /** The recorded voice for anyone: their own, or the plain voice of their gender. */
 export function recordedVoice(spec: { id?: string; gender: 'f' | 'm' }): { base: BaseVoice; play: number } {
   const known = spec.id ? (spec.id === 'narrator' ? NARRATOR_VOICE : CAST_VOICES[spec.id]) : undefined;
   if (known) return { base: known.base, play: known.play };
   if (spec.id === 'hero') return { base: spec.gender === 'f' ? 'f' : 'm2', play: 1 };
+  // Practice sentences: the steadier male voice (davefx gets high-pitched when excited).
+  if (spec.id === 'sentence-m') return { base: 'm2', play: 1 };
   return { base: spec.gender === 'f' ? 'f' : 'm', play: 1 };
 }
 

@@ -10,6 +10,7 @@
 //   lookup  — the Wiktionary entry to use when it differs from the word ("mola" → "molar")
 //   both    — show both genders ("el amigo / la amiga")
 //   trap    — for false friends: the English look-alike and how to really say it
+//   gender  — for nouns Wiktionary lacks or lists both ways ("la sartén" in Spain)
 //   id      — keeps an older id when two words would collide
 
 export type Pos = 'noun' | 'verb' | 'adj' | 'adv' | 'phrase' | 'num';
@@ -20,6 +21,7 @@ export interface WordOptions {
   lookup?: string;
   both?: boolean;
   trap?: [string, string];
+  gender?: 'm' | 'f';
   id?: string;
 }
 
@@ -496,6 +498,122 @@ export const LESSONS: Lesson[] = [
     'en cambio',
     ['darse cuenta', '💡'],
   ], 'b1'),
+  // ================================================================ Act II
+  // Chapter 6 · La Mancha: windmills, knights and old stories (imperfecto vs indefinido).
+  lesson(6, 'La Mancha', 'noun', [
+    ['molino', '🌬️', { sense: 'mill' }],
+    ['gigante', '🗿', { sense: 'giant' }],
+    ['caballero', '🛡️', { sense: 'knight' }],
+    ['castillo', '🏰'],
+    ['oveja', '🐑'],
+    ['trigo', '🌾'],
+    ['llanura', '', { sense: 'plain' }],
+    ['escudo', '🛡️', { id: 'escudo-noun', sense: 'shield' }],
+    ['espada', '⚔️'],
+    ['sueño', '💭', { sense: 'dream' }],
+    ['aventura', '🗺️'],
+    ['cuento', '📖', { sense: 'story' }],
+    ['tren', '🚆'],
+    ['estación', '🚉', { sense: 'station' }],
+  ]),
+  lesson(6, 'La Mancha', 'phrase', [
+    ['érase una vez', '📜', { en: 'once upon a time' }],
+    ['de vez en cuando', '', { en: 'from time to time' }],
+    ['a lo mejor', '🤷', { en: 'maybe, perhaps' }],
+    ['estar como una cabra', '🐐', { en: 'to be nuts, crazy' }],
+    ['cuando era pequeño', '', { en: 'when I was little' }],
+  ]),
+  // Chapter 7 · Valencia: Las Fallas, oranges and paella (the future).
+  lesson(7, 'Valencia', 'noun', [
+    ['fiesta', '🎉'],
+    ['petardo', '🧨', { sense: 'firecracker' }],
+    ['ninot', '🎎', { en: 'ninot (a Fallas statue)' }],
+    ['falla', '🔥', { en: 'falla (a Fallas monument, burnt at the festival)', gender: 'f' }],
+    ['horchata', '🥛'],
+    ['huerta', '🌳', { sense: 'orchard' }],
+    ['naranjo', '🍊', { sense: 'orange tree' }],
+    ['banda', '🎺', { sense: 'band' }],
+    ['ceniza', '', { sense: 'ash' }],
+    ['humo', '💨'],
+    ['concurso', '🏆', { sense: 'competition' }],
+    ['receta', '📝', { sense: 'recipe' }],
+    ['sartén', '🍳', { gender: 'f' }],
+  ]),
+  lesson(7, 'Valencia', 'phrase', [
+    ['¡qué pasada!', '🤩', { en: 'how amazing!' }],
+    ['estar a tope', '⚡', { en: 'to be full on, packed' }],
+    ['tirar la casa por la ventana', '🏠', { en: 'to go all out, spare no expense' }],
+    ['más vale prevenir que curar', '', { en: 'better safe than sorry' }],
+    ['dentro de poco', '⏳', { en: 'soon, shortly' }],
+  ]),
+  // Chapter 8 · Andalucía: Sevilla and the palace (commands and the conditional).
+  lesson(8, 'Andalucía', 'noun', [
+    ['abanico', '🪭', { sense: 'fan' }],
+    ['patio', '🏛️', { sense: 'courtyard' }],
+    ['palacio', '🏰'],
+    ['jardín', '🌺'],
+    ['azulejo', '🟦', { sense: 'tile' }],
+    ['feria', '🎡', { sense: 'fair' }],
+    ['vestido', '👗', { sense: 'dress' }],
+    ['sombrero', '🎩'],
+    ['calor', '🥵', { sense: 'heat' }],
+    ['arco', '🌈', { sense: 'arch' }],
+    ['tablao', '💃', { en: 'flamenco venue, tablao' }],
+    ['primo', '👫', { sense: 'cousin', both: true }],
+  ]),
+  lesson(8, 'Andalucía', 'phrase', [
+    ['¡olé!', '👏', { en: 'olé! (cheer)' }],
+    ['¡qué arte!', '✨', { en: 'what talent! (Andalusian praise)' }],
+    ['tener duende', '🎶', { en: 'to have soul, magic (in art)' }],
+    ['quedarse de piedra', '🗿', { en: 'to be stunned' }],
+    ['¿podrías…?', '🙏', { en: 'could you…? (polite)' }],
+    ['me gustaría', '', { en: 'I would like' }],
+  ]),
+  // Chapter 9 · Galicia: rain, meigas and the Camino (the subjunctive: wishes).
+  lesson(9, 'Galicia', 'noun', [
+    ['lluvia', '🌧️'],
+    ['paraguas', '☂️'],
+    ['niebla', '🌫️', { sense: 'fog' }],
+    ['bruja', '🧙', { sense: 'witch' }],
+    ['meiga', '🧙‍♀️', { en: 'meiga (a Galician witch)', gender: 'f' }],
+    ['pulpo', '🐙'],
+    ['gaita', '🎵', { sense: 'bagpipe' }],
+    ['catedral', '⛪'],
+    ['peregrino', '🥾', { sense: 'pilgrim', both: true }],
+    ['concha', '🐚', { sense: 'shell' }],
+    ['hórreo', '🏠', { en: 'hórreo (a raised granary)' }],
+    ['vaca', '🐄'],
+    ['deseo', '🌠', { sense: 'wish' }],
+  ]),
+  lesson(9, 'Galicia', 'phrase', [
+    ['ojalá', '🤞', { en: 'I hope, if only' }],
+    ['llover a cántaros', '⛈️', { en: 'to pour with rain' }],
+    ['poco a poco', '🐢', { en: 'little by little' }],
+    ['¡buen camino!', '🥾', { en: 'have a good Camino! (pilgrims\' greeting)' }],
+    ['haberlas, haylas', '🧙‍♀️', { en: 'they do exist (said of meigas)' }],
+  ]),
+  // Chapter 10 · Salamanca: the old university and its library (doubt and feelings).
+  lesson(10, 'Salamanca', 'noun', [
+    ['biblioteca', '📚'],
+    ['universidad', '🎓'],
+    ['estudiante', '🧑‍🎓', { sense: 'student' }],
+    ['profesor', '🧑‍🏫', { en: 'teacher, professor', both: true }],
+    ['pluma', '🪶', { sense: 'feather' }],
+    ['tinta', '🖋️'],
+    ['página', '📄'],
+    ['letra', '🔤', { sense: 'letter' }],
+    ['historia', '📜', { en: 'story, history' }],
+    ['reloj', '⏰'],
+    ['olvido', '🌫️', { sense: 'forgetting' }],
+    ['memoria', '🧠', { en: 'memory (the ability to remember)' }],
+  ]),
+  lesson(10, 'Salamanca', 'phrase', [
+    ['quien busca, encuentra', '🔎', { en: 'whoever seeks, finds' }],
+    ['hablando se entiende la gente', '🗣️', { en: 'talking is how people understand each other' }],
+    ['colorín colorado, este cuento se ha acabado', '📕', { en: 'and that is the end of the story' }],
+    ['no hay mal que por bien no venga', '🌈', { en: 'every cloud has a silver lining' }],
+    ['dudo que', '🤔', { en: 'I doubt that…' }],
+  ]),
 ];
 
 /** Verbs Lola sings, by the chapter they start in. */
@@ -504,4 +622,10 @@ export const VERB_LESSONS: VerbLesson[] = [
   verbs(3, ['ser', 'estar', 'tener', 'ir', 'hacer', 'poder', ['querer', 'want'], 'dormir', 'ver', 'saber', 'jugar', 'pensar']),
   verbs(4, ['decir', 'venir', 'volver', 'poner', 'dar', 'salir', 'conocer', 'empezar']),
   verbs(5, ['recordar', 'pedir', 'leer', 'creer', 'llegar', 'ayudar', 'luchar', ['perdonar', 'forgive'], 'olvidar']),
+  // Act II
+  verbs(6, [['contar', 'tell'], ['soñar', 'dream'], ['montar', 'ride'], 'caer', 'perder', ['encontrar', 'find'], 'seguir', 'viajar']),
+  verbs(7, ['celebrar', 'quemar', 'preparar', 'invitar', ['ganar', 'win'], ['llevar', 'carry'], 'terminar', 'construir']),
+  verbs(8, ['mirar', ['esperar', 'wait'], 'entrar', 'bajar', 'pasar', 'cerrar', 'traer', 'sentir']),
+  verbs(9, ['llover', 'desear', 'dejar', ['conseguir', 'get'], ['buscar', 'look for'], 'volar', 'cuidar', 'cambiar']),
+  verbs(10, ['estudiar', 'aprender', 'enseñar', 'entender', 'explicar', 'dudar', ['guardar', 'keep'], 'compartir']),
 ];

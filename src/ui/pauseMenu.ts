@@ -10,7 +10,7 @@ import { h, clear, menu, appendAll } from './dom';
 import { spanish } from './spanish';
 import { pushLayer } from '../engine/input';
 import { sfx } from '../engine/audio';
-import { speak, speechAvailable, voiceName } from '../engine/speech';
+import { speak, speechAvailable, voiceName, listeningAvailable } from '../engine/speech';
 import { MEMBERS, SKILLS, xpToNext } from '../battle/defs';
 import { memberStats } from '../battle/rules';
 import { ENEMIES } from '../battle/enemies';
@@ -389,8 +389,16 @@ function grammar(game: Game, el: HTMLElement) {
   if (g.chapter >= TOPIC_CH.porPara) notes.push([RULES.por.title, RULES.por.text], [RULES.para.title, RULES.para.text]);
   notes.push(['“Ir a” + infinitive', 'The easy future: voy a comer (I’m going to eat). Every enemy uses it to announce its next move: «El cangrejo va a pellizcar a Mateo».']);
   if (g.chapter >= 4) notes.push(['Perfecto vs indefinido (Spain)', 'In Spain, use the perfecto for things that happened today / this week / this year: «Hoy he comido paella». Use the indefinido for finished time: «Ayer comí paella». (Much of Latin America uses the indefinido for both.)']);
-  if (g.settings.level === 'b1') {
+  const a2 = g.settings.level === 'a2';
+  if (a2 && g.chapter >= 7) notes.push(['El futuro', 'Add the endings to the whole infinitive: hablaré, hablarás, hablará, hablaremos, hablaréis, hablarán. A few verbs change the stem: tendré, haré, diré, podré, saldré, vendré, pondré, querré, sabré.']);
+  if (a2 && g.chapter >= 8) {
+    notes.push(['El imperativo · Commands', 'Tú: the él form of the present — ¡habla!, ¡come!, ¡escribe! (irregular: di, haz, ven, pon, sal, ten, ve, sé). Vosotros: swap the -r for -d — ¡hablad!, ¡comed!, ¡venid!']);
+    notes.push(['El condicional · “would”', 'Infinitive + -ía: hablaría, comerías, viviríamos (same stems as the future: tendría, haría, podría). Perfect for polite requests: ¿Podrías ayudarme? · Me gustaría un café.']);
+  }
+  if (g.settings.level === 'b1' || (a2 && g.chapter >= 9)) {
     for (const k of ['subjWish', 'subjDoubt', 'subjEmotion', 'subjFuture', 'subjPurpose', 'subjUnknown', 'indicFact']) notes.push([RULES[k].title, RULES[k].text]);
+  }
+  if (g.settings.level === 'b1') {
     notes.push(['Falsos amigos · False friends', 'embarazada = pregnant (not embarrassed: avergonzado) · constipado = has a cold · éxito = success (exit: salida) · librería = bookshop (library: biblioteca) · carpeta = folder · realizar = carry out (realise: darse cuenta) · asistir = attend.']);
     notes.push(['España vs Latinoamérica', 'Spain says ordenador, móvil, coche, conducir, zumo, patata, billete, piso, vale. Much of Latin America says computadora, celular, carro, manejar, jugo, papa, boleto, departamento.']);
   }
@@ -478,7 +486,7 @@ const repaso: View = (game, el) => {
         rand: Math.random,
         recent: game.recent,
         preferTyping: g.settings.typingFocus,
-        listening: g.settings.voice && speechAvailable(),
+        listening: g.settings.voice && listeningAvailable(),
         level: g.settings.level,
       });
       game.recent.push(ch.key);

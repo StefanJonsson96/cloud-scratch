@@ -12,7 +12,9 @@
 import ts from 'typescript';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { BASE_VOICES, CAST_VOICES, NARRATOR_VOICE, heroVoice, voiceKey, type BaseVoice } from '../../src/story/voices';
+import { BASE_VOICES, CAST_VOICES, NARRATOR_VOICE, heroVoice, recordedVoice, sentenceVoice, voiceKey, type BaseVoice } from '../../src/story/voices';
+import words from '../../src/data/generated/words.json';
+import sentences from '../../src/data/generated/sentences.json';
 
 export interface VoiceLine {
   key: string;
@@ -24,6 +26,8 @@ export interface VoiceLine {
   text: string;
   /** Where it comes from, for the report. */
   at: string;
+  /** Which pack it goes in (one per story file, plus words and sentences). */
+  pack: string;
 }
 
 const ROOT = join(import.meta.dirname, '../..');
@@ -193,7 +197,8 @@ export function extractLines(): { lines: VoiceLine[]; skipped: string[] } {
       for (const base of bases) {
         const key = voiceKey(base, raw.split(NAME).join(' '));
         const { model, speaker } = BASE_VOICES[base];
-        if (!found.has(key)) found.set(key, { key, base, model, speaker, text: withoutName(raw), at });
+        const pack = sf.fileName.split('/').pop()!.replace(/\.ts$/, '');
+        if (!found.has(key)) found.set(key, { key, base, model, speaker, text: withoutName(raw), at, pack });
       }
     }
   };
@@ -226,6 +231,15 @@ export function extractLines(): { lines: VoiceLine[]; skipped: string[] } {
     };
     visit(sf);
   }
+  // Practice audio: every vocabulary word (the narrator) and every practice
+  // sentence (half women, half men), so listening works on any device.
+  const practice = (base: BaseVoice, text: string, pack: string) => {
+    const key = voiceKey(base, text);
+    const { model, speaker } = BASE_VOICES[base];
+    if (!found.has(key)) found.set(key, { key, base, model, speaker, text, at: `src/data/generated/${pack}.json`, pack });
+  };
+  for (const w of words as { es: string }[]) practice(NARRATOR_VOICE.base, w.es, 'words');
+  for (const s of sentences as { es: string }[]) practice(recordedVoice(sentenceVoice(s.es)).base, s.es, 'sentences');
   const lines = [...found.values()].sort((a, b) => a.key.localeCompare(b.key));
   return { lines, skipped };
 }

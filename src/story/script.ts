@@ -14,7 +14,7 @@ import { runChallenge } from '../ui/challengeView';
 import { ITEMS, ACCESSORIES } from '../data/items';
 import { h, menu, wait, waitConfirm } from '../ui/dom';
 import { sfx, playMusic } from '../engine/audio';
-import { speechAvailable, type VoiceSpec } from '../engine/speech';
+import { type VoiceSpec, listeningAvailable } from '../engine/speech';
 import { spanish } from '../ui/spanish';
 import { agree } from './agree';
 import { CAST_VOICES, heroVoice } from './voices';
@@ -128,7 +128,7 @@ export class Script {
             rand: Math.random,
             recent: this.game.recent,
             preferTyping: this.g.settings.typingFocus,
-            listening: this.g.settings.voice && speechAvailable(),
+            listening: this.g.settings.voice && listeningAvailable(),
             level: this.g.settings.level,
           })
         : style;

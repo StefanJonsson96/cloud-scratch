@@ -355,7 +355,7 @@ for (const lesson of LESSONS) {
     if (lesson.level) w.lvl = lesson.level;
     if (opt.trap) w.trap = opt.trap;
     if (lesson.pos === 'noun') {
-      const g = (picked?.pos.g ?? 'm').startsWith('f') ? 'f' : 'm';
+      const g = opt.gender ?? ((picked?.pos.g ?? 'm').startsWith('f') ? 'f' : 'm');
       const article = g === 'f' && takesEl(lemma) ? 'el' : g === 'f' ? 'la' : 'el';
       w.article = article;
       w.gender = opt.both ? 'both' : g;
@@ -423,8 +423,9 @@ for (const w of genWords) {
 
 // ------------------------------------------------------------------ sentences
 const BASIC_VERBS = new Set(['ser', 'estar', 'tener', 'ir', 'haber', 'hacer', 'gustar', 'encantar', 'llamar']);
+const LAST_CH = Math.max(...LESSONS.map((l) => l.chapter), ...VERB_LESSONS.map((l) => l.chapter));
 function chapterOf(p: Pair, wordsUpTo: (ch: number) => Set<string>): number | undefined {
-  for (let ch = 1; ch <= 5; ch++) {
+  for (let ch = 1; ch <= LAST_CH; ch++) {
     const allowed = wordsUpTo(ch);
     let ok = true;
     for (const [pos, set] of p.lemmas) {
@@ -445,9 +446,10 @@ const wordsUpTo = (ch: number) => {
   }
   return upTo.get(ch)!;
 };
-// Tenses a sentence may use from each chapter (A1/A2); others wait for B1.
-// Forms of "haber" stand for the compound tense they build ("has visto").
-const TENSE_CH: Partial<Record<TenseId, number>> = { presente: 1, perfecto: 4, indefinido: 5, imperfecto: 5 };
+// Tenses a sentence may use from each chapter at A2 (matches UNLOCK in
+// src/data/verbs.ts); others wait for B1. Forms of "haber" stand for the
+// compound tense they build ("has visto").
+const TENSE_CH: Partial<Record<TenseId, number>> = { presente: 1, perfecto: 4, indefinido: 5, imperfecto: 5, futuro: 7, condicional: 8, imperativo: 8, subjuntivo: 9 };
 const FORM_TENSES = new Map<string, Set<TenseId>>();
 for (const inf of new Set([...VERB_SET, ...BASIC_VERBS])) {
   const table = paradigm(inf);
@@ -513,7 +515,7 @@ for (const p of goodPairs) {
   const toks = words(p.es);
   if (toks.length < 4 || toks.length > 8) continue;
   const advanced = toks.some((t) => FORM_INFO.get(t)?.some((i) => ['futuro', 'condicional', 'subjuntivo'].includes(i.tense) && !FORM_INFO.get(t)!.some((j) => j.tense === 'presente')));
-  if (!advanced || chapterOf(p, () => wordsUpTo(5)) === undefined) continue;
+  if (!advanced || chapterOf(p, () => wordsUpTo(LAST_CH)) === undefined) continue;
   sentences.push({ es: p.es, en: p.en, ch: 1, lvl: 'b1', src: p.credit });
   b1++;
 }
@@ -544,7 +546,7 @@ const FIXED_POR = /(?<!\p{L})por (favor|qué|fin|eso|supuesto|cierto|ejemplo|lo 
 const PERSONAL = new Set(['mí', 'ti', 'usted', 'ustedes', 'él', 'ella', 'ellos', 'ellas', 'nosotros', 'nosotras', 'vosotros', 'vosotras', 'mi', 'tu', 'su', 'mis', 'tus', 'sus', 'nuestro', 'nuestra', 'vuestro', 'vuestra', 'todos', 'alguien', 'nadie']);
 for (const p of drillPairs) {
   const toks = words(p.es);
-  if (toks.length < 4 || toks.length > 9 || chapterOf(p, () => wordsUpTo(5)) === undefined) continue;
+  if (toks.length < 4 || toks.length > 9 || chapterOf(p, () => wordsUpTo(LAST_CH)) === undefined) continue;
   const original = (t: string) => p.es.match(new RegExp(`(?<![\\p{L}])${t}(?![\\p{L}])`, 'iu'))?.[0] ?? t;
   // ser / estar
   const se = toks.filter((t) => FORM_INFO.get(t)?.some((i) => i.inf === 'ser' || i.inf === 'estar'));

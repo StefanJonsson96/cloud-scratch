@@ -6,7 +6,7 @@ import { checkTyped, type Grade } from '../learn/check';
 import { liveVariant } from '../learn/live';
 import { pushLayer } from '../engine/input';
 import { sfx } from '../engine/audio';
-import { speak, speechAvailable } from '../engine/speech';
+import { speak, canSpeak, NARRATOR } from '../engine/speech';
 import { h, appendAll, waitConfirm } from './dom';
 
 export interface ChallengeResult {
@@ -47,7 +47,8 @@ export const GRADE_TEXT: Record<Grade, { es: string; en: string; cls: string }> 
 
 export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOptions): Promise<ChallengeResult> {
   return new Promise((resolve) => {
-    const voice = opts.voice !== false && speechAvailable();
+    const voice = opts.voice !== false && !!ch.speak && canSpeak(ch.speak, ch.voice ?? NARRATOR);
+    const say = () => speak(ch.speak!, ch.voice ?? { ...NARRATOR, rate: 0.9 });
     let usedHint = false;
     let answered = false;
     const t0 = performance.now();
@@ -60,7 +61,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
       : null;
     const sayBtn =
       voice && ch.speak && ch.listening
-        ? h('button', { class: 'cc-tool no-advance', title: 'Listen again (R)', onclick: () => speak(ch.speak!, 0.9) }, '🔊')
+        ? h('button', { class: 'cc-tool no-advance', title: 'Listen again (R)', onclick: () => say() }, '🔊')
         : null;
 
     const timerFill = h('div', { class: 'cc-timer-fill' });
@@ -89,7 +90,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
     // Exposed for automated play-testing.
     (window as unknown as { __challenge?: Challenge }).__challenge = ch;
 
-    if (ch.listening && voice && ch.speak) setTimeout(() => speak(ch.speak!, 0.9), 250);
+    if (ch.listening && voice && ch.speak) setTimeout(() => say(), 250);
 
     function showHint() {
       if (answered || !ch.hint) return;
@@ -257,7 +258,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
     const pop = pushLayer((a) => {
       if (answered) return true;
       if (a === 'hint') showHint();
-      else if (a === 'speak' && ch.speak && voice && ch.listening) speak(ch.speak, 0.9);
+      else if (a === 'speak' && ch.speak && voice && ch.listening) say();
       else if (ch.kind === 'choice' && a.startsWith('num')) {
         const n = Number(a.slice(3)) - 1;
         if (n < ch.options!.length) pickOption(n);
@@ -289,7 +290,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
       timerFill.style.animationPlayState = 'paused';
       for (const b of card.querySelectorAll<HTMLButtonElement>('.cc-option, .cc-tile, .cc-accent, .cc-submit, .cc-dunno')) b.disabled = true;
       sfx(grade === 'wrong' ? 'wrong' : grade === 'close' ? 'close' : 'correct');
-      if (voice && ch.speak) setTimeout(() => speak(ch.speak!), 150);
+      if (voice && ch.speak) setTimeout(() => say(), 150);
 
       const g = GRADE_TEXT[grade];
       const detailed = grade === 'wrong' || grade === 'close';
@@ -304,7 +305,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
           h('span', { class: 'es', lang: 'es' }, ch.reveal.es),
           h('span', { class: 'eq' }, '='),
           h('span', { class: 'en' }, ch.reveal.en),
-          voice && ch.speak ? h('button', { class: 'cc-tool no-advance', onclick: () => speak(ch.speak!) }, '🔊') : null,
+          voice && ch.speak ? h('button', { class: 'cc-tool no-advance', onclick: () => say() }, '🔊') : null,
         ),
         detailed && ch.note ? h('div', { class: 'cc-note' }, '📜 ', ch.note) : null,
         detailed && ch.table

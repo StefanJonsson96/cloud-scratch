@@ -58,7 +58,7 @@ export const STATUSES: Record<StatusId, StatusDef> = {
   provocando: { es: 'Provocando', en: 'Taunting', icon: '🎯', good: true, desc: 'Enemies aim their single attacks at this fighter.' },
 };
 
-export type MemberId = 'hero' | 'mateo' | 'lola';
+export type MemberId = 'hero' | 'mateo' | 'lola' | 'bruno';
 
 export type TargetKind = 'enemy' | 'allEnemies' | 'ally' | 'otherAlly' | 'allAllies' | 'deadAlly' | 'self';
 
@@ -121,6 +121,19 @@ export const SKILLS: SkillDef[] = [
     id: 'viento', name: 'Viento', en: 'Wind', user: 'hero', mp: 8, target: 'allEnemies', element: 'viento', stat: 'mag',
     power: 0.85, interrupt: true, level: 9, desc: 'Hits all foes and blows away charging attacks.',
   },
+  {
+    id: 'tierra', name: 'Tierra', en: 'Earth', user: 'hero', mp: 9, target: 'enemy', element: 'tierra', stat: 'mag',
+    power: 1.7, status: { id: 'aturdido', turns: 1, chance: 0.3 }, level: 11, desc: 'The ground rises: heavy earth damage that may stun.',
+  },
+  {
+    id: 'aurora', name: 'Aurora', en: 'Dawn', user: 'hero', mp: 12, target: 'allAllies', element: 'luz', stat: 'mag',
+    heal: 0.9, healFlat: 15, cleanse: ['envenenado', 'quemado', 'congelado', 'lento', 'debil', 'mudo', 'aturdido'], level: 13,
+    desc: 'Heals the whole party and clears every bad status.',
+  },
+  {
+    id: 'estrella', name: 'Estrella', en: 'Star', user: 'hero', mp: 15, target: 'allEnemies', element: 'luz', stat: 'mag',
+    power: 1.35, level: 16, desc: 'Falling stars: heavy light damage on every foe.',
+  },
   // Class skills
   {
     id: 'meteoro', name: 'Meteoro', en: 'Meteor', user: 'hero', cls: 'hechicero', mp: 9, target: 'allEnemies', element: 'fuego',
@@ -158,6 +171,14 @@ export const SKILLS: SkillDef[] = [
     power: 2.0, status: { id: 'aturdido', turns: 1, chance: 0.45 }, interrupt: true, level: 9,
     desc: 'A crushing blow that can stun and interrupts charging foes.',
   },
+  {
+    id: 'oleaje', name: 'Oleaje', en: 'Swell', user: 'mateo', mp: 9, target: 'allEnemies', element: 'agua', stat: 'atk',
+    power: 1.15, status: { id: 'mojado', turns: 3, chance: 1 }, level: 12, desc: 'A wave over every foe — they are all WET. Lightning, anyone?',
+  },
+  {
+    id: 'rompeolas', name: 'Rompeolas', en: 'Breakwater', user: 'mateo', mp: 9, target: 'allAllies', element: 'fisico', stat: 'atk',
+    status: { id: 'escudo', turns: 3, chance: 1 }, level: 15, desc: 'Mateo stands like a sea wall: the whole party is SHIELDED.',
+  },
   // --- Lola: songs
   {
     id: 'cancion', name: 'Canción', en: 'Song', user: 'lola', mp: 5, target: 'allAllies', element: 'luz', stat: 'mag',
@@ -180,6 +201,43 @@ export const SKILLS: SkillDef[] = [
     id: 'desafinar', name: 'Desafinar', en: 'Off-Key', user: 'lola', mp: 4, target: 'allEnemies', element: 'sombra',
     stat: 'mag', status: { id: 'debil', turns: 3, chance: 0.75 }, level: 7, desc: 'A terrible note that WEAKENS all foes.',
   },
+  {
+    id: 'bulerias', name: 'Bulerías', en: 'Bulerías', user: 'lola', mp: 9, target: 'allAllies', element: 'luz', stat: 'mag',
+    status: { id: 'rapido', turns: 3, chance: 1 }, level: 11, desc: 'A fast flamenco rhythm: the whole party becomes FAST.',
+  },
+  {
+    id: 'saeta', name: 'Saeta', en: 'Saeta', user: 'lola', mp: 8, target: 'enemy', element: 'luz', stat: 'mag',
+    power: 1.9, interrupt: true, level: 14, desc: 'A piercing song like an arrow: heavy light damage that cancels a charge.',
+  },
+  {
+    id: 'duende', name: 'Duende', en: 'Duende', user: 'lola', mp: 14, target: 'allAllies', element: 'luz', stat: 'mag',
+    heal: 1.1, healFlat: 12, status: { id: 'fuerte', turns: 3, chance: 1 }, level: 17,
+    desc: 'Pure flamenco soul: heals everyone and makes them STRONG.',
+  },
+  // --- Bruno: the memory of forty years of silence
+  {
+    id: 'recuerdo', name: 'Recuerdo', en: 'Memory', user: 'bruno', mp: 4, target: 'ally', element: 'luz', stat: 'mag',
+    heal: 1.2, healFlat: 8, cleanse: ['envenenado', 'quemado', 'congelado', 'lento', 'debil', 'mudo'], level: 1,
+    desc: 'A good memory: heals an ally and clears their bad statuses.',
+  },
+  {
+    id: 'eco', name: 'Eco', en: 'Echo', user: 'bruno', mp: 4, target: 'enemy', element: 'sombra', stat: 'mag',
+    power: 1.25, status: { id: 'debil', turns: 3, chance: 0.4 }, level: 1, desc: 'Shadow damage that may WEAKEN.',
+  },
+  {
+    id: 'silencio', name: 'Silencio', en: 'Silence', user: 'bruno', mp: 5, target: 'enemy', element: 'sombra', stat: 'mag',
+    status: { id: 'mudo', turns: 2, chance: 0.85 }, interrupt: true, level: 1,
+    desc: 'The old silence, used for good: the foe cannot use specials, and its plan is cancelled.',
+  },
+  {
+    id: 'velo', name: 'Velo de sombra', en: 'Shadow Veil', user: 'bruno', mp: 9, target: 'allAllies', element: 'sombra', stat: 'mag',
+    status: { id: 'escudo', turns: 2, chance: 1 }, level: 12, desc: 'Shadows wrap the party: everyone is SHIELDED for 2 turns.',
+  },
+  {
+    id: 'voz', name: 'Voz', en: 'Voice', user: 'bruno', mp: 12, target: 'allEnemies', element: 'luz', stat: 'mag',
+    power: 1.2, status: { id: 'aturdido', turns: 1, chance: 0.25 }, level: 15,
+    desc: 'The voice he found again: light damage on every foe, may stun.',
+  },
 ];
 
 export const SKILL_BY_ID: ReadonlyMap<string, SkillDef> = new Map(SKILLS.map((s) => [s.id, s]));
@@ -197,6 +255,7 @@ export const ULTIMATES: Record<MemberId, UltimateDef> = {
   hero: { id: 'tormenta', name: '¡Tormenta!', en: 'Storm', user: 'hero', target: 'allEnemies', desc: 'Massive lightning on all foes, and soaks them.' },
   mateo: { id: 'marejada', name: '¡Marejada!', en: 'Tidal Surge', user: 'mateo', target: 'enemy', desc: 'An enormous blow that stuns.' },
   lola: { id: 'fiesta', name: '¡Fiesta!', en: 'Party Time', user: 'lola', target: 'allAllies', desc: 'Full heal, revive, and the party becomes STRONG and FAST.' },
+  bruno: { id: 'palabra_viva', name: '¡Palabra Viva!', en: 'Living Word', user: 'bruno', target: 'allEnemies', desc: 'Every word he kept silent for forty years at once: heavy light damage on all foes, and the party is SHIELDED.' },
 };
 
 export interface MemberDef {
@@ -229,6 +288,12 @@ export const MEMBERS: Record<MemberId, MemberDef> = {
     base: { hp: 46, mp: 26, atk: 7, mag: 11, def: 5, spd: 13 },
     growth: { hp: 7, mp: 3.5, atk: 1.1, mag: 1.9, def: 1.0, spd: 0.7 },
     sprite: 'lola',
+  },
+  bruno: {
+    id: 'bruno', name: 'Bruno', role: 'Memoria', roleEn: 'Keeper of memories', style: 'listen', styleEn: 'Listening',
+    base: { hp: 56, mp: 24, atk: 8, mag: 12, def: 8, spd: 7 },
+    growth: { hp: 8.5, mp: 3, atk: 1.3, mag: 1.9, def: 1.5, spd: 0.5 },
+    sprite: 'bruno',
   },
 };
 

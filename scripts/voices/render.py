@@ -97,8 +97,8 @@ def text_hash(line):
 
 
 def pack_name(line):
-    # One pack per story file, so the game loads a chapter's voices together.
-    return os.path.splitext(os.path.basename(line['at'].split(':')[0]))[0]
+    # One pack per story file (so the game loads a chapter's voices together), plus words and sentences.
+    return line.get('pack') or os.path.splitext(os.path.basename(line['at'].split(':')[0]))[0]
 
 
 def main():

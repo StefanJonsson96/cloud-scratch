@@ -178,8 +178,10 @@ export function verbsUpToChapter(ch: number, level: Level = 'a2'): Verb[] {
 
 /** Chapter each tense unlocks in, per Spanish level. */
 const UNLOCK: Record<Level, Partial<Record<Tense, number>>> = {
-  a1: { presente: 2, perfecto: 4, indefinido: 5 },
-  a2: { presente: 2, perfecto: 4, indefinido: 5, imperfecto: 5 },
+  a1: { presente: 2, perfecto: 4, indefinido: 5, imperfecto: 7, futuro: 9 },
+  // Act II brings the rest: the future in Valencia, commands and the
+  // conditional in Andalucía, the subjunctive in Galicia.
+  a2: { presente: 2, perfecto: 4, indefinido: 5, imperfecto: 5, futuro: 7, condicional: 8, imperativo: 8, subjuntivo: 9 },
   b1: { presente: 2, perfecto: 2, indefinido: 2, imperfecto: 2, futuro: 2, condicional: 3, subjuntivo: 3, imperativo: 2 },
 };
 

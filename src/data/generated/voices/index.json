@@ -1,7 +1,35 @@
 {
+"f:a buen entendedor pocas palabras bastan": [
+"words",
+"e0c43cc7a7"
+],
+"f:a lo mejor": [
+"words",
+"7c0090a552"
+],
 "f:a mí también": [
 "ch2",
 "2681b12d15"
+],
+"f:a quién tenemos que invitar": [
+"sentences",
+"9581425c31"
+],
+"f:abrir": [
+"words",
+"a7583fb46a"
+],
+"f:actual": [
+"words",
+"acdff81835"
+],
+"f:adiós": [
+"words",
+"a0047a59c6"
+],
+"f:ahora": [
+"words",
+"a5dd9c46fc"
 ],
 "f:ahora eres un palabrista de verdad": [
 "ch5",
@@ -23,6 +51,22 @@
 "common",
 "87ae69bb9b"
 ],
+"f:amarillo": [
+"words",
+"b5d562ec4c"
+],
+"f:anda ya": [
+"words",
+"284f9dbd53"
+],
+"f:aparcar": [
+"words",
+"cb2e2b8408"
+],
+"f:aquí": [
+"words",
+"7a6306a8e7"
+],
 "f:aquí no se oye nada ni mis pasos": [
 "ch5",
 "38ee87e68a"
@@ -30,6 +74,14 @@
 "f:aquí tienes son dos euros": [
 "ch1",
 "53bcc8da43"
+],
+"f:asistir": [
+"words",
+"bfb94d3ab5"
+],
+"f:aunque": [
+"words",
+"a3457e9a7f"
 ],
 "f:auu auu": [
 "ch3",
@@ -43,13 +95,57 @@
 "ch2",
 "0c1c53d6be"
 ],
+"f:ayer": [
+"words",
+"f63851042a"
+],
+"f:ayer encontraste a tu gato": [
+"sentences",
+"aaf37f511d"
+],
+"f:ayudar": [
+"words",
+"bc2d958c45"
+],
+"f:azul": [
+"words",
+"363f8dc44e"
+],
+"f:bailar": [
+"words",
+"0449946e3b"
+],
+"f:barato": [
+"words",
+"dc41422b7f"
+],
+"f:beber": [
+"words",
+"1a4a9980e5"
+],
+"f:bien": [
+"words",
+"eefa9acf59"
+],
 "f:bienvenidos a la posada del sol": [
 "ch2",
 "e6cc11dd54"
 ],
+"f:blanco": [
+"words",
+"c5b254efaf"
+],
+"f:bonito": [
+"words",
+"ebb79bb2b3"
+],
 "f:bruno hermano escucha": [
 "ch5",
 "33160fdca1"
+],
+"f:buen camino": [
+"words",
+"4132261511"
 ],
 "f:buen camino soy peregrina voy a pie hasta santiago de compostela": [
 "ch2",
@@ -58,6 +154,26 @@
 "f:buen camino y recordad paso a paso se llega lejos": [
 "ch2",
 "defdb3d388"
+],
+"f:buenas noches": [
+"words",
+"f4414ab575"
+],
+"f:buenas tardes": [
+"words",
+"0a607ad43c"
+],
+"f:bueno": [
+"words",
+"23443a1baa"
+],
+"f:bueno que te vaya bien": [
+"sentences",
+"8ac1c0be8b"
+],
+"f:buenos días": [
+"words",
+"b75a3fb922"
 ],
 "f:buenos días cariño qué guapa estás hoy qué te pongo": [
 "ch1",
@@ -79,6 +195,14 @@
 "script",
 "e3870e2cc6"
 ],
+"f:caliente": [
+"words",
+"2b4541e6bf"
+],
+"f:caminar": [
+"words",
+"50baad34ae"
+],
 "f:cangrejo mola toma mis ahorros": [
 "ch1",
 "733f5dd41f"
@@ -87,25 +211,161 @@
 "ch1",
 "97344be20c"
 ],
+"f:cansado": [
+"words",
+"9c83393c66"
+],
 "f:cansado pero si has dormido diez horas jaja hoy es un día especial": [
 "ch1",
 "a13e8d03b2"
+],
+"f:cantar": [
+"words",
+"4663fb82cf"
+],
+"f:caro": [
+"words",
+"87d3ac28be"
+],
+"f:chulo": [
+"words",
+"ea7f9bab88"
+],
+"f:cien": [
+"words",
+"bd1b6f4263"
+],
+"f:cinco": [
+"words",
+"4e3cb0a635"
 ],
 "f:clic la puerta se abre": [
 "ch2",
 "4f606ac670"
 ],
+"f:cocinar": [
+"words",
+"2845c694c5"
+],
+"f:coger": [
+"words",
+"558b9941a7"
+],
+"f:colorín colorado este cuento se ha acabado": [
+"words",
+"d39b8808e0"
+],
+"f:comer": [
+"words",
+"8be598859f"
+],
+"f:comprar": [
+"words",
+"f8f035275d"
+],
 "f:compras una barra de pan": [
 "ch1",
 "3a79ee9e9f"
+],
+"f:conducir": [
+"words",
+"366a18cb8c"
+],
+"f:constipado": [
+"words",
+"b4d8b61533"
+],
+"f:contento": [
+"words",
+"8dfe0d9e3c"
+],
+"f:correr": [
+"words",
+"7b402b1a4c"
+],
+"f:costar un ojo de la cara": [
+"words",
+"212bd1a8ce"
+],
+"f:creer": [
+"words",
+"d0a8c1fe42"
+],
+"f:crees que él me perdonará": [
+"sentences",
+"2bd5b8da00"
+],
+"f:creo que lo he entendido": [
+"sentences",
+"bcf145d3d3"
+],
+"f:creo que perdí mis llaves": [
+"sentences",
+"94d6613bac"
+],
+"f:creía que no querías venir": [
+"sentences",
+"b1ef827585"
+],
+"f:cuando era pequeño": [
+"words",
+"99929ec199"
+],
+"f:cuatro": [
+"words",
+"19bfb168e7"
+],
+"f:cuatro por cinco es veinte": [
+"sentences",
+"a84008d4b1"
+],
+"f:cuenta de uno a diez": [
+"sentences",
+"d2b0086668"
 ],
 "f:cuidado no te acerques": [
 "ch1",
 "7fab5e9103"
 ],
+"f:currar": [
+"words",
+"d8e6d02077"
+],
+"f:cutre": [
+"words",
+"06ee8a0f91"
+],
+"f:cuánto cuesta": [
+"words",
+"9cb353ab87"
+],
+"f:cuánto es": [
+"words",
+"156471f8a4"
+],
+"f:cómo estás": [
+"words",
+"4e5bc01f3e"
+],
+"f:dar la lata": [
+"words",
+"c83549f6bc"
+],
+"f:darse cuenta": [
+"words",
+"55b5e80818"
+],
+"f:de nada": [
+"words",
+"27f8327ac1"
+],
 "f:de noche en el cielo hay una cosa blanca y redonda cómo se llama": [
 "ch1",
 "58cc883a7d"
+],
+"f:de quién son las llaves": [
+"sentences",
+"bbfb704f28"
 ],
 "f:de qué color soy soy del color de las fresas y de los tomates": [
 "ch3",
@@ -119,6 +379,22 @@
 "ch3",
 "3d502f093a"
 ],
+"f:de vez en cuando": [
+"words",
+"2d9eaac986"
+],
+"f:dejamos de escuchar la radio": [
+"sentences",
+"df8a3f1cda"
+],
+"f:delicioso": [
+"words",
+"05db704686"
+],
+"f:dentro de poco": [
+"words",
+"a664e0fd75"
+],
 "f:después de aquella noche bruno no pudo hablar nunca más nadie lo entendía se sentía muy solo": [
 "ch5",
 "91262ebf10"
@@ -127,57 +403,665 @@
 "ch1",
 "1658ebd4e4"
 ],
+"f:diez": [
+"words",
+"0d625efd6d"
+],
+"f:doce": [
+"words",
+"ddfd2becb3"
+],
+"f:dormir": [
+"words",
+"4e0631d896"
+],
+"f:dos": [
+"words",
+"60615ff6cc"
+],
+"f:dudo que": [
+"words",
+"ea37feb854"
+],
+"f:dulce": [
+"words",
+"70438ae9e7"
+],
+"f:débil": [
+"words",
+"5d7ae0da06"
+],
 "f:díselo dile lo que necesita oír": [
 "ch5",
 "723b499da1"
+],
+"f:echar una mano": [
+"words",
+"c7effcd113"
 ],
 "f:eh adónde vas primero a practicar con el muñeco": [
 "ch1",
 "3eb245e0c5"
 ],
+"f:el abanico": [
+"words",
+"3d8b4955dc"
+],
+"f:el abuelo": [
+"words",
+"63bdf802ed"
+],
+"f:el aceite": [
+"words",
+"ccca2b1729"
+],
+"f:el agua": [
+"words",
+"964a37dbbf"
+],
+"f:el amigo": [
+"words",
+"7355e679ab"
+],
+"f:el amor": [
+"words",
+"e89a027759"
+],
+"f:el arco": [
+"words",
+"8ab0e6711f"
+],
+"f:el arroz": [
+"words",
+"f2cb634aac"
+],
+"f:el ascensor": [
+"words",
+"a741e5a619"
+],
+"f:el autobús": [
+"words",
+"68b0d7c1d0"
+],
+"f:el azulejo": [
+"words",
+"c535b4c737"
+],
+"f:el azúcar": [
+"words",
+"b24ab3b102"
+],
+"f:el barco": [
+"words",
+"f106c107e9"
+],
+"f:el billete": [
+"words",
+"d17eb5d3e8"
+],
+"f:el bocadillo": [
+"words",
+"15484be1da"
+],
+"f:el bolígrafo": [
+"words",
+"ab462e8284"
+],
+"f:el bosque": [
+"words",
+"1d8afc5892"
+],
 "f:el bosque susurrante no salgas del camino": [
 "common",
 "92deb2f888"
+],
+"f:el brazo": [
+"words",
+"b9cbab02e5"
+],
+"f:el búho": [
+"words",
+"f801455854"
+],
+"f:el caballero": [
+"words",
+"b3c304f4d5"
+],
+"f:el caballo": [
+"words",
+"b1790dd318"
+],
+"f:el café": [
+"words",
+"7e650eafc9"
 ],
 "f:el callado está en la torre muda detrás de la montaña": [
 "ch3",
 "11264094cc"
 ],
+"f:el calor": [
+"words",
+"4c3f2a7830"
+],
+"f:el camino": [
+"words",
+"d35fb70155"
+],
 "f:el camino está gris y en silencio": [
 "ch3",
 "b6110357f9"
+],
+"f:el cangrejo": [
+"words",
+"2cf0770798"
+],
+"f:el castillo": [
+"words",
+"876a6cb93d"
+],
+"f:el chocolate": [
+"words",
+"a339b5ce9a"
+],
+"f:el cielo": [
+"words",
+"6d5a2663cc"
+],
+"f:el ciervo": [
+"words",
+"7f3a8e4b07"
+],
+"f:el coche": [
+"words",
+"be94e706a4"
 ],
 "f:el cofre está vacío": [
 "common",
 "aff89386c9"
 ],
+"f:el color": [
+"words",
+"527aeed7f0"
+],
+"f:el concurso": [
+"words",
+"89cd0d2b46"
+],
+"f:el conejo": [
+"words",
+"5fdfdf7a0e"
+],
+"f:el corazón": [
+"words",
+"9492d91280"
+],
+"f:el cuento": [
+"words",
+"ba0354cfa7"
+],
+"f:el desayuno": [
+"words",
+"f4805a547a"
+],
+"f:el deseo": [
+"words",
+"b7b9387f0a"
+],
+"f:el dolor de cabeza": [
+"words",
+"b2fdad076b"
+],
+"f:el día": [
+"words",
+"67bff74f27"
+],
+"f:el escudo": [
+"words",
+"04744bbc77"
+],
+"f:el estudiante": [
+"words",
+"5bd1bff0ad"
+],
+"f:el euro": [
+"words",
+"0e325e3924"
+],
+"f:el faro": [
+"words",
+"7c7ee7212f"
+],
 "f:el faro brilla otra vez sois mis héroes": [
 "ch1",
 "ae16bafa5b"
+],
+"f:el finde": [
+"words",
+"57ad9b8248"
+],
+"f:el fuego": [
+"words",
+"afa34d1136"
+],
+"f:el gato": [
+"words",
+"bdbec02ef8"
 ],
 "f:el gato duerme zzz qué vida": [
 "common",
 "b4a77a6cf9"
 ],
+"f:el gigante": [
+"words",
+"011431c1ee"
+],
+"f:el guiri": [
+"words",
+"0cdbcc8ec1"
+],
+"f:el hermano": [
+"words",
+"d43e794542"
+],
+"f:el hielo": [
+"words",
+"5776bd6f07"
+],
+"f:el hijo": [
+"words",
+"aba6b32fa9"
+],
+"f:el huevo": [
+"words",
+"c07b83b894"
+],
+"f:el humo": [
+"words",
+"1d65b8c2ca"
+],
+"f:el hórreo": [
+"words",
+"eb9811a3b6"
+],
+"f:el idioma": [
+"words",
+"338d7006d3"
+],
+"f:el jamón": [
+"words",
+"6004a906b0"
+],
+"f:el jardín": [
+"words",
+"3297e5545b"
+],
+"f:el jefe": [
+"words",
+"7b20657690"
+],
+"f:el jersey": [
+"words",
+"028a8c66e5"
+],
+"f:el libro": [
+"words",
+"ad8ec130d6"
+],
+"f:el limón": [
+"words",
+"6937ba4c8e"
+],
+"f:el lobo": [
+"words",
+"f2fd7f8060"
+],
+"f:el maestro": [
+"words",
+"3fd18f28de"
+],
+"f:el mapa": [
+"words",
+"6ccb93aa38"
+],
+"f:el mar": [
+"words",
+"1c8885b19e"
+],
+"f:el melocotón": [
+"words",
+"447cd5d6c3"
+],
+"f:el mercado": [
+"words",
+"98a643d580"
+],
+"f:el miedo": [
+"words",
+"0f0f8c2b12"
+],
+"f:el molino": [
+"words",
+"09b7725ca3"
+],
+"f:el monje": [
+"words",
+"cc7a4ab78e"
+],
+"f:el mundo": [
+"words",
+"7d7fcadfe7"
+],
 "f:el muñeco de práctica quieres practicar": [
 "common",
 "a9b104b3d1"
+],
+"f:el móvil": [
+"words",
+"13130f7197"
+],
+"f:el naranjo": [
+"words",
+"09aba9c349"
+],
+"f:el ninot": [
+"words",
+"dee4e110d8"
+],
+"f:el ojo": [
+"words",
+"3ad614bce2"
+],
+"f:el olvido": [
+"words",
+"252826f116"
+],
+"f:el ordenador": [
+"words",
+"b71ae7c503"
+],
+"f:el oso": [
+"words",
+"08bea2e775"
+],
+"f:el padre": [
+"words",
+"984a2f4c26"
+],
+"f:el palacio": [
+"words",
+"e96ad0093c"
 ],
 "f:el pan": [
 "ch1",
 "6a33d8f424"
 ],
+"f:el paraguas": [
+"words",
+"7e82a8c618"
+],
+"f:el pariente": [
+"words",
+"4771693fa7"
+],
+"f:el patio": [
+"words",
+"56b203dbc7"
+],
+"f:el pelo": [
+"words",
+"f8749dd921"
+],
+"f:el peregrino": [
+"words",
+"fc6fd26344"
+],
+"f:el perro": [
+"words",
+"616dc6bfdb"
+],
+"f:el pescado": [
+"words",
+"bbd93c7a25"
+],
+"f:el pescador": [
+"words",
+"f9ecaa48b2"
+],
+"f:el petardo": [
+"words",
+"5b9a612aa3"
+],
+"f:el pez": [
+"words",
+"585520d892"
+],
+"f:el pie": [
+"words",
+"73931dddee"
+],
+"f:el piso": [
+"words",
+"317f63ceca"
+],
+"f:el planeta": [
+"words",
+"ac9a2227d8"
+],
+"f:el plátano": [
+"words",
+"3e09c901d4"
+],
+"f:el pollo": [
+"words",
+"bc9417f1da"
+],
+"f:el primo": [
+"words",
+"a80bb1085b"
+],
+"f:el problema": [
+"words",
+"26d6edd956"
+],
+"f:el profesor": [
+"words",
+"c63ee718b7"
+],
+"f:el pueblo": [
+"words",
+"47dd1c004a"
+],
+"f:el puente": [
+"words",
+"0c981f3c95"
+],
+"f:el pulpo": [
+"words",
+"b56877e945"
+],
+"f:el pájaro": [
+"words",
+"5974b813ad"
+],
+"f:el queso": [
+"words",
+"64c94e5582"
+],
+"f:el radio": [
+"words",
+"67c34ccbd2"
+],
+"f:el ratón": [
+"words",
+"ed6d245fb7"
+],
+"f:el rayo": [
+"words",
+"4e13029110"
+],
+"f:el recuerdo": [
+"words",
+"d710f50917"
+],
+"f:el reloj": [
+"words",
+"c17a5a8704"
+],
+"f:el rey": [
+"words",
+"94e1bc22e1"
+],
+"f:el río": [
+"words",
+"ad6b563834"
+],
+"f:el silencio": [
+"words",
+"1a285dadb8"
+],
+"f:el sol": [
+"words",
+"1455196686"
+],
+"f:el sombrero": [
+"words",
+"3a1b66673b"
+],
+"f:el suceso": [
+"words",
+"0170eeba63"
+],
+"f:el sueldo": [
+"words",
+"38021321d7"
+],
+"f:el sueño": [
+"words",
+"72a5d8108c"
+],
+"f:el tablao": [
+"words",
+"89f8c1b220"
+],
+"f:el tema": [
+"words",
+"bdb6785832"
+],
+"f:el templo": [
+"words",
+"3b346f6442"
+],
+"f:el tomate": [
+"words",
+"3354d081bf"
+],
+"f:el trabajo": [
+"words",
+"33c258cdf3"
+],
+"f:el tren": [
+"words",
+"53fe59c374"
+],
+"f:el trigo": [
+"words",
+"acfab6bc31"
+],
+"f:el tío": [
+"words",
+"2dc1391c71"
+],
+"f:el vestido": [
+"words",
+"f747871786"
+],
+"f:el viaje": [
+"words",
+"5acf0fad2e"
+],
+"f:el viento": [
+"words",
+"5ef88686c3"
+],
+"f:el zorro": [
+"words",
+"cd175adcee"
+],
+"f:el zumo": [
+"words",
+"48fc9379a1"
+],
+"f:el árbol": [
+"words",
+"2aa382f081"
+],
+"f:el éxito": [
+"words",
+"1353675bde"
+],
 "f:el último recuerdo": [
 "ch5",
 "2ae4c8399c"
+],
+"f:ella no come carne verdad": [
+"sentences",
+"44ac8e65b3"
+],
+"f:ella no come ni bebe": [
+"sentences",
+"9d1fa23cb7"
+],
+"f:ella tiene que beber agua": [
+"sentences",
+"22add5e40d"
+],
+"f:ella trabaja en la cocina": [
+"sentences",
+"dd508d88fa"
+],
+"f:ellos no perdieron la esperanza": [
+"sentences",
+"f3c9617a7d"
+],
+"f:embarazada": [
+"words",
+"0930acd6b6"
+],
+"f:en boca cerrada no entran moscas": [
+"words",
+"7f50608b3e"
+],
+"f:en cambio": [
+"words",
+"aafc9dd7d4"
 ],
 "f:en el monte eco hay un templo dicen que los monjes saben muchas cosas": [
 "ch3",
 "39f8c2df0c"
 ],
+"f:encantado": [
+"words",
+"a8229e4447"
+],
+"f:enfadado": [
+"words",
+"7d1f952955"
+],
+"f:entiendo que eres estudiante aquí": [
+"sentences",
+"dff78fcd68"
+],
+"f:es lo que hacen todos": [
+"sentences",
+"42197f7500"
+],
 "f:es pequeña rosa del mar no me sale la palabra": [
 "ch2",
 "c4472ea29d"
+],
+"f:es todo lo que hay": [
+"sentences",
+"aab9e42f7b"
 ],
 "f:escuchad el mercado canta otra vez": [
 "ch2",
@@ -186,6 +1070,10 @@
 "f:escuchad sé quién se come las palabras hay un monstruo en la bodega del panadero": [
 "ch2",
 "a3b055dd9a"
+],
+"f:escuchar": [
+"words",
+"b43439b0ff"
 ],
 "f:eso es la canción vuelve yo canto en la plaza vosotros bailáis conmigo": [
 "ch2",
@@ -199,13 +1087,73 @@
 "ch1",
 "3834b51da2"
 ],
+"f:estamos viviendo con nuestro tío": [
+"sentences",
+"6bb83a352b"
+],
+"f:estamos yendo a las montañas": [
+"sentences",
+"7e5051becc"
+],
+"f:estar": [
+"words",
+"5a32e5614a"
+],
+"f:estar a tope": [
+"words",
+"4c58da7cfc"
+],
+"f:estar como una cabra": [
+"words",
+"ce1ba299c0"
+],
+"f:estar en las nubes": [
+"words",
+"c1732b5e79"
+],
+"f:estar hecho polvo": [
+"words",
+"49490d07ee"
+],
 "f:este san sabor el pueblo del mercado oeste puerto alegre": [
 "common",
 "11a2546125"
 ],
+"f:estoy deseando volverte a ver": [
+"sentences",
+"d7bbe430f4"
+],
+"f:estuve en su casa ayer": [
+"sentences",
+"3175621d65"
+],
+"f:está empezando a hacer frío": [
+"sentences",
+"9298c752a5"
+],
+"f:feliz": [
+"words",
+"23f09fa163"
+],
+"f:feo": [
+"words",
+"03148216d1"
+],
+"f:flipar": [
+"words",
+"e3b718953c"
+],
 "f:fresas fresas a dos euros el kilo": [
 "ch2",
 "92df63db01"
+],
+"f:frío": [
+"words",
+"5ac18ec7a9"
+],
+"f:fuerte": [
+"words",
+"36aef9615f"
 ],
 "f:gambas al ajillo qué hambre me da": [
 "ch2",
@@ -223,6 +1171,10 @@
 "ch2",
 "98648bd691"
 ],
+"f:gracias": [
+"words",
+"67c8f2f1e9"
+],
 "f:gracias guapo": [
 "ch2",
 "e24723dfa3"
@@ -231,9 +1183,53 @@
 "ch1",
 "39dc067ba6"
 ],
+"f:grande": [
+"words",
+"3df23c6140"
+],
+"f:gris": [
+"words",
+"89c784e837"
+],
+"f:haberlas haylas": [
+"words",
+"d53c650b7c"
+],
+"f:hablando se entiende la gente": [
+"words",
+"21a7c12622"
+],
+"f:hablar": [
+"words",
+"5f17e3807e"
+],
+"f:hacer": [
+"words",
+"5971691f07"
+],
+"f:hasta luego": [
+"words",
+"40dbddbc57"
+],
+"f:hay algo que pueda hacer": [
+"sentences",
+"ce6c1a7005"
+],
+"f:hay algo que pueda hacer yo": [
+"sentences",
+"7e7aa0aa1e"
+],
+"f:hay algo que yo pueda hacer": [
+"sentences",
+"ee76eb7c99"
+],
 "f:hay una nota en la mesa comprar pan r": [
 "ch1",
 "01df0a9f16"
+],
+"f:hola": [
+"words",
+"13264259a1"
 ],
 "f:hola cariño qué te pongo hoy": [
 "ch1",
@@ -243,6 +1239,10 @@
 "ch2",
 "ed6e7df3b5"
 ],
+"f:hoy": [
+"words",
+"429dd8ac93"
+],
 "f:hoy empieza tu formación de palabrista": [
 "ch1",
 "76c2e75099"
@@ -250,6 +1250,18 @@
 "f:hoy hemos caminado muchísimo y todavía falta la montaña": [
 "ch4",
 "3d540ca73f"
+],
+"f:introducir": [
+"words",
+"aaedcef8cd"
+],
+"f:ir": [
+"words",
+"5a736e47cd"
+],
+"f:ir al grano": [
+"words",
+"668ff9e1fb"
 ],
 "f:jaja esto una guitarra española qué gracia": [
 "ch2",
@@ -267,25 +1279,413 @@
 "ch1",
 "868483abc8"
 ],
+"f:joven": [
+"words",
+"dc402b8917"
+],
+"f:juntos": [
+"words",
+"ce6ba8323c"
+],
+"f:la abeja": [
+"words",
+"f00e55ee73"
+],
+"f:la abuela": [
+"words",
+"07c74df2aa"
+],
+"f:la araña": [
+"words",
+"2875a370ad"
+],
+"f:la arena": [
+"words",
+"82d7208c61"
+],
+"f:la aventura": [
+"words",
+"abbf19b904"
+],
+"f:la banda": [
+"words",
+"b227cfb1f0"
+],
 "f:la barca de don ramón se llama la gaviota": [
 "ch1",
 "b14f2f2db1"
+],
+"f:la biblioteca": [
+"words",
+"2877e9af79"
+],
+"f:la boca": [
+"words",
+"1a2fc001a2"
+],
+"f:la bruja": [
+"words",
+"2f9b3682e6"
+],
+"f:la cabeza": [
+"words",
+"c9e2ca84ea"
+],
+"f:la calle": [
+"words",
+"b6663b2091"
+],
+"f:la camiseta": [
+"words",
+"7559c677dc"
+],
+"f:la canción": [
+"words",
+"8029c20402"
+],
+"f:la carne": [
+"words",
+"3f10fe542e"
+],
+"f:la carpeta": [
+"words",
+"88dd67dde1"
+],
+"f:la casa": [
+"words",
+"617738b8fa"
+],
+"f:la catedral": [
+"words",
+"1a9026c628"
+],
+"f:la caña": [
+"words",
+"1d669a5ed9"
+],
+"f:la cena": [
+"words",
+"deef9afc18"
+],
+"f:la ceniza": [
+"words",
+"b363456ead"
+],
+"f:la cita": [
+"words",
+"aaa6d020ee"
+],
+"f:la ciudad": [
+"words",
+"bb2670c0fa"
+],
+"f:la cocina": [
+"words",
+"5d68ec198a"
+],
+"f:la comida": [
+"words",
+"2101d4a3c1"
+],
+"f:la concha": [
+"words",
+"b324026d22"
+],
+"f:la cuenta por favor": [
+"words",
+"5e04181d9e"
+],
+"f:la cueva": [
+"words",
+"0e2969c0bf"
+],
+"f:la entrevista": [
+"words",
+"55b693a82c"
+],
+"f:la espada": [
+"words",
+"730d3cec47"
+],
+"f:la esperanza": [
+"words",
+"434ff935a2"
+],
+"f:la estación": [
+"words",
+"5c0b033eb3"
+],
+"f:la estrella": [
+"words",
+"707369d763"
+],
+"f:la falla": [
+"words",
+"129d1687b5"
+],
+"f:la familia": [
+"words",
+"ba04cf8fde"
+],
+"f:la farmacia": [
+"words",
+"db6d6c862c"
+],
+"f:la feria": [
+"words",
+"5974443e5e"
+],
+"f:la fiesta": [
+"words",
+"5a2e483cfa"
+],
+"f:la flor": [
+"words",
+"791a791988"
 ],
 "f:la flor recupera su color": [
 "ch3",
 "fc3543a017"
 ],
+"f:la foto": [
+"words",
+"10220f21fb"
+],
+"f:la fresa": [
+"words",
+"34c5a78d8c"
+],
+"f:la fruta": [
+"words",
+"8a0922b205"
+],
+"f:la fábrica": [
+"words",
+"8eeb3ef670"
+],
+"f:la gaita": [
+"words",
+"1381be5b29"
+],
+"f:la gamba": [
+"words",
+"7f8221e466"
+],
+"f:la gaviota": [
+"words",
+"7aa284f601"
+],
+"f:la gente": [
+"words",
+"c664acf78a"
+],
+"f:la guitarra": [
+"words",
+"807c7c2cdb"
+],
+"f:la hermana": [
+"words",
+"b65a153287"
+],
+"f:la hija": [
+"words",
+"3625ca38b1"
+],
+"f:la historia": [
+"words",
+"5f2f6d2dc4"
+],
+"f:la hoja": [
+"words",
+"0164b67d78"
+],
+"f:la horchata": [
+"words",
+"97a91f6b51"
+],
+"f:la huerta": [
+"words",
+"458367918a"
+],
+"f:la isla": [
+"words",
+"a6b4fcbad9"
+],
 "f:la la la ay no otra vez no recuerdo la letra de mi canción": [
 "ch2",
 "07327a1287"
+],
+"f:la leche": [
+"words",
+"0238441001"
+],
+"f:la lectura": [
+"words",
+"cc23c45876"
+],
+"f:la letra": [
+"words",
+"60bed261c0"
+],
+"f:la librería": [
+"words",
+"e3021b40a3"
+],
+"f:la llanura": [
+"words",
+"bb3f076b6a"
+],
+"f:la llave": [
+"words",
+"02476209d5"
+],
+"f:la lluvia": [
+"words",
+"4476d63ade"
 ],
 "f:la loba está tranquila sus lobeznos juegan": [
 "ch3",
 "482776a5fb"
 ],
+"f:la luna": [
+"words",
+"9b67d3fc4d"
+],
 "f:la luna qué bonita palabra toma esto por favor": [
 "ch1",
 "1ca94e29aa"
+],
+"f:la luz": [
+"words",
+"638eae0301"
+],
+"f:la madre": [
+"words",
+"783e6e694a"
+],
+"f:la magia": [
+"words",
+"4691750924"
+],
+"f:la mano": [
+"words",
+"329fd41294"
+],
+"f:la manzana": [
+"words",
+"d6cb26dfbc"
+],
+"f:la mariposa": [
+"words",
+"7f08da35ca"
+],
+"f:la medusa": [
+"words",
+"34cb1c77ea"
+],
+"f:la meiga": [
+"words",
+"f36f08afa1"
+],
+"f:la memoria": [
+"words",
+"e55c3eeb12"
+],
+"f:la mentira": [
+"words",
+"531055aae1"
+],
+"f:la miel": [
+"words",
+"127533cc5e"
+],
+"f:la moneda": [
+"words",
+"4eede8887e"
+],
+"f:la montaña": [
+"words",
+"2de89a7072"
+],
+"f:la moto": [
+"words",
+"7aac2767e7"
+],
+"f:la naranja": [
+"words",
+"10ab325b02"
+],
+"f:la nariz": [
+"words",
+"1f40738201"
+],
+"f:la nevera": [
+"words",
+"da236d0d16"
+],
+"f:la niebla": [
+"words",
+"4f13e4b279"
+],
+"f:la nieve": [
+"words",
+"9d3b3ed24a"
+],
+"f:la noche": [
+"words",
+"ab11c346fd"
+],
+"f:la nube": [
+"words",
+"8e58d165c3"
+],
+"f:la ola": [
+"words",
+"a65b51c324"
+],
+"f:la oreja": [
+"words",
+"86f525805e"
+],
+"f:la oveja": [
+"words",
+"7aa71213fc"
+],
+"f:la palabra": [
+"words",
+"3ff83d5cd8"
+],
+"f:la pasta": [
+"words",
+"f8ced66f04"
+],
+"f:la patata": [
+"words",
+"e93f9bd2c2"
+],
+"f:la piedra": [
+"words",
+"b50ce9a4f4"
+],
+"f:la piel": [
+"words",
+"85bea9738b"
+],
+"f:la pierna": [
+"words",
+"72a6de8d48"
+],
+"f:la playa": [
+"words",
+"199fbdafaa"
+],
+"f:la pluma": [
+"words",
+"0c2cdfe1af"
+],
+"f:la puerta": [
+"words",
+"b3ee95614a"
 ],
 "f:la puerta de la despensa un cartel dice": [
 "ch2",
@@ -303,17 +1703,129 @@
 "ch1",
 "9d2e2ad203"
 ],
+"f:la página": [
+"words",
+"09da227554"
+],
+"f:la rana": [
+"words",
+"c902c457af"
+],
+"f:la receta": [
+"words",
+"3ad93c816f"
+],
+"f:la reunión": [
+"words",
+"178c75a888"
+],
+"f:la ropa": [
+"words",
+"a990a06e46"
+],
+"f:la sal": [
+"words",
+"90b37b2bc0"
+],
+"f:la salud": [
+"words",
+"5eeb28b88f"
+],
+"f:la sartén": [
+"words",
+"e7e87a25f5"
+],
+"f:la serpiente": [
+"words",
+"dd0cc6dcec"
+],
+"f:la seta": [
+"words",
+"acaad87351"
+],
+"f:la sombra": [
+"words",
+"f87152d4a5"
+],
+"f:la sopa": [
+"words",
+"4aaf35c50c"
+],
+"f:la tapa": [
+"words",
+"40a99ae298"
+],
+"f:la tienda": [
+"words",
+"5ad4cf2669"
+],
 "f:la tienda de doña carmen está al lado de la plaza compra pan por favor": [
 "ch1",
 "04f080549a"
+],
+"f:la tierra": [
+"words",
+"b8c5d43198"
+],
+"f:la tinta": [
+"words",
+"9a519ce6bd"
+],
+"f:la tirita": [
+"words",
+"fdfca797eb"
+],
+"f:la torre": [
+"words",
+"e592523dc6"
 ],
 "f:la torre muda aquí no se habla": [
 "common",
 "2a2cb74001"
 ],
+"f:la tortilla": [
+"words",
+"a8a0bc1949"
+],
+"f:la tía": [
+"words",
+"9e9367ed1e"
+],
+"f:la universidad": [
+"words",
+"acf7038c50"
+],
+"f:la uva": [
+"words",
+"a249fb989c"
+],
+"f:la vaca": [
+"words",
+"412c8de7a4"
+],
+"f:la ventaja": [
+"words",
+"b52b859456"
+],
+"f:la verdad": [
+"words",
+"ae19d65b70"
+],
+"f:la voz": [
+"words",
+"f9b5971b11"
+],
 "f:las palabras son poder recupéralas la torre muda al norte": [
 "ch1",
 "181fc828fe"
+],
+"f:le dijeron eso a ella": [
+"sentences",
+"0d7a27f94c"
+],
+"f:lento": [
+"words",
+"575ba73d3a"
 ],
 "f:libros de la abuela las palabras perdidas cocina valenciana el arte del palabrista": [
 "ch1",
@@ -323,9 +1835,21 @@
 "ch4",
 "cee2d9a062"
 ],
+"f:llevo toda la mañana haciéndolo": [
+"sentences",
+"56227f5a41"
+],
+"f:llover a cántaros": [
+"words",
+"7bc7598d65"
+],
 "f:lo has conseguido estoy muy orgullosa de ti": [
 "ch5",
 "2c6e5214b4"
+],
+"f:lo siento": [
+"words",
+"abedcfe528"
 ],
 "f:lo siento no tienes bastante dinero": [
 "script",
@@ -335,6 +1859,30 @@
 "ch1",
 "62649af0e4"
 ],
+"f:luchar": [
+"words",
+"84220c107a"
+],
+"f:madre mía": [
+"words",
+"3e5d7d6054"
+],
+"f:madrugar": [
+"words",
+"4e58e93899"
+],
+"f:majo": [
+"words",
+"467538e55a"
+],
+"f:mal": [
+"words",
+"19f6575b3b"
+],
+"f:malo": [
+"words",
+"d572d23dc0"
+],
 "f:manzana claro toma de regalo": [
 "ch2",
 "93d373e852"
@@ -342,6 +1890,14 @@
 "f:manzanas manzanas qué palabra tan bonita": [
 "ch2",
 "9a404777d6"
+],
+"f:marrón": [
+"words",
+"0140a9df75"
+],
+"f:mañana": [
+"words",
+"aa30d4b952"
 ],
 "f:mañana vuelvo a sevilla pero antes una canción más": [
 "ch5",
@@ -351,21 +1907,77 @@
 "ch1",
 "5ea595c8c9"
 ],
+"f:me apetece": [
+"words",
+"c2607ee763"
+],
+"f:me dijeron que no ganarían": [
+"sentences",
+"0aa6436c16"
+],
+"f:me encanta": [
+"words",
+"2aaab0a4ff"
+],
+"f:me estoy preparando para hacerlo": [
+"sentences",
+"12e2d1531c"
+],
+"f:me gusta": [
+"words",
+"89855f758f"
+],
 "f:me gustan los churros con chocolate y a ti te gustan": [
 "ch2",
 "7b1bc6cb0a"
+],
+"f:me gustaría": [
+"words",
+"6e3c86d8fb"
+],
+"f:me llamo": [
+"words",
+"93cbaacd3a"
 ],
 "f:me me me gusta no recuerdo qué me gusta": [
 "ch2",
 "547a9bff90"
 ],
+"f:me podrías enseñar la ciudad": [
+"sentences",
+"c50e5b850d"
+],
+"f:me pone": [
+"words",
+"8cfd40fc7b"
+],
+"f:meter la pata": [
+"words",
+"bff92b40db"
+],
+"f:mi abuela perdió la memoria": [
+"sentences",
+"ea90e56ede"
+],
 "f:mi canción habla del mercado pero el silencio se ha llevado los verbos me ayudáis": [
 "ch2",
 "d6af69f3b2"
 ],
+"f:mi hijo se ha perdido": [
+"sentences",
+"806145a772"
+],
 "f:mi mi animal favorito no recuerdo cómo se llama": [
 "ch1",
 "366b73c387"
+],
+"f:mira lo que has hecho": [
+"sentences",
+"841e28a754"
+],
+"f:mirad lo que habéis hecho": [
+"sentences",
+"c6c8a47c9e"
 ],
 "f:mirad sus lobeznos": [
 "ch3",
@@ -379,9 +1991,21 @@
 "ch3",
 "b9921a4b16"
 ],
+"f:mogollón": [
+"words",
+"5bc8a0efd7"
+],
+"f:mola": [
+"words",
+"ffed34693d"
+],
 "f:monte eco el templo está arriba abrígate": [
 "common",
 "ae450de236"
+],
+"f:morado": [
+"words",
+"bc358a0a29"
 ],
 "f:muy bien eres un buen alumno tienes talento": [
 "ch1",
@@ -403,6 +2027,26 @@
 "ch2",
 "7461545f39"
 ],
+"f:más vale prevenir que curar": [
+"words",
+"391472cb26"
+],
+"f:más vale tarde que nunca": [
+"words",
+"2b1eff0f00"
+],
+"f:nadie recuerda cómo empezó todo": [
+"sentences",
+"9d6d742032"
+],
+"f:negro": [
+"words",
+"ca90afc604"
+],
+"f:no encontré nada de nada": [
+"sentences",
+"d0172ed628"
+],
 "f:no es mala está triste": [
 "ch3",
 "bc4730add1"
@@ -411,9 +2055,53 @@
 "ch5",
 "221a0fc184"
 ],
+"f:no hay mal que por bien no venga": [
+"words",
+"cd4d2377a5"
+],
+"f:no he hecho eso hoy": [
+"sentences",
+"252078d1fb"
+],
 "f:no las palabras son de todos": [
 "ch5",
 "544aba49a0"
+],
+"f:no lo vuelvas a hacer": [
+"sentences",
+"38cb6dc2fd"
+],
+"f:no los volverá a ver": [
+"sentences",
+"48647b1ff5"
+],
+"f:no los volverán a ver": [
+"sentences",
+"1f9b19bec1"
+],
+"f:no los volveréis a ver": [
+"sentences",
+"6d39e80850"
+],
+"f:no me creo tu historia": [
+"sentences",
+"c265f70e00"
+],
+"f:no me dejan beber leche": [
+"sentences",
+"fee5776475"
+],
+"f:no me lo vuelvas a decir": [
+"sentences",
+"2d46e29844"
+],
+"f:no me salen las palabras": [
+"sentences",
+"61505384de"
+],
+"f:no me toques los huevos": [
+"sentences",
+"c0694f245a"
 ],
 "f:no no cuarenta y cinco cuarenta cuarenta y cinco": [
 "ch2",
@@ -423,13 +2111,97 @@
 "common",
 "a32b892b8d"
 ],
+"f:no os olvidéis de nosotros": [
+"sentences",
+"a1ee43449f"
+],
+"f:no pasa nada": [
+"words",
+"d6a57eefe8"
+],
+"f:no pegar ojo": [
+"words",
+"132ed1de43"
+],
+"f:no puedo abrir esta puerta": [
+"sentences",
+"02e29caeba"
+],
+"f:no queréis hablar con ellos": [
+"sentences",
+"2e892d4115"
+],
+"f:no quieres hablar con ellos": [
+"sentences",
+"e0928d2940"
+],
 "f:no recuerdo los nombres de nada pero sé los precios los números no se olvidan": [
 "ch2",
 "c68ce2c4fe"
 ],
+"f:no se lo digas a tu padre": [
+"sentences",
+"e50903c309"
+],
+"f:no se olvide de nosotros": [
+"sentences",
+"8f68f182f5"
+],
+"f:no se olvidó de nosotros": [
+"sentences",
+"9518d0dbf0"
+],
+"f:no te olvides de nosotros": [
+"sentences",
+"6526d20be6"
+],
+"f:no te tienes que ir": [
+"sentences",
+"b8cdb29699"
+],
+"f:no todo se puede explicar": [
+"sentences",
+"3a77339a7a"
+],
+"f:no vas a hacerlo espero": [
+"sentences",
+"0f6c8c6daa"
+],
+"f:no ves quién nos sigue": [
+"sentences",
+"5b9d400799"
+],
+"f:nos conocimos en la universidad": [
+"sentences",
+"ad1bf3f34f"
+],
+"f:nuestra casa es vuestra casa": [
+"sentences",
+"e1ce78713b"
+],
+"f:nueve": [
+"words",
+"8640d46e62"
+],
+"f:nuevo": [
+"words",
+"519f2dd9c7"
+],
+"f:nunca": [
+"words",
+"1b44372803"
+],
+"f:ocho": [
+"words",
+"a1351ac740"
+],
 "f:ocho más siete cuenta con los dedos diez once doce": [
 "ch2",
 "106978a2a1"
+],
+"f:ojalá": [
+"words",
+"37e61a301b"
 ],
 "f:ojalá hable español muy bien": [
 "common",
@@ -442,6 +2214,34 @@
 "f:ojalá la abuela vuelva a hablar": [
 "common",
 "6557d2cfc2"
+],
+"f:ojo": [
+"words",
+"f8f1a363c0"
+],
+"f:olvidar": [
+"words",
+"0a75abb3d5"
+],
+"f:olé": [
+"words",
+"b4d7280505"
+],
+"f:once": [
+"words",
+"137d1b7c54"
+],
+"f:os gusta el chocolate caliente": [
+"sentences",
+"b5794ca2af"
+],
+"f:oscuro": [
+"words",
+"4709c54ac1"
+],
+"f:ostras": [
+"words",
+"54e9b3645d"
 ],
 "f:otra puerta": [
 "ch5",
@@ -459,6 +2259,34 @@
 "ch2",
 "5b51a76afb"
 ],
+"f:pasarlo bomba": [
+"words",
+"ff905f68e8"
+],
+"f:pequeño": [
+"words",
+"2f2afa87f4"
+],
+"f:perdido": [
+"words",
+"76588fd013"
+],
+"f:perdona pero tú quién eres": [
+"sentences",
+"85dcf1d68f"
+],
+"f:perdonar": [
+"words",
+"5d1c2edb2c"
+],
+"f:perdón": [
+"words",
+"9f073b17d0"
+],
+"f:pero no lo puede hacer": [
+"sentences",
+"49cb9e868e"
+],
 "f:pero qué dices": [
 "ch3",
 "aa79b0630d"
@@ -470,6 +2298,34 @@
 "f:pobre bruno": [
 "ch5",
 "b1b73d49b7"
+],
+"f:poco a poco": [
+"words",
+"aa925cd783"
+],
+"f:poder": [
+"words",
+"406681f7ce"
+],
+"f:podrías": [
+"words",
+"4270fcb597"
+],
+"f:ponerse las pilas": [
+"words",
+"e1c59328ac"
+],
+"f:por favor": [
+"words",
+"d4c8ddf938"
+],
+"f:por lo tanto": [
+"words",
+"acb41ff63a"
+],
+"f:pretender": [
+"words",
+"74226dd046"
 ],
 "f:puedes practicar con el muñeco cuando quieras": [
 "ch1",
@@ -487,9 +2343,53 @@
 "ch1",
 "0a4b2ac648"
 ],
+"f:que no se te olvide nada": [
+"sentences",
+"39816c54e0"
+],
+"f:que todo el mundo salga rápido": [
+"sentences",
+"21f827bc6c"
+],
+"f:queda un poco de leche": [
+"sentences",
+"f025fc5409"
+],
+"f:quedar": [
+"words",
+"25e7e11fb4"
+],
+"f:quedarse de piedra": [
+"words",
+"772d6c6ee2"
+],
+"f:quien busca encuentra": [
+"words",
+"4c2c1cad96"
+],
+"f:quien calla otorga": [
+"words",
+"fa45ada62a"
+],
+"f:quiere ir a esta fiesta": [
+"sentences",
+"e1ba554a83"
+],
 "f:quieres tirar una moneda y pedir un deseo": [
 "common",
 "c871eb258d"
+],
+"f:quiero": [
+"words",
+"0a0e302d99"
+],
+"f:quiero que todos se vayan": [
+"sentences",
+"3ab781b509"
+],
+"f:quince": [
+"words",
+"a3c152d9e0"
 ],
 "f:quizás las flores grises del bosque": [
 "ch3",
@@ -499,6 +2399,18 @@
 "ch4",
 "e079ced47c"
 ],
+"f:quién se bebió el agua": [
+"sentences",
+"82ace9a494"
+],
+"f:quién te enseñó a bailar": [
+"sentences",
+"37a4b5e199"
+],
+"f:qué arte": [
+"words",
+"e0075e08fa"
+],
 "f:qué bien allí hay un mercado precioso pero dicen que está en silencio": [
 "ch2",
 "2b2b571d2f"
@@ -507,9 +2419,25 @@
 "ch3",
 "1ebe944d73"
 ],
+"f:qué crees que estoy pensando": [
+"sentences",
+"3a4ef3bc44"
+],
 "f:qué energía yo estoy hecha polvo": [
 "ch4",
 "62b017d7b7"
+],
+"f:qué fuerte": [
+"words",
+"3e1c8349e9"
+],
+"f:qué guay": [
+"words",
+"1a7bf983c3"
+],
+"f:qué le vas a dar": [
+"sentences",
+"6aa8186c96"
 ],
 "f:qué os pongo": [
 "ch2",
@@ -519,21 +2447,65 @@
 "ch2",
 "b775faa90e"
 ],
+"f:qué pasada": [
+"words",
+"c549582c76"
+],
 "f:qué qué pasa no no recuerdo cómo se dice": [
 "ch1",
 "41aca5f28a"
+],
+"f:qué rico": [
+"words",
+"cc51e31f29"
+],
+"f:qué rollo": [
+"words",
+"7b30b322b7"
+],
+"f:qué tal": [
+"words",
+"f796494c8a"
+],
+"f:qué te está poniendo triste": [
+"sentences",
+"798443b28d"
 ],
 "f:qué triste": [
 "ch4",
 "645fee42ca"
 ],
+"f:realizar": [
+"words",
+"b729c2d940"
+],
+"f:recordar": [
+"words",
+"4dbe966fa2"
+],
+"f:rojo": [
+"words",
+"72ac5ff55f"
+],
+"f:rosa": [
+"words",
+"93277244c2"
+],
 "f:rosa y bruno eran hermanos vivían en puerto alegre bruno siempre cantaba": [
 "ch5",
 "52615a98bc"
 ],
+"f:rápido": [
+"words",
+"a7bb4f82f5"
+],
 "f:sabemos quién eres eres bruno el hermano de rosa": [
 "ch5",
 "0b2b79df97"
+],
+"f:saber": [
+"words",
+"d2c5b455c4"
 ],
 "f:sabes el faro brilla toda la noche mola mucho": [
 "ch1",
@@ -547,13 +2519,53 @@
 "common",
 "c43800db90"
 ],
+"f:seis": [
+"words",
+"3d9bc37b9c"
+],
+"f:sensible": [
+"words",
+"567a20f3b4"
+],
+"f:ser": [
+"words",
+"ab54d55b35"
+],
+"f:ser pan comido": [
+"words",
+"3efa0a1322"
+],
 "f:si no entiendes algo toca las palabras o pulsa en": [
 "ch1",
 "374d4ad681"
 ],
+"f:siempre": [
+"words",
+"1d91ad9b7f"
+],
+"f:siete": [
+"words",
+"b3ec9a9003"
+],
 "f:sigue practicando vale un palabrista nunca deja de aprender": [
 "ch5",
 "e5754aaabb"
+],
+"f:sin embargo": [
+"words",
+"aa6c3ec52e"
+],
+"f:sin él me sentía perdida": [
+"sentences",
+"fad72c9a23"
+],
+"f:sin él me sentía perdido": [
+"sentences",
+"fcb3b12972"
+],
+"f:solo": [
+"words",
+"bacf6a7b65"
 ],
 "f:soy blanca y amarilla vivo en el faro sin mí los barcos se pierden de noche quién soy": [
 "ch1",
@@ -563,9 +2575,77 @@
 "ch1",
 "8ba8a04a83"
 ],
+"f:subir": [
+"words",
+"7ea2fc8440"
+],
+"f:sé que no puedes verlo": [
+"sentences",
+"97e980159e"
+],
+"f:sí": [
+"words",
+"edcb5160cd"
+],
+"f:sólo mira cómo lo hago": [
+"sentences",
+"4c45e978fc"
+],
+"f:también": [
+"words",
+"91022cdbca"
+],
+"f:también le gustas a él": [
+"sentences",
+"1159a7a24f"
+],
+"f:tapear": [
+"words",
+"fd62d51e24"
+],
 "f:te despiertas todos estáis bien": [
 "game",
 "506bfd9838"
+],
+"f:te echo de menos": [
+"words",
+"0413aaeb50"
+],
+"f:te gustaría ir en tren": [
+"sentences",
+"fcc2da504e"
+],
+"f:te quiero": [
+"words",
+"25c99759be"
+],
+"f:ten cuidado": [
+"words",
+"76863e7f29"
+],
+"f:tener": [
+"words",
+"ff305d6067"
+],
+"f:tener duende": [
+"words",
+"1745110a5a"
+],
+"f:tengo hambre": [
+"words",
+"884f8f78ca"
+],
+"f:tengo sed": [
+"words",
+"d20ca01e4d"
+],
+"f:tiene algún problema con eso": [
+"sentences",
+"90e0674937"
+],
+"f:tirar la casa por la ventana": [
+"words",
+"3838660534"
 ],
 "f:tocas el cristal color": [
 "ch3",
@@ -583,6 +2663,10 @@
 "ch4",
 "36c2002d5c"
 ],
+"f:todos vamos a hacer eso": [
+"sentences",
+"c6c7ee4223"
+],
 "f:toma mi grimorio rápido": [
 "ch1",
 "1dadf55340"
@@ -590,6 +2674,22 @@
 "f:tomad para el camino un buen café da energía": [
 "ch2",
 "8195c6a81a"
+],
+"f:tomar el pelo": [
+"words",
+"9791abc1ba"
+],
+"f:tres": [
+"words",
+"89e98f93ef"
+],
+"f:triste": [
+"words",
+"402ab05063"
+],
+"f:tío": [
+"words",
+"92e8348d10"
 ],
 "f:tú siempre tienes hambre mateo": [
 "ch5",
@@ -606,6 +2706,10 @@
 "f:un bar de tapas huele a tortilla y a café": [
 "ch2",
 "9d48deff83"
+],
+"f:un oso escribió la historia": [
+"sentences",
+"a3ccd3d7db"
 ],
 "f:un palabrista usa las palabras como magia cada palabra tiene poder": [
 "ch1",
@@ -659,9 +2763,45 @@
 "ch4",
 "cf4f06f7d9"
 ],
+"f:uno": [
+"words",
+"9932bc62ff"
+],
+"f:vale": [
+"words",
+"672108b6d3"
+],
+"f:valiente": [
+"words",
+"54e443141a"
+],
+"f:vaya": [
+"words",
+"9b9704635b"
+],
+"f:veinte": [
+"words",
+"7ae995932a"
+],
+"f:vender": [
+"words",
+"34e9d7d4ed"
+],
+"f:venga": [
+"words",
+"6d5f7c42a4"
+],
 "f:venga una canción para todos": [
 "ch5",
 "dd32dbb203"
+],
+"f:ver": [
+"words",
+"216f636669"
+],
+"f:verde": [
+"words",
+"8fc50519b7"
 ],
 "f:ves el muñeco de paja vamos a practicar tres cosas estás lista": [
 "ch1",
@@ -670,6 +2810,26 @@
 "f:ves el muñeco de paja vamos a practicar tres cosas estás listo": [
 "ch1",
 "5c6b1e1121"
+],
+"f:viejo": [
+"words",
+"ffdc21fd71"
+],
+"f:vives también en esta calle": [
+"sentences",
+"0d0dffb284"
+],
+"f:vivir": [
+"words",
+"3a15362cf0"
+],
+"f:volver": [
+"words",
+"d0f48879f6"
+],
+"f:voy a escribir de esto": [
+"sentences",
+"75a8b93383"
 ],
 "f:voy con vosotros": [
 "ch2",
@@ -703,6 +2863,38 @@
 "ch1",
 "247818f032"
 ],
+"f:yo escribo lo que quiero": [
+"sentences",
+"4520e14136"
+],
+"f:yo estaba en la fiesta": [
+"sentences",
+"bd5919acb5"
+],
+"f:yo no quiero comer aquí": [
+"sentences",
+"3bbe6a412d"
+],
+"f:yo te enseñaré la ciudad": [
+"sentences",
+"ad4fef0b6a"
+],
+"f:él escribió a sus padres": [
+"sentences",
+"2cd17fbdcd"
+],
+"f:él ha escrito muchas historias": [
+"sentences",
+"192d652edc"
+],
+"f:érase una vez": [
+"words",
+"ea7090b860"
+],
+"m2:a nadie le caes bien": [
+"sentences",
+"df9c83290b"
+],
 "m2:agua agua no quiero olvidarla otra vez": [
 "ch1",
 "ade73075f5"
@@ -711,17 +2903,73 @@
 "ch1",
 "98da28cd10"
 ],
+"m2:ahora le toca a usted": [
+"sentences",
+"09f3c39a2d"
+],
 "m2:allí está el faro qué oscuro está": [
 "ch1",
 "af867599a9"
+],
+"m2:aquí no conoces a nadie": [
+"sentences",
+"3e34d89baa"
+],
+"m2:aquí no puedes hacer eso": [
+"sentences",
+"cd3ae4a165"
 ],
 "m2:ay qué bonitos": [
 "ch3",
 "e2cf632ba1"
 ],
+"m2:cada casa tenía un jardín": [
+"sentences",
+"2ac492c741"
+],
+"m2:come tanta comida como quieras": [
+"sentences",
+"fe04b3b5f0"
+],
+"m2:como sea nunca lo sabrás": [
+"sentences",
+"050d30cb3a"
+],
+"m2:compré media docena de huevos": [
+"sentences",
+"71789ddeb2"
+],
 "m2:creo que el silencio se ha llevado la luz del faro": [
 "ch1",
 "59d11480b3"
+],
+"m2:creo que no volverá nunca": [
+"sentences",
+"11eafb848e"
+],
+"m2:creí que no querías venir": [
+"sentences",
+"1482b6f3d0"
+],
+"m2:cuándo quieres que te llame": [
+"sentences",
+"15cfa4bc13"
+],
+"m2:cuándo se escribió este libro": [
+"sentences",
+"c5b3c3daf6"
+],
+"m2:cuándo se terminará el mundo": [
+"sentences",
+"743578ae46"
+],
+"m2:cómo quieres que lo sepa": [
+"sentences",
+"fc3210b928"
+],
+"m2:dónde están tus hijos ahora": [
+"sentences",
+"dc03303136"
 ],
 "m2:eh hoy el mar está muy tranquilo": [
 "ch1",
@@ -735,6 +2983,10 @@
 "ch3",
 "321d8a7f27"
 ],
+"m2:el cielo está sobre mí": [
+"sentences",
+"83667f01cf"
+],
 "m2:el faro está al oeste por la playa hay una cueva debajo": [
 "ch1",
 "5a326aea3e"
@@ -742,6 +2994,22 @@
 "m2:el hermano de tu abuela": [
 "ch4",
 "30f621aa65"
+],
+"m2:ella me enseñó su jardín": [
+"sentences",
+"054aee7779"
+],
+"m2:ella se prepara la comida": [
+"sentences",
+"d7c97ee0e8"
+],
+"m2:ella tiene los pies pequeños": [
+"sentences",
+"81156eea77"
+],
+"m2:ellas quieren hablar con usted": [
+"sentences",
+"5870b2b7da"
 ],
 "m2:en serio una piedra una roca pues eso": [
 "ch1",
@@ -751,9 +3019,29 @@
 "ch4",
 "69111df160"
 ],
+"m2:es esta la que buscáis": [
+"sentences",
+"7cf11a86d5"
+],
+"m2:ese no es tu libro": [
+"sentences",
+"4424942ce1"
+],
 "m2:esta paella está buenísima quieres un poco": [
 "ch5",
 "19e595b12a"
+],
+"m2:estamos vendiendo zumo de naranja": [
+"sentences",
+"8bc4886749"
+],
+"m2:este libro se vende bien": [
+"sentences",
+"4fb8180e26"
+],
+"m2:están todas las puertas cerradas": [
+"sentences",
+"bc5099334d"
 ],
 "m2:estás herida mi padre no habla está gris como una piedra": [
 "ch1",
@@ -815,6 +3103,18 @@
 "ch1",
 "04c82a199e"
 ],
+"m2:las uvas son como huevos": [
+"sentences",
+"7931086c4d"
+],
+"m2:lea el pie de la página": [
+"sentences",
+"974ea56fc4"
+],
+"m2:lo dices porque tienes miedo": [
+"sentences",
+"69fc41a501"
+],
 "m2:lo hemos conseguido": [
 "ch5",
 "840e0a9f72"
@@ -834,6 +3134,26 @@
 "m2:me da miedo pero vamos juntos": [
 "ch5",
 "e5902c028c"
+],
+"m2:me gusta viajar en tren": [
+"sentences",
+"a6d52a7f6e"
+],
+"m2:me gustaría ayudarlos si puedo": [
+"sentences",
+"7015c67fbc"
+],
+"m2:me gustaría salir esta noche": [
+"sentences",
+"db414e24a9"
+],
+"m2:me podéis llevar con vosotras": [
+"sentences",
+"bdae2c671d"
+],
+"m2:me podéis llevar con vosotros": [
+"sentences",
+"4378b5f187"
 ],
 "m2:mi barco claro toma un regalo del mar": [
 "ch1",
@@ -867,6 +3187,14 @@
 "ch1",
 "9752df3f2c"
 ],
+"m2:mis gatas son mis hijas": [
+"sentences",
+"8718c105b9"
+],
+"m2:mis gatos son mis hijos": [
+"sentences",
+"cd9d223058"
+],
 "m2:mmm qué hay en un faro algo que brilla": [
 "ch1",
 "bd7910840e"
@@ -879,6 +3207,34 @@
 "ch1",
 "1f93d287f6"
 ],
+"m2:nadie sabe quién es él": [
+"sentences",
+"622363e03b"
+],
+"m2:ninguno de nosotros quería perder": [
+"sentences",
+"b9ebb62c80"
+],
+"m2:no consigo encontrar mi reloj": [
+"sentences",
+"432120baca"
+],
+"m2:no creo que esté sola": [
+"sentences",
+"07e2ce5b96"
+],
+"m2:no creo que esté solo": [
+"sentences",
+"dd0c532a2d"
+],
+"m2:no creo que vaya contigo": [
+"sentences",
+"223823e869"
+],
+"m2:no dude de sus palabras": [
+"sentences",
+"85b23d750a"
+],
 "m2:no entréis hay un monstruo solo solo una música puede ayudar": [
 "ch2",
 "1ba6b2bb3a"
@@ -887,9 +3243,93 @@
 "ch5",
 "cf2d503157"
 ],
+"m2:no le digas esto a nadie": [
+"sentences",
+"387c1899c6"
+],
 "m2:no le preguntes eso": [
 "ch3",
 "71c7286b5f"
+],
+"m2:no lo vuelvas a comprar": [
+"sentences",
+"ce08787154"
+],
+"m2:no los volverás a ver": [
+"sentences",
+"4236163b12"
+],
+"m2:no me creo tu cuento": [
+"sentences",
+"07f8f928e2"
+],
+"m2:no me gusta la leche": [
+"sentences",
+"efe6afd9d6"
+],
+"m2:no me vuelvas a llamar": [
+"sentences",
+"ec1b6128f6"
+],
+"m2:no pude encontrar dónde estaba": [
+"sentences",
+"05b7f37f4d"
+],
+"m2:no puedo seguir haciendo esto": [
+"sentences",
+"0bda463c88"
+],
+"m2:no quiere hablar con ellos": [
+"sentences",
+"51c6e0d142"
+],
+"m2:no quiero hablar de ello": [
+"sentences",
+"fb4f64f472"
+],
+"m2:no sabes cómo hacerlo verdad": [
+"sentences",
+"5eb04b735f"
+],
+"m2:no se lo digas a tu madre": [
+"sentences",
+"143386ae74"
+],
+"m2:no se lo digáis a vuestra madre": [
+"sentences",
+"f08f6fc22e"
+],
+"m2:no sé lo que quieres": [
+"sentences",
+"ac34d3cc6e"
+],
+"m2:no te olvides de mí": [
+"sentences",
+"860d4d4feb"
+],
+"m2:no tenemos nada que perder": [
+"sentences",
+"7208437c3b"
+],
+"m2:no vivo en la ciudad": [
+"sentences",
+"8781bbdd59"
+],
+"m2:nos hemos quedado sin patatas": [
+"sentences",
+"cae7bc0426"
+],
+"m2:nuestra casa es tu casa": [
+"sentences",
+"fa5cc4118c"
+],
+"m2:nuestra tienda no está abierta": [
+"sentences",
+"b20a3a68c9"
+],
+"m2:nunca quisiste ser mi amigo": [
+"sentences",
+"fc2fa66a3b"
 ],
 "m2:ojalá hable español muy bien": [
 "common",
@@ -911,9 +3351,45 @@
 "ch2",
 "74c193b5d5"
 ],
+"m2:podría usted volver aquí mañana": [
+"sentences",
+"471969a2a0"
+],
+"m2:por qué tienes que hacerlo": [
+"sentences",
+"145c4bb5df"
+],
+"m2:puedes pasar la noche aquí": [
+"sentences",
+"856b300129"
+],
+"m2:puedo quedarme aquí esta noche": [
+"sentences",
+"4484d01894"
+],
+"m2:puedo venderte esto si quieres": [
+"sentences",
+"5daf7b3ad3"
+],
 "m2:pues cierra la puerta jaja algo caliente un café": [
 "ch2",
 "cc9da9633a"
+],
+"m2:querría invitarte a la fiesta": [
+"sentences",
+"da218c87ad"
+],
+"m2:queréis que vaya con ellas": [
+"sentences",
+"7101edde88"
+],
+"m2:queréis que vaya con ellos": [
+"sentences",
+"a98cac3b19"
+],
+"m2:quería venir a las nueve": [
+"sentences",
+"cddd999424"
 ],
 "m2:queso manchego queso de cabra me encanta el queso": [
 "ch2",
@@ -922,6 +3398,18 @@
 "m2:queso mi vida toma esto es para ti": [
 "ch2",
 "d36fc5b0a5"
+],
+"m2:quieres que vaya con ellas": [
+"sentences",
+"4a0ac0108c"
+],
+"m2:quieres que vaya con ellos": [
+"sentences",
+"158e4b9676"
+],
+"m2:quiero un perro como ese": [
+"sentences",
+"839eaf8ffe"
 ],
 "m2:qué día tan bonito": [
 "ch1",
@@ -947,6 +3435,14 @@
 "ch2",
 "cdab3b1772"
 ],
+"m2:se ha ido la luz": [
+"sentences",
+"f970df7e1a"
+],
+"m2:se le fue el sueño": [
+"sentences",
+"83e317a999"
+],
 "m2:shh oís eso los árboles susurran": [
 "ch3",
 "3e5b5867ca"
@@ -959,13 +3455,53 @@
 "ch2",
 "f7481bfbc3"
 ],
+"m2:soy profesor no soy estudiante": [
+"sentences",
+"c0c185b0d7"
+],
+"m2:sé que no me quieren": [
+"sentences",
+"08f4830d75"
+],
+"m2:también me gusta beber leche": [
+"sentences",
+"fccf0df485"
+],
+"m2:te gusta el chocolate caliente": [
+"sentences",
+"e14f04fe3d"
+],
+"m2:te gustaría trabajar desde casa": [
+"sentences",
+"a2cf570acb"
+],
+"m2:te puedo enseñar a cantar": [
+"sentences",
+"dec6b71e23"
+],
 "m2:tengo hambre en san sabor hay un mercado enorme": [
 "ch2",
 "7c2aa6df25"
 ],
+"m2:tengo que escribir con tinta": [
+"sentences",
+"63ff47d88f"
+],
+"m2:tengo que irme a trabajar": [
+"sentences",
+"182a7f538b"
+],
 "m2:tengo tengo sed quiero ay no recuerdo la palabra": [
 "ch1",
 "186d7b94dc"
+],
+"m2:todas las manzanas están aquí": [
+"sentences",
+"ed03aa542b"
+],
+"m2:todo está como lo dejamos": [
+"sentences",
+"7f32d717a8"
 ],
 "m2:todos los días eso es una costumbre no": [
 "ch5",
@@ -991,9 +3527,17 @@
 "ch1",
 "def5111a78"
 ],
+"m2:vas a perder ese tren": [
+"sentences",
+"60961d5f83"
+],
 "m2:venga voy contigo tengo mi remo": [
 "ch1",
 "3dd3438e86"
+],
+"m2:voy a hacer que lo entiendas": [
+"sentences",
+"087c2769aa"
 ],
 "m2:y ahora qué hacemos": [
 "ch3",
@@ -1018,6 +3562,14 @@
 "m2:ánimo el templo está arriba ya queda poco": [
 "ch4",
 "d7df6cd7ae"
+],
+"m2:él no dirá que sí": [
+"sentences",
+"a0bde12bb4"
+],
+"m2:él no sabe qué hacer": [
+"sentences",
+"e65d7c2139"
 ],
 "m:ahora el gólem del templo le obedece bloquea la puerta de la torre": [
 "ch4",
