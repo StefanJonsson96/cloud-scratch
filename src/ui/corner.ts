@@ -1,7 +1,8 @@
 // The little buttons in the corner of every screen: mute, volume and help.
 
 import { audioPrefs, onAudioPrefs, setAudioPrefs, sfx, type AudioPrefs } from '../engine/audio';
-import { speak, speechAvailable, stopSpeaking } from '../engine/speech';
+import { speak, stopSpeaking } from '../engine/speech';
+import { CAST_VOICES } from '../story/voices';
 import { modal, pushLayer } from '../engine/input';
 import { h, waitConfirm } from './dom';
 
@@ -30,7 +31,7 @@ export function volumeSliders(): HTMLElement {
     });
     input.addEventListener('change', () => {
       if (key === 'sfx') sfx('blip');
-      if (key === 'voice' && speechAvailable()) speak('¡Hola! Así suena mi voz.', { id: 'abuela', gender: 'f', pitch: 0.85, rate: 0.86 });
+      if (key === 'voice') speak('¡Me alegro! Hoy es un día especial.', CAST_VOICES.abuela);
     });
     wrap.append(h('label', { class: 'vol-row' }, h('span', { class: 'vol-label' }, label, h('small', null, en)), input, val));
   }

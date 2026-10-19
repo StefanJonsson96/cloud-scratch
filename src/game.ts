@@ -20,7 +20,8 @@ import { cornerButtons } from './ui/corner';
 import { offerTalents, pendingTalents } from './ui/talents';
 import { initTouch } from './engine/input';
 import { playMusic } from './engine/audio';
-import { missingVoiceGenders, setSpeechEnabled } from './engine/speech';
+import { missingVoiceGenders, setSpeechEnabled, voiceChoice } from './engine/speech';
+import { preloadVoices, setHeroNameSource } from './engine/voiceover';
 
 export class Game implements WorldHost {
   g!: GameState;
@@ -78,6 +79,8 @@ export class Game implements WorldHost {
 
   async start(g: GameState, fresh: boolean) {
     this.g = g;
+    setHeroNameSource(() => this.g.heroName);
+    preloadVoices(`ch${Math.max(1, g.chapter)}`);
     defineHero(g.look);
     this.applySettings();
     document.body.classList.remove('no-world');
@@ -121,7 +124,8 @@ export class Game implements WorldHost {
   /** Once per session: tell the player if men and women will sound alike, and where to fix it. */
   private voiceNoticeShown = false;
   private voiceNotice() {
-    if (this.voiceNoticeShown || !this.g.settings.voice) return;
+    // Dialogue is recorded; this only matters if the player switched recordings off.
+    if (this.voiceNoticeShown || !this.g.settings.voice || voiceChoice().recorded !== false) return;
     // Voices load asynchronously; give them a moment.
     setTimeout(() => {
       const missing = missingVoiceGenders();

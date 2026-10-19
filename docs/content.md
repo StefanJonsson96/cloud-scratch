@@ -82,3 +82,12 @@ The first run downloads about 130 MB into `.cache/`. To use a local checkout of
 The generated data is derived from CC BY-SA and CC BY sources, so it is shared under CC BY-SA 4.0.
 See [`src/data/generated/README.md`](../src/data/generated/README.md). Every Tatoeba sentence keeps
 its author credit in the data, and the game lists its sources under *Ajustes → Créditos*.
+
+## Recorded dialogue
+
+Story dialogue is spoken by recorded neural voices (a female and two male Spanish-from-Spain
+voices), so characters sound right on every device. After editing lines in `src/story/`, run
+`npm run voices` to record the new ones — `npm test` reports any line without a recording. Each
+character's voice and speed is set in `src/story/voices.ts`. See
+[`src/data/generated/voices/README.md`](../src/data/generated/voices/README.md) for what it needs and
+the voices' licences.

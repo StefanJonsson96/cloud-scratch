@@ -1,5 +1,6 @@
-// The "Voces" settings: which Spanish voices this device has, which one women
-// and men use, and how to install more.
+// The "Voces" settings. Story dialogue is recorded (real female and male
+// voices from Spain); the browser's own Spanish voices read everything else,
+// so this also shows which ones this device has and how to install more.
 
 import {
   missingVoiceGenders,
@@ -11,14 +12,20 @@ import {
   voiceChoice,
   type VoiceSpec,
 } from '../engine/speech';
+import { CAST_VOICES } from '../story/voices';
 import { h, clear } from './dom';
 
+// Real lines from the story, so the recorded voices can be heard here.
 const SAMPLES: [string, string, VoiceSpec][] = [
-  ['Abuela Rosa', 'Hola, cariño. ¿Has comido?', { id: 'abuela', gender: 'f', pitch: 0.85, rate: 0.86 }],
-  ['Lola', '¡Hola! Me llamo Lola. ¡Encantada!', { id: 'lola', gender: 'f', pitch: 1.1, rate: 1.05 }],
-  ['Mateo', '¡Venga! Tengo mi remo.', { id: 'mateo', gender: 'm', pitch: 1.1, rate: 1.05 }],
-  ['Don Ramón', 'Mi hijo está en el muelle.', { id: 'ramon', gender: 'm', pitch: 0.8, rate: 0.9 }],
+  ['Abuela Rosa', '¡Me alegro! Hoy es un día especial.', CAST_VOICES.abuela],
+  ['Lola', '¡Hola! Me llamo Lola. Soy música, de Sevilla. ¡Encantada!', CAST_VOICES.lola],
+  ['Mateo', 'Luego vamos a pescar, ¿vale?', CAST_VOICES.mateo],
+  ['Don Ramón', 'Cuida de mi hijo, ¿vale? Come mucho, pero es muy valiente.', CAST_VOICES.ramon],
+  ['Dani', '¿Sabes? El faro brilla toda la noche. ¡Mola mucho!', CAST_VOICES.nino],
 ];
+
+// Not in the story, so these always use the browser's voice.
+const BROWSER_TEST = { f: 'Hola. Así suena la voz de las mujeres.', m: 'Hola. Así suena la voz de los hombres.' };
 
 const HOW_TO = [
   ['Chrome', 'already includes “Google español” (a female voice) — try playing in Chrome.'],
@@ -33,9 +40,47 @@ export function voicesPanel(): HTMLElement {
   const el = h('div', { class: 'voices-panel' });
   const draw = () => {
     clear(el);
-    el.append(h('h3', null, 'Voces', h('small', null, ' · Character voices')));
+    const recorded = voiceChoice().recorded !== false;
+    el.append(
+      h('h3', null, 'Voces', h('small', null, ' · Character voices')),
+      h(
+        'div',
+        { class: 'switch' },
+        h(
+          'div',
+          null,
+          'Diálogos · Story dialogue',
+          h('small', null, recorded ? 'Recorded voices from Spain: women and men sound right on every device.' : "Read by this browser's own Spanish voices."),
+        ),
+        h(
+          'div',
+          { class: 'seg' },
+          ([true, false] as const).map((on) =>
+            h(
+              'button',
+              {
+                class: `btn${recorded === on ? ' on' : ''}`,
+                'aria-pressed': String(recorded === on),
+                onclick: () => {
+                  setVoiceChoice({ recorded: on });
+                  draw();
+                  speak(SAMPLES[0][1], SAMPLES[0][2]);
+                },
+              },
+              on ? 'Grabadas' : 'Navegador',
+            ),
+          ),
+        ),
+      ),
+      h(
+        'div',
+        { class: 'row voice-tests' },
+        SAMPLES.map(([who, line, spec]) => h('button', { class: 'btn', onclick: () => speak(line, spec) }, `▶ ${who}`)),
+      ),
+      h('h4', null, 'Voz del navegador', h('small', null, ' · for practice words, battles and anything not recorded')),
+    );
     if (!speechAvailable()) {
-      el.append(h('p', { class: 'warn-box' }, 'No Spanish voice was found on this device, so nothing can be read aloud. To add one:'), howTo());
+      el.append(h('p', { class: 'warn-box' }, 'No Spanish voice was found in this browser, so practice words are silent (story dialogue still plays). To add one:'), howTo());
       return;
     }
     const voices = spanishVoices();
@@ -48,8 +93,7 @@ export function voicesPanel(): HTMLElement {
       sel.addEventListener('change', () => {
         setVoiceChoice({ [g]: sel.value || undefined });
         draw();
-        const sample = SAMPLES.find(([, , v]) => v.gender === g)!;
-        speak(sample[1], sample[2]);
+        speak(BROWSER_TEST[g], { gender: g });
       });
       return h('label', { class: 'voice-pick' }, h('span', null, text), sel);
     };
@@ -59,7 +103,7 @@ export function voicesPanel(): HTMLElement {
       h(
         'div',
         { class: 'row voice-tests' },
-        SAMPLES.map(([who, line, spec]) => h('button', { class: 'btn', onclick: () => speak(line, spec) }, `▶ ${who}`)),
+        (['f', 'm'] as const).map((g) => h('button', { class: 'btn', onclick: () => speak(BROWSER_TEST[g], { gender: g }) }, g === 'f' ? '▶ Mujer' : '▶ Hombre')),
       ),
     );
     const missing = missingVoiceGenders();
@@ -69,7 +113,7 @@ export function voicesPanel(): HTMLElement {
         h(
           'p',
           { class: 'warn-box' },
-          `This device has no ${which} Spanish voice, so those characters use a pitch-shifted version of another voice. For real ${which} voices:`,
+          `This browser has no ${which} Spanish voice, so practice words and battle lines use a pitch-shifted version of another voice (story dialogue is recorded, so it isn't affected). For real ${which} voices:`,
         ),
         howTo(),
       );

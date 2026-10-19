@@ -19,6 +19,7 @@ import { WORDS, withArticle } from '../data/vocab';
 import { verbsUpToChapter, tensesUpToChapter, TENSES, TABLE_PERSONS } from '../data/verbs';
 import { RULES, TOPIC_CH } from '../data/grammar';
 import meta from '../data/generated/meta.json';
+import { VOICE_CREDITS } from '../engine/voiceover';
 import { MAX_BOX } from '../learn/srs';
 import { makeChallenge, type ChallengeStyle } from '../learn/challenges';
 import { record } from '../learn/srs';
@@ -542,7 +543,7 @@ const ajustes: View = (game, el, rerender, close) => {
       [true, 'On'],
       [false, 'Off'],
     ]),
-    seg('voice', 'Voz · Spanish voice', speechAvailable() ? `Reads Spanish aloud with: ${voiceName()}` : 'No Spanish voice found in this browser/OS. Add one in your system settings.', [
+    seg('voice', 'Voz · Spanish voice', `Story dialogue: recorded voices from Spain. Practice words: ${speechAvailable() ? voiceName() : 'no voice in this browser (see Voces below)'}.`, [
       [true, 'On'],
       [false, 'Off'],
     ]),
@@ -667,6 +668,8 @@ const ajustes: View = (game, el, rerender, close) => {
         Object.entries(meta.licenses).map(([what, license]) => h('li', null, `${what} — ${license}`)),
       ),
       h('p', null, 'Every example sentence keeps its Tatoeba author credit in the game data.'),
+      h('p', null, 'Recorded dialogue, made with ', h('code', null, 'npm run voices'), ':'),
+      h('ul', null, VOICE_CREDITS.map(([what, license]) => h('li', null, `${what} — ${license}`))),
     ),
   );
 };

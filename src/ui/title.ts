@@ -71,7 +71,7 @@ export function showTitle(): Promise<TitleResult> {
       items.push({ label: '✨ Nueva partida', sub: 'New game' });
       items.push({ label: '❓ Cómo se juega', sub: 'How to play' });
       const host = h('div', { style: { width: '100%', display: 'flex', justifyContent: 'center' } });
-      inner.append(host, h('p', { class: 'footnote' }, 'Arrow keys or tap · Enter to choose. Best with sound on: Spanish is read aloud by your browser’s voice.'));
+      inner.append(host, h('p', { class: 'footnote' }, 'Arrow keys or tap · Enter to choose. Best with sound on: every character speaks their lines in Spanish from Spain.'));
       void menu(host, items).then((i) => {
         unlockAudio();
         playMusic('town');

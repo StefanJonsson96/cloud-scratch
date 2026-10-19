@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "data": "tsx scripts/data/build.ts"
+    "data": "tsx scripts/data/build.ts",
+    "voices": "tsx scripts/voices/lines.ts | python3 scripts/voices/render.py"
   },
   "devDependencies": {
     "@jirimracek/conjugate-esp": "2.3.6",

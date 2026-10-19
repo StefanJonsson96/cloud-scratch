@@ -7,6 +7,7 @@ let ctx: AudioContext | null = null;
 let master: GainNode;
 let musicGain: GainNode;
 let sfxGain: GainNode;
+let voiceGain: GainNode;
 
 // ------------------------------------------------------------------ volume
 /** Volume settings belong to the device, not the save game. */
@@ -61,8 +62,9 @@ function applyGains() {
   if (!ctx) return;
   const t = ctx.currentTime;
   master.gain.setTargetAtTime(prefs.muted ? 0 : 0.5, t, 0.02);
-  musicGain.gain.setTargetAtTime(0.5 * prefs.music, t, 0.02);
+  musicGain.gain.setTargetAtTime(0.5 * prefs.music * (voiceSrc ? DUCK : 1), t, 0.02);
   sfxGain.gain.setTargetAtTime(0.7 * prefs.sfx, t, 0.02);
+  voiceGain.gain.setTargetAtTime(prefs.muted ? 0 : prefs.voice, t, 0.02);
 }
 
 function ac(): AudioContext | null {
@@ -76,10 +78,66 @@ function ac(): AudioContext | null {
   musicGain.connect(master);
   sfxGain = ctx.createGain();
   sfxGain.connect(master);
+  // Voices skip the master bus: speech should be as loud as the system voice was.
+  voiceGain = ctx.createGain();
+  voiceGain.connect(ctx.destination);
+  voiceGain.gain.value = prefs.muted ? 0 : prefs.voice;
   master.gain.value = prefs.muted ? 0 : 0.5;
   musicGain.gain.value = 0.5 * prefs.music;
   sfxGain.gain.value = 0.7 * prefs.sfx;
   return ctx;
+}
+
+// ------------------------------------------------------------------ voices
+/** Music drops to this while someone speaks. */
+const DUCK = 0.35;
+let voiceSrc: AudioBufferSourceNode | null = null;
+
+/** Decode compressed audio (the recorded dialogue). */
+export async function decodeAudio(data: ArrayBuffer): Promise<AudioBuffer | null> {
+  const c = ac();
+  if (!c) return null;
+  try {
+    // Older Safari only has the callback form.
+    return await new Promise<AudioBuffer>((resolve, reject) => {
+      const p = c.decodeAudioData(data, resolve, reject);
+      if (p && typeof p.then === 'function') p.then(resolve, reject);
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Play a recorded line; `rate` changes speed and pitch together (0.9 = deeper, 1.15 = a child). */
+export function playVoiceBuffer(buffer: AudioBuffer, rate = 1, onEnded?: () => void) {
+  const c = ac();
+  if (!c) return;
+  stopVoiceBuffer();
+  const src = c.createBufferSource();
+  src.buffer = buffer;
+  src.playbackRate.value = rate;
+  src.connect(voiceGain);
+  src.onended = () => {
+    if (voiceSrc !== src) return;
+    voiceSrc = null;
+    applyGains();
+    onEnded?.();
+  };
+  voiceSrc = src;
+  applyGains();
+  src.start();
+}
+
+export function stopVoiceBuffer() {
+  const src = voiceSrc;
+  if (!src) return;
+  voiceSrc = null;
+  try {
+    src.stop();
+  } catch {
+    /* already stopped */
+  }
+  applyGains();
 }
 
 /** Browsers only allow audio after a user gesture: call this from one. */

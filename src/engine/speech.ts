@@ -1,12 +1,15 @@
-// Spanish text-to-speech with the browser's built-in voices, preferring voices
-// from Spain (es-ES) so you hear "zumo" with a Castilian "z".
+// Spanish speech. Story dialogue plays its recording (voiceover.ts). Anything
+// else — practice words, battle announcements — uses the browser's built-in
+// voices, preferring voices from Spain (es-ES) so you hear "zumo" with a
+// Castilian "z".
 //
 // Each character has a voice: a gender, and a pitch and speed of their own.
 // When the system has several Spanish voices of the right gender, characters
 // are spread across them so they don't all sound alike. When it has no voice of
-// the right gender, pitch is shifted so a grandmother never sounds like a man.
+// the right gender, pitch is shifted towards it.
 
 import { audioPrefs } from './audio';
+import { hasRecording, playRecorded, stopRecorded } from './voiceover';
 
 export interface VoiceSpec {
   gender: 'f' | 'm';
@@ -35,6 +38,8 @@ const listeners = new Set<() => void>();
 export interface VoiceChoice {
   f?: string;
   m?: string;
+  /** false: read dialogue with the browser's voice instead of the recordings. */
+  recorded?: boolean;
 }
 const CHOICE_KEY = 'palabrista-voices';
 let choice: VoiceChoice = loadChoice();
@@ -72,6 +77,14 @@ export function genderOf(v: SpeechSynthesisVoice): 'f' | 'm' | null {
   if (MALE.test(v.name)) return 'm';
   if (FEMALE.test(v.name)) return 'f';
   return null;
+}
+
+/**
+ * A best guess for voices whose name doesn't say ("Spanish (Spain)", "es-es-x-eea-local"):
+ * Android's are usually female; eSpeak's (Linux) default voice is male.
+ */
+function likelyGender(v: SpeechSynthesisVoice): 'f' | 'm' {
+  return genderOf(v) ?? (/android/i.test(navigator.userAgent) ? 'f' : 'm');
 }
 
 function rank(v: SpeechSynthesisVoice): number {
@@ -150,7 +163,13 @@ export function setSpeechEnabled(on: boolean) {
 }
 
 export function stopSpeaking() {
+  stopRecorded();
   if ('speechSynthesis' in window) speechSynthesis.cancel();
+}
+
+/** Whether a line can be heard: it has a recording, or the browser has a Spanish voice. */
+export function canSpeak(text: string, spec: VoiceSpec = NARRATOR): boolean {
+  return (choice.recorded !== false && hasRecording(text, spec)) || speechAvailable();
 }
 
 function hash(s: string): number {
@@ -165,8 +184,7 @@ export function resolveVoice(spec: VoiceSpec): { voice: SpeechSynthesisVoice | n
   // The player's own pick wins.
   const chosen = byName(choice[spec.gender]);
   if (chosen) {
-    const g = genderOf(chosen);
-    if (g && g !== spec.gender) pitch *= spec.gender === 'f' ? 1.45 : 0.72;
+    if (likelyGender(chosen) !== spec.gender) pitch *= spec.gender === 'f' ? 1.45 : 0.72;
     return { voice: chosen, pitch };
   }
   const own = pools[spec.gender];
@@ -178,27 +196,24 @@ export function resolveVoice(spec: VoiceSpec): { voice: SpeechSynthesisVoice | n
   }
   const voice = pools.any[0] ?? null;
   // No voice of the right gender: shift the pitch towards it.
-  // Unnamed voices (Android) are usually female, so men get a lower pitch.
-  if (voice) {
-    const other = genderOf(voice);
-    if (spec.gender === 'f' && other === 'm') pitch *= 1.45;
-    if (spec.gender === 'm' && other !== 'm') pitch *= other === 'f' ? 0.72 : 0.85;
-  }
+  if (voice && likelyGender(voice) !== spec.gender) pitch *= spec.gender === 'f' ? 1.45 : 0.72;
   return { voice, pitch };
 }
 
-/** Read Spanish aloud. Stops whatever was being said before. */
+/** Read Spanish aloud: the recording if there is one, otherwise the browser's voice. Stops whatever was being said before. */
 export function speak(text: string, spec: VoiceSpec | number = NARRATOR) {
   const prefs = audioPrefs();
-  if (!enabled || prefs.muted || prefs.voice <= 0 || !speechAvailable()) return;
+  if (!enabled || prefs.muted || prefs.voice <= 0) return;
   const v = typeof spec === 'number' ? { ...NARRATOR, rate: spec } : spec;
+  stopSpeaking();
+  if (choice.recorded !== false && playRecorded(text, v)) return;
+  if (!speechAvailable()) return;
   const clean = text
     .replace(/[_]{2,}/g, '…')
     .replace(/\[|\]/g, '')
     .replace(/[«»“”]/g, '');
   if (!/[a-záéíóúñü0-9]/i.test(clean)) return; // "……" — nothing to say
   try {
-    speechSynthesis.cancel();
     const { voice, pitch } = resolveVoice(v);
     const u = new SpeechSynthesisUtterance(clean);
     u.voice = voice;

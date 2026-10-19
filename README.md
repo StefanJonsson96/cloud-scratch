@@ -22,13 +22,11 @@ Prefer a single file? `npm run build` writes `dist/index.html`, which runs strai
 double-click it, or put it on a phone. Your progress is saved in the browser; *Menú → Ajustes* gives
 you a save code to carry it to another device.
 
-**Sound:** every line of dialogue is read aloud by your browser's text-to-speech, and each
-character has their own voice — women and girls get a female Spanish voice, men and boys a male one,
-each with their own pitch and pace. The game prefers Spain (es-ES) voices: on Windows that's
-*Microsoft Helena/Laura/Pablo* (Edge adds natural voices like *Elvira* and *Álvaro*), on macOS
-*Mónica/Jorge*, and Chrome ships *Google español*. With only one voice installed, pitch is shifted
-to tell characters apart. If you hear nothing, add a Spanish voice in your OS settings. Mute and
-volume (music, effects, voices) are the 🔊 and 🎚️ buttons in the corner.
+**Sound:** every line of story dialogue is recorded with neural Spanish-from-Spain voices — a
+female voice for women and girls, male voices for men — so characters sound right on any device,
+each at their own pitch and pace (*Abuela* slower and lower, the children higher). Practice words
+and battle announcements use your browser's Spanish voice (*Menú → Ajustes → Voces* shows which, and
+how to add one). Mute and volume (music, effects, voices) are the 🔊 and 🎚️ buttons in the corner.
 
 ## How it plays
 
@@ -131,6 +129,10 @@ Data credits: [Wiktionary](https://en.wiktionary.org) (CC BY-SA 4.0) and
 [conjugate-esp](https://github.com/jirimracek/conjugate-esp) and
 [compromise](https://github.com/spencermountain/compromise) (MIT). The generated data is shared under
 CC BY-SA 4.0 — see [its README](https://github.com/StefanJonsson96/palabrista/blob/main/src/data/generated/README.md).
+Recorded dialogue: [Piper](https://github.com/rhasspy/piper) voices *sharvard* (CC BY 3.0, Sharvard
+corpus, University of Edinburgh) and *davefx* (CC0), made with
+[sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) — see
+[the voices README](https://github.com/StefanJonsson96/palabrista/blob/main/src/data/generated/voices/README.md).
 
 ## Controls
 
@@ -153,6 +155,7 @@ src/
   data/       the curriculum, tense and grammar rules, items, and generated/ (built by `npm run data`)
   learn/      answer checking (incl. the live Wiktionary check), spaced repetition, challenges, tap-to-translate
 scripts/data/ the data build: reads Wiktionary, Tatoeba and conjugate-esp, writes src/data/generated/
+scripts/voices/ records the story dialogue (`npm run voices`), writes src/data/generated/voices/
   battle/     rules (turn order, damage, combos, enemy AI), enemies, classes & talents, controller and screen
   world/      tiles, maps, overworld engine
   story/      the scripts for every chapter, and the objective for each stage

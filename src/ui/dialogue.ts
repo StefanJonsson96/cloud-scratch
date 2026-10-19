@@ -3,7 +3,7 @@
 
 import { pushLayer } from '../engine/input';
 import { sfx } from '../engine/audio';
-import { speak, speechAvailable, NARRATOR, type VoiceSpec } from '../engine/speech';
+import { speak, canSpeak, NARRATOR, type VoiceSpec } from '../engine/speech';
 import { portrait as portraitCanvas, hasSprite } from '../engine/sprites';
 import type { Settings } from '../state';
 import { h, clear, menu } from './dom';
@@ -102,7 +102,7 @@ export class Dialogue {
         'EN',
       );
       if (!always) this.tools.append(enBtn);
-      if (this.settings().voice && speechAvailable()) {
+      if (this.settings().voice && canSpeak(line.es, line.voice ?? NARRATOR)) {
         this.tools.append(h('button', { class: 'dlg-tool no-advance', title: 'Listen again (R)', onclick: () => this.speak(line) }, '🔊'));
         if (this.settings().autoVoice) this.speak(line);
       }

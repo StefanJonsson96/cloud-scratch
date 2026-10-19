@@ -17,6 +17,8 @@ import { sfx, playMusic } from '../engine/audio';
 import { speechAvailable, type VoiceSpec } from '../engine/speech';
 import { spanish } from '../ui/spanish';
 import { agree } from './agree';
+import { CAST_VOICES, heroVoice } from './voices';
+import { preloadVoices } from '../engine/voiceover';
 
 export type ScriptFn = (s: Script) => Promise<void>;
 export const SCRIPTS: Record<string, ScriptFn> = {};
@@ -32,35 +34,33 @@ export interface Speaker {
   voice?: VoiceSpec;
 }
 
-const v = (id: string, gender: 'f' | 'm', pitch = 1, rate = 1): VoiceSpec => ({ id, gender, pitch, rate });
-
 export const CAST: Record<string, Speaker> = {
-  abuela: { name: 'Abuela Rosa', face: 'abuela', voice: v('abuela', 'f', 0.85, 0.86) },
-  mateo: { name: 'Mateo', face: 'mateo', voice: v('mateo', 'm', 1.1, 1.05) },
-  lola: { name: 'Lola', face: 'lola', voice: v('lola', 'f', 1.1, 1.05) },
-  ramon: { name: 'Don Ramón', face: 'pescador', voice: v('ramon', 'm', 0.8, 0.9) },
-  carmen: { name: 'Doña Carmen', face: 'vendedora', voice: v('carmen', 'f', 0.95, 0.95) },
-  pepe: { name: 'Pepe', face: 'vecino', voice: v('pepe', 'm', 0.95) },
-  lucia: { name: 'Lucía', face: 'vecina', voice: v('lucia', 'f', 1.05) },
-  nino: { name: 'Dani', face: 'nino', voice: v('nino', 'm', 1.5, 1.08) },
-  guardia: { name: 'Guardia', face: 'guardia', voice: v('guardia', 'm', 0.85, 0.95) },
-  peregrina: { name: 'Peregrina', face: 'peregrina', voice: v('peregrina', 'f', 1) },
-  monje: { name: 'Hermano Tomás', face: 'monje', voice: v('monje', 'm', 0.8, 0.85) },
-  callado: { name: 'El Callado', face: 'callado', voice: v('callado', 'm', 0.6, 0.8) },
-  bruno: { name: 'Bruno', face: 'bruno', voice: v('bruno', 'm', 0.75, 0.9) },
-  voz: { name: '???', voice: v('voz', 'f', 0.9, 0.88) },
-  posadera: { name: 'Doña Pilar', face: 'vecina', voice: v('posadera', 'f', 0.95) },
-  frutera: { name: 'La frutera', face: 'vecina2', voice: v('frutera', 'f', 1.05, 1.05) },
-  quesero: { name: 'El quesero', face: 'vecino2', voice: v('quesero', 'm', 0.9) },
-  pescadera: { name: 'La pescadera', face: 'vecina', voice: v('pescadera', 'f', 1) },
-  tendera: { name: 'Doña Encarna', face: 'vendedora', voice: v('tendera', 'f', 0.9, 0.95) },
-  panadero: { name: 'Don Julián', face: 'vecino', voice: v('panadero', 'm', 0.9) },
-  camarero: { name: 'El camarero', face: 'vecino2', voice: v('camarero', 'm', 1.05, 1.08) },
-  nina: { name: 'Marta', face: 'nino', voice: v('nina', 'f', 1.4, 1.08) },
-  gloton: { name: 'El Glotón', voice: v('gloton', 'm', 0.5, 0.8) },
-  Paco: { name: 'Paco', voice: v('paco', 'm', 0.95) },
-  Leñador: { name: 'Leñador', voice: v('lenador', 'm', 0.75, 0.9) },
-  Alpinista: { name: 'Alpinista', voice: v('alpinista', 'm', 1) },
+  abuela: { name: 'Abuela Rosa', face: 'abuela', voice: CAST_VOICES.abuela },
+  mateo: { name: 'Mateo', face: 'mateo', voice: CAST_VOICES.mateo },
+  lola: { name: 'Lola', face: 'lola', voice: CAST_VOICES.lola },
+  ramon: { name: 'Don Ramón', face: 'pescador', voice: CAST_VOICES.ramon },
+  carmen: { name: 'Doña Carmen', face: 'vendedora', voice: CAST_VOICES.carmen },
+  pepe: { name: 'Pepe', face: 'vecino', voice: CAST_VOICES.pepe },
+  lucia: { name: 'Lucía', face: 'vecina', voice: CAST_VOICES.lucia },
+  nino: { name: 'Dani', face: 'nino', voice: CAST_VOICES.nino },
+  guardia: { name: 'Guardia', face: 'guardia', voice: CAST_VOICES.guardia },
+  peregrina: { name: 'Peregrina', face: 'peregrina', voice: CAST_VOICES.peregrina },
+  monje: { name: 'Hermano Tomás', face: 'monje', voice: CAST_VOICES.monje },
+  callado: { name: 'El Callado', face: 'callado', voice: CAST_VOICES.callado },
+  bruno: { name: 'Bruno', face: 'bruno', voice: CAST_VOICES.bruno },
+  voz: { name: '???', voice: CAST_VOICES.voz },
+  posadera: { name: 'Doña Pilar', face: 'vecina', voice: CAST_VOICES.posadera },
+  frutera: { name: 'La frutera', face: 'vecina2', voice: CAST_VOICES.frutera },
+  quesero: { name: 'El quesero', face: 'vecino2', voice: CAST_VOICES.quesero },
+  pescadera: { name: 'La pescadera', face: 'vecina', voice: CAST_VOICES.pescadera },
+  tendera: { name: 'Doña Encarna', face: 'vendedora', voice: CAST_VOICES.tendera },
+  panadero: { name: 'Don Julián', face: 'vecino', voice: CAST_VOICES.panadero },
+  camarero: { name: 'El camarero', face: 'vecino2', voice: CAST_VOICES.camarero },
+  nina: { name: 'Marta', face: 'nino', voice: CAST_VOICES.nina },
+  gloton: { name: 'El Glotón', voice: CAST_VOICES.gloton },
+  Paco: { name: 'Paco', voice: CAST_VOICES.paco },
+  Leñador: { name: 'Leñador', voice: CAST_VOICES.lenador },
+  Alpinista: { name: 'Alpinista', voice: CAST_VOICES.alpinista },
 };
 
 export class Script {
@@ -76,7 +76,7 @@ export class Script {
   }
 
   private speaker(who: string): Speaker {
-    if (who === 'hero') return { name: this.g.heroName, face: 'hero', voice: { id: 'hero', gender: this.g.gender ?? 'm' } };
+    if (who === 'hero') return { name: this.g.heroName, face: 'hero', voice: heroVoice(this.g.gender ?? 'm') };
     return CAST[who] ?? { name: who };
   }
 
@@ -240,6 +240,7 @@ export class Script {
   async chapter(n: number, title: string, en: string, learn: string) {
     this.end();
     this.g.chapter = Math.max(this.g.chapter, n);
+    preloadVoices(`ch${Math.max(1, n)}`);
     const card = h(
       'div',
       { class: 'chapter-card' },
