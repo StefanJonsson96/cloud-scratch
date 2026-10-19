@@ -6,14 +6,14 @@ A grey fog called *El Silencio* is stealing the words of a little coastal villag
 the last *Palabrista* (word-mage), is struck silent. With Mateo the fisherman's son and Lola the
 flamenco guitarist, you travel up the coast to the Mute Tower to win the words back.
 
-![A battle: enemies announce their next move in Spanish](https://github.com/StefanJonsson96/cloud-scratch/blob/main/docs/battle.png?raw=true)
+![A battle: enemies announce their next move in Spanish](https://github.com/StefanJonsson96/palabrista/blob/main/docs/battle.png?raw=true)
 
 ## Run it
 
 You need [Node.js](https://nodejs.org) 20 or newer.
 
 ```bash
-git clone https://github.com/StefanJonsson96/cloud-scratch.git; cd cloud-scratch; npm install; npm run dev
+git clone https://github.com/StefanJonsson96/palabrista.git; cd palabrista; npm install; npm run dev
 ```
 
 Then open the address it prints (usually <http://localhost:5173>).
@@ -60,7 +60,7 @@ volume (music, effects, voices) are the 🔊 and 🎚️ buttons in the corner.
 - **No clock.** Take as long as you need to read and answer. (Want pressure? Turn on the speed bonus
   in *Ajustes*.) Lost a fight? Each retry gives you *¡Ánimo!* — the enemies get a bit weaker.
 
-![Choose a class: each changes how you grow, adds a skill and a passive](https://github.com/StefanJonsson96/cloud-scratch/blob/main/docs/classes.png?raw=true)
+![Choose a class: each changes how you grow, adds a skill and a passive](https://github.com/StefanJonsson96/palabrista/blob/main/docs/classes.png?raw=true)
 
 ### Classes and talents
 
@@ -76,7 +76,7 @@ knockout once per battle), *Maestro de combos*, *Buena memoria* (hints stop lowe
 
 ## What it teaches (and why)
 
-![After a wrong answer you get the full conjugation table](https://github.com/StefanJonsson96/cloud-scratch/blob/main/docs/explain.png?raw=true)
+![After a wrong answer you get the full conjugation table](https://github.com/StefanJonsson96/palabrista/blob/main/docs/explain.png?raw=true)
 
 It's built to sit next to Duolingo and fill the gaps an app course tends to leave:
 
@@ -100,7 +100,7 @@ It's built to sit next to Duolingo and fill the gaps an app course tends to leav
 
 Change it any time in *Menú → Ajustes*; the Grimorio shows the tenses and notes for your level.
 
-![Every Spanish word is tappable; EN shows the whole line](https://github.com/StefanJonsson96/cloud-scratch/blob/main/docs/dialogue.png?raw=true)
+![Every Spanish word is tappable; EN shows the whole line](https://github.com/StefanJonsson96/palabrista/blob/main/docs/dialogue.png?raw=true)
 
 **Translations are always available.** Tap (or hover) any underlined word for its meaning — every
 word in the story has an entry, including conjugated verbs. Press **EN** (or **T**) for the whole
@@ -122,7 +122,7 @@ There's no hand-written dictionary. The curriculum (`src/data/curriculum.ts`) on
 words each chapter teaches; `npm run data` looks everything else up in open data — meanings,
 genders, forms, synonyms and regional labels from **Wiktionary**, real example sentences and
 grammar drills from **Tatoeba**, and every verb form from **conjugate-esp** — and writes
-`src/data/generated/`. See [docs/content.md](https://github.com/StefanJonsson96/cloud-scratch/blob/main/docs/content.md) for how to add words and how answers
+`src/data/generated/`. See [docs/content.md](https://github.com/StefanJonsson96/palabrista/blob/main/docs/content.md) for how to add words and how answers
 are graded.
 
 Data credits: [Wiktionary](https://en.wiktionary.org) (CC BY-SA 4.0) and
@@ -130,7 +130,7 @@ Data credits: [Wiktionary](https://en.wiktionary.org) (CC BY-SA 4.0) and
 [FrequencyWords](https://github.com/hermitdave/FrequencyWords) (CC BY-SA 4.0),
 [conjugate-esp](https://github.com/jirimracek/conjugate-esp) and
 [compromise](https://github.com/spencermountain/compromise) (MIT). The generated data is shared under
-CC BY-SA 4.0 — see [its README](https://github.com/StefanJonsson96/cloud-scratch/blob/main/src/data/generated/README.md).
+CC BY-SA 4.0 — see [its README](https://github.com/StefanJonsson96/palabrista/blob/main/src/data/generated/README.md).
 
 ## Controls
 
