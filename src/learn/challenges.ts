@@ -30,6 +30,7 @@ import {
 import { sentencesUpToChapter, tokenize, type Sentence } from '../data/sentences';
 import { grammarUpToChapter, RULES, TOPIC_CH, type GrammarItem, type GrammarTopic } from '../data/grammar';
 import { boxOf, isNew, pick, type SrsState } from './srs';
+import type { Variant } from '../data/types';
 
 export type ChallengeStyle = 'vocab' | 'quick' | 'verb' | 'sentence';
 export type ChallengeKind = 'choice' | 'type' | 'order';
@@ -52,6 +53,13 @@ export interface Challenge {
   options?: string[];
   answer?: number;
   accepted?: string[];
+  /** Other right answers for a typed translation (synonyms, slang, regional words). */
+  variants?: readonly Variant[];
+  /**
+   * For a typed translation: the English meaning and the Spain word, so an
+   * answer we don't know can still be checked against Wiktionary.
+   */
+  live?: { meaning: string; spain: string };
   article?: 'el' | 'la';
   tiles?: string[];
   solutions?: string[][];
@@ -127,8 +135,10 @@ export function distractors(
   filter?: (d: Word, chosen: Word[]) => boolean,
 ): Word[] {
   const parts = (x: Word) => x.en.split(' / ');
+  // Not another right answer either: "bueno" can't be a wrong option for "vale" (okay).
+  const alike = (a: Word, b: Word) => (a.variants ?? []).some((v) => b.forms.includes(v.form));
   const bad = (d: Word) =>
-    d.id === w.id || d.en === w.en || d.bare === w.bare || parts(d).some((p) => parts(w).includes(p));
+    d.id === w.id || d.en === w.en || d.bare === w.bare || parts(d).some((p) => parts(w).includes(p)) || alike(w, d) || alike(d, w);
   const ch = Math.max(chapter, 1);
   // Advanced words only show up as wrong answers for advanced words.
   const usable = WORDS.filter((d) => !d.lvl || w.lvl);
@@ -251,6 +261,8 @@ export function vocabChallenge(ctx: ChallengeContext): Challenge {
       sub: posHint(w),
       hint: (w.pos === 'noun' && w.article ? `${w.article} … ` : '') + firstLetters(w.forms[0].replace(/[¿?¡!…]/g, '')),
       accepted: w.forms,
+      variants: w.variants,
+      live: { meaning: w.en, spain: w.bare },
       article: w.gender === 'm' || w.gender === 'f' ? w.article : undefined,
       difficulty: 1.3,
       maxBox: 5,
@@ -570,7 +582,7 @@ export function verbChallenge(ctx: ChallengeContext): Challenge {
     promptLang: 'es' as const,
     sub: en,
     hint: conjugationHint(v, person, tense),
-    reveal: { es: tense === 'imperativo' ? `¡${cap(form)}!` : `${person} ${form}`, en: `${en}  ·  ${v.inf} = to ${v.en.base}` },
+    reveal: { es: tense === 'imperativo' ? `¡${cap(form)}!` : `${person} ${form}`, en: `${en}  ·  ${v.inf} = to ${v.en.base}${v.en.sense ? ` (${v.en.sense})` : ''}` },
     note:
       tense === 'presente' && person !== 'vosotros'
         ? undefined

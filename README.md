@@ -114,6 +114,27 @@ quick ten-question review anywhere.
 A spaced-repetition scheduler decides what you practise: shaky words come back soon, known words
 fade into the background, and mastered ones return days later.
 
+**More than one right answer.** Typed answers accept synonyms and slang (*porfa* for *por favor*,
+*andar* for *caminar*, *boli* for *bolígrafo*) with a note, and Latin American words count as
+"almost" with the Spain word shown (*carro* → *coche*, *jugo* → *zumo*). If you type something the
+game doesn't know, it checks Wiktionary before marking it wrong.
+
+## Where the Spanish comes from
+
+There's no hand-written dictionary. The curriculum (`src/data/curriculum.ts`) only lists which
+words each chapter teaches; `npm run data` looks everything else up in open data — meanings,
+genders, forms, synonyms and regional labels from **Wiktionary**, real example sentences and
+grammar drills from **Tatoeba**, and every verb form from **conjugate-esp** — and writes
+`src/data/generated/`. See [docs/content.md](docs/content.md) for how to add words and how answers
+are graded.
+
+Data credits: [Wiktionary](https://en.wiktionary.org) (CC BY-SA 4.0) and
+[Tatoeba](https://tatoeba.org) (CC BY 2.0 FR) via [doozan/spanish_data](https://github.com/doozan/spanish_data),
+[FrequencyWords](https://github.com/hermitdave/FrequencyWords) (CC BY-SA 4.0),
+[conjugate-esp](https://github.com/jirimracek/conjugate-esp) and
+[compromise](https://github.com/spencermountain/compromise) (MIT). The generated data is shared under
+CC BY-SA 4.0 — see [its README](src/data/generated/README.md).
+
 ## Controls
 
 | | Keyboard | Touch |
@@ -132,8 +153,9 @@ fade into the background, and mastered ones return days later.
 
 ```
 src/
-  data/       vocabulary, verbs (all tenses), grammar drills, sentences, items, glossary
-  learn/      answer checking, spaced repetition, challenge generator, tap-to-translate dictionary
+  data/       the curriculum, tense and grammar rules, items, and generated/ (built by `npm run data`)
+  learn/      answer checking (incl. the live Wiktionary check), spaced repetition, challenges, tap-to-translate
+scripts/data/ the data build: reads Wiktionary, Tatoeba and conjugate-esp, writes src/data/generated/
   battle/     rules (turn order, damage, combos, enemy AI), enemies, classes & talents, controller and screen
   world/      tiles, maps, overworld engine
   story/      the scripts for every chapter, and the objective for each stage
@@ -144,7 +166,8 @@ tests/        learning logic, battle rules, and map/story integrity
 tech-debt/    known shortcuts we intend to fix later
 ```
 
-`npm test` runs the test suite: answer checking, conjugations (all eight tenses), the scheduler,
+`npm test` runs the test suite: answer checking (including synonyms, slang and regional words),
+the generated data, conjugations (all eight tenses), the scheduler,
 the Spanish levels, battle rules, classes and talents, and checks that every map is walkable, every
 exit leads somewhere, every story stage has an objective, and every Spanish word in the story has a
 translation.

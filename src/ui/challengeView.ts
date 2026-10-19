@@ -3,6 +3,7 @@
 
 import { checkOrder, type Challenge } from '../learn/challenges';
 import { checkTyped, type Grade } from '../learn/check';
+import { liveVariant } from '../learn/live';
 import { pushLayer } from '../engine/input';
 import { sfx } from '../engine/audio';
 import { speak, speechAvailable } from '../engine/speech';
@@ -25,6 +26,8 @@ export interface ChallengeOptions {
   timed?: boolean;
   /** Hints don't lower the grade (the Buena memoria talent). */
   freeHint?: boolean;
+  /** Ask Wiktionary about typed answers we don't recognise (the "online check" setting). */
+  liveCheck?: boolean;
 }
 
 /** Time to answer for the speed bonus: the challenge's own allowance plus time to read it. */
@@ -97,8 +100,10 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
       sfx('blip');
     }
 
+    // When the answer was given (an online check afterwards doesn't count against the clock).
+    let answeredAt: number | undefined;
     function gradeFor(correct: boolean, typed?: Grade): Grade {
-      const ms = performance.now() - t0;
+      const ms = (answeredAt ?? performance.now()) - t0;
       if (!correct) return 'wrong';
       if (typed === 'close') return 'close';
       if (usedHint && !opts.freeHint) return 'close';
@@ -181,17 +186,30 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
     }
     let typedValue = '';
     let typedNote: string | undefined;
-    function submitTyped() {
-      if (answered || !input) return;
+    let checking = false;
+    async function submitTyped() {
+      if (answered || checking || !input) return;
       typedValue = input.value;
       if (!typedValue.trim()) {
         input.classList.add('shake');
         setTimeout(() => input?.classList.remove('shake'), 300);
         return;
       }
-      const r = checkTyped(typedValue, ch.accepted!, { article: ch.article, accentsOptional: opts.accentsOptional });
-      typedNote = r.note;
+      answeredAt = performance.now();
+      let r = checkTyped(typedValue, ch.accepted!, { article: ch.article, accentsOptional: opts.accentsOptional, variants: ch.variants });
       input.disabled = true;
+      if (r.grade === 'wrong' && ch.live && opts.liveCheck) {
+        // Not a word we know: maybe it's still right. Ask Wiktionary (a few seconds at most).
+        checking = true;
+        const status = h('div', { class: 'cc-checking' }, '📖 Comprobando en Wiktionary… · Checking Wiktionary…');
+        body.append(status);
+        const v = await liveVariant(typedValue, ch.live.meaning, ch.live.spain);
+        status.remove();
+        checking = false;
+        if (answered) return;
+        if (v) r = { grade: v.kind === 'regional' ? 'close' : 'correct', note: v.note, matched: v.form };
+      }
+      typedNote = r.note;
       input.classList.add(r.grade === 'wrong' ? 'wrong' : r.grade === 'close' ? 'close' : 'right');
       finish(gradeFor(r.grade !== 'wrong', r.grade));
     }
@@ -266,7 +284,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
     async function finish(grade: Grade) {
       if (answered) return;
       answered = true;
-      const ms = performance.now() - t0;
+      const ms = (answeredAt ?? performance.now()) - t0;
       card.classList.add('answered', GRADE_TEXT[grade].cls);
       timerFill.style.animationPlayState = 'paused';
       for (const b of card.querySelectorAll<HTMLButtonElement>('.cc-option, .cc-tile, .cc-accent, .cc-submit, .cc-dunno')) b.disabled = true;
@@ -278,7 +296,7 @@ export function runChallenge(host: HTMLElement, ch: Challenge, opts: ChallengeOp
       appendAll(
         result,
         h('div', { class: 'cc-banner' }, h('strong', null, g.es), h('span', null, g.en)),
-        typedNote && grade === 'close' ? h('div', { class: 'cc-typed-note' }, typedNote) : null,
+        typedNote && grade !== 'wrong' ? h('div', { class: 'cc-typed-note' }, typedNote) : null,
         ch.kind === 'type' && grade === 'wrong' && typedValue ? h('div', { class: 'cc-yours' }, `You wrote: “${typedValue}”`) : null,
         h(
           'div',

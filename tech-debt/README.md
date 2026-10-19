@@ -6,7 +6,7 @@ would look like, so whoever picks it up doesn't have to rediscover the context.
 
 | # | Item | Added |
 | --- | --- | --- |
-| 001 | [Spanish content is hardcoded in TypeScript](001-hardcoded-spanish-content.md) | 2026-10 |
+| 002 | [Generated synonyms and sentences are picked by rules, not reviewed](002-generated-content-is-not-reviewed.md) | 2026-10 |
 
 ## Adding an item
 

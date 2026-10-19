@@ -3,7 +3,7 @@
 
 import { script, type Script } from './script';
 import { choiceChallenge } from './common';
-import { tokenize } from '../data/sentences';
+import { tokenize } from '../data/text';
 import type { Challenge } from '../learn/challenges';
 import { h, wait, waitConfirm } from '../ui/dom';
 import { dayStreak } from '../state';

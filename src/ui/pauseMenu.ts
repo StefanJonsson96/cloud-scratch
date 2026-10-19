@@ -18,6 +18,7 @@ import { ITEMS, ACCESSORIES } from '../data/items';
 import { WORDS, withArticle } from '../data/vocab';
 import { verbsUpToChapter, tensesUpToChapter, TENSES, TABLE_PERSONS } from '../data/verbs';
 import { RULES, TOPIC_CH } from '../data/grammar';
+import meta from '../data/generated/meta.json';
 import { MAX_BOX } from '../learn/srs';
 import { makeChallenge, type ChallengeStyle } from '../learn/challenges';
 import { record } from '../learn/srs';
@@ -352,7 +353,7 @@ function verbs(game: Game, el: HTMLElement) {
     ...tenses.map((t) => h('div', { class: 'rule' }, h('h4', null, `${TENSES[t].es} — ${TENSES[t].en}`), h('div', null, TENSES[t].rule))),
   );
   const pick = h('select', { id: 'verb-pick', 'aria-label': 'Verb' }) as HTMLSelectElement;
-  for (const v of list) pick.append(h('option', { value: v.inf }, `${v.inf} — to ${v.en.base}`));
+  for (const v of list) pick.append(h('option', { value: v.inf }, `${v.inf} — to ${v.en.base}${v.en.sense ? ` (${v.en.sense})` : ''}`));
   const table = h('div', { class: 'scroll-x' });
   el.append(h('div', { class: 'row' }, h('label', { for: 'verb-pick' }, 'Verbo: '), pick), table);
   const render = () => {
@@ -487,6 +488,7 @@ const repaso: View = (game, el) => {
         timed: g.settings.speedBonus,
         freeHint: g.talents.includes('memoria'),
         accentsOptional: g.settings.level === 'a1',
+        liveCheck: g.settings.liveCheck,
       });
       if (ch.srs) record(g.srs, ch.key, r.grade, Date.now(), ch.maxBox);
       g.stats.answered++;
@@ -557,6 +559,10 @@ const ajustes: View = (game, el, rerender, close) => {
     seg('speedBonus', 'Bonus de rapidez · Speed bonus', 'Off: take all the time you need. On: a timer bar — answer before it runs out for ×1.25 power.', [
       [false, 'Off'],
       [true, 'On'],
+    ]),
+    seg('liveCheck', 'Comprobar en línea · Online check', 'If you type a word the game doesn’t know (say, a synonym), it asks Wiktionary before marking it wrong. Sends only that word.', [
+      [true, 'On'],
+      [false, 'Off'],
     ]),
     seg('textSpeed', 'Texto · Text speed', '', [
       ['normal', 'Normal'],
@@ -650,5 +656,17 @@ const ajustes: View = (game, el, rerender, close) => {
     code,
     importBox,
     h('button', { class: 'btn', onclick: () => void showHelp() }, '❓ Controles · Controls'),
+    h('h3', null, 'Créditos · Credits'),
+    h(
+      'div',
+      { class: 'muted credits' },
+      h('p', null, 'The Spanish in this game comes from open data, built by ', h('code', null, 'npm run data'), ` from ${meta.source.repo} (${meta.source.date.slice(0, 10)}):`),
+      h(
+        'ul',
+        null,
+        Object.entries(meta.licenses).map(([what, license]) => h('li', null, `${what} — ${license}`)),
+      ),
+      h('p', null, 'Every example sentence keeps its Tatoeba author credit in the game data.'),
+    ),
   );
 };

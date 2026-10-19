@@ -1974,9 +1974,21 @@ textarea {
 
 .cc-banner span,
 .cc-yours,
-.cc-typed-note {
+.cc-typed-note,
+.cc-checking {
   color: #6a5a3a;
   font-size: 0.9em;
+}
+
+.cc-checking {
+  margin-top: 6px;
+  animation: cc-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes cc-pulse {
+  from {
+    opacity: 0.5;
+  }
 }
 
 .cc-reveal {

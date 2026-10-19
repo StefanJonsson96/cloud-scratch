@@ -1,10 +1,13 @@
-// Conjugation data for Lola's verb songs — Spain Spanish, so vosotros is in.
+// Verbs Lola sings, conjugated Spain-style (with vosotros). The forms come from
+// the conjugate-esp library and the English from Wiktionary, both via
+// `npm run data`; this file holds the teaching side: tenses, their time
+// markers and rules, and the hints shown when you ask for help.
 //
-// Tenses unlock as the story goes on:
-//   ch2 presente (regular) · ch3 presente (irregular) · ch4 pretérito perfecto
-//   ch5 pretérito indefinido + imperfecto
 // The perfecto is used the Spanish-from-Spain way: for things that happened
 // "today / this week / this year" (Hoy he comido…), not just "have done".
+
+import VERBS_JSON from './generated/verbs.json';
+import type { GenVerb, Six } from './types';
 
 export type Person = 'yo' | 'tú' | 'él' | 'ella' | 'nosotros' | 'vosotros' | 'ellos' | 'ellas';
 export const PERSONS: Person[] = ['yo', 'tú', 'él', 'ella', 'nosotros', 'vosotros', 'ellos', 'ellas'];
@@ -119,16 +122,7 @@ export function slot(p: Person): number {
   }
 }
 
-type Six = [string, string, string, string, string, string];
-
-export interface Verb {
-  inf: string;
-  en: { base: string; s3: string; past: string; pp: string };
-  /** Chapter in which Lola starts singing it (present tense). */
-  ch: number;
-  irregular: Partial<Record<Tense, true>>;
-  forms: Record<Tense, Six>;
-}
+export type Verb = GenVerb;
 
 const ENDINGS: Record<'presente' | 'indefinido' | 'imperfecto', Record<'ar' | 'er' | 'ir', Six>> = {
   presente: {
@@ -148,53 +142,9 @@ const ENDINGS: Record<'presente' | 'indefinido' | 'imperfecto', Record<'ar' | 'e
   },
 };
 
-export const HABER: Six = ['he', 'has', 'ha', 'hemos', 'habéis', 'han'];
 
-// ------------------------------------------------------------ B1 tenses
-const FUT_ENDINGS: Six = ['é', 'ás', 'á', 'emos', 'éis', 'án'];
-const COND_ENDINGS: Six = ['ía', 'ías', 'ía', 'íamos', 'íais', 'ían'];
-const FUT_STEM: Record<string, string> = {
-  tener: 'tendr', poner: 'pondr', salir: 'saldr', venir: 'vendr', hacer: 'har', decir: 'dir', poder: 'podr', saber: 'sabr', querer: 'querr', haber: 'habr',
-};
 
-function futureStem(inf: string): string {
-  return FUT_STEM[inf] ?? inf;
-}
-
-const SUBJ_IRR: Record<string, Six> = {
-  ser: ['sea', 'seas', 'sea', 'seamos', 'seáis', 'sean'],
-  estar: ['esté', 'estés', 'esté', 'estemos', 'estéis', 'estén'],
-  ir: ['vaya', 'vayas', 'vaya', 'vayamos', 'vayáis', 'vayan'],
-  saber: ['sepa', 'sepas', 'sepa', 'sepamos', 'sepáis', 'sepan'],
-  dar: ['dé', 'des', 'dé', 'demos', 'deis', 'den'],
-  haber: ['haya', 'hayas', 'haya', 'hayamos', 'hayáis', 'hayan'],
-  // Stem-changers keep the infinitive stem in nosotros / vosotros (-ir verbs change too).
-  dormir: ['duerma', 'duermas', 'duerma', 'durmamos', 'durmáis', 'duerman'],
-  pedir: ['pida', 'pidas', 'pida', 'pidamos', 'pidáis', 'pidan'],
-  pensar: ['piense', 'pienses', 'piense', 'pensemos', 'penséis', 'piensen'],
-  volver: ['vuelva', 'vuelvas', 'vuelva', 'volvamos', 'volváis', 'vuelvan'],
-  poder: ['pueda', 'puedas', 'pueda', 'podamos', 'podáis', 'puedan'],
-  querer: ['quiera', 'quieras', 'quiera', 'queramos', 'queráis', 'quieran'],
-  recordar: ['recuerde', 'recuerdes', 'recuerde', 'recordemos', 'recordéis', 'recuerden'],
-  empezar: ['empiece', 'empieces', 'empiece', 'empecemos', 'empecéis', 'empiecen'],
-  jugar: ['juegue', 'juegues', 'juegue', 'juguemos', 'juguéis', 'jueguen'],
-};
-
-/** Present subjunctive from the yo form: hablo → hable, tengo → tenga. */
-function subjunctive(inf: string, yo: string): Six {
-  if (SUBJ_IRR[inf]) return SUBJ_IRR[inf];
-  let stem = yo.endsWith('o') ? yo.slice(0, -1) : inf.slice(0, -2);
-  const ar = inf.endsWith('ar');
-  // Spelling: keep the hard sound before e (toque, llegue, empiece).
-  if (ar) stem = stem.replace(/c$/, 'qu').replace(/g$/, 'gu').replace(/z$/, 'c');
-  const e = ar ? ['e', 'es', 'e', 'emos', 'éis', 'en'] : ['a', 'as', 'a', 'amos', 'áis', 'an'];
-  return e.map((x) => stem + x) as Six;
-}
-
-const IMP_TU: Record<string, string> = { tener: 'ten', hacer: 'haz', decir: 'di', poner: 'pon', salir: 'sal', venir: 'ven', ir: 've', ser: 'sé' };
-/** Verbs that don't really have commands. */
-const NO_IMPERATIVE = new Set(['poder', 'saber', 'querer', 'haber']);
-
+/** The regular forms of a tense (to explain endings in hints). */
 export function regular(inf: string, tense: 'presente' | 'indefinido' | 'imperfecto'): Six {
   const ending = inf.slice(-2) as 'ar' | 'er' | 'ir';
   const e = ENDINGS[tense][ending];
@@ -203,190 +153,27 @@ export function regular(inf: string, tense: 'presente' | 'indefinido' | 'imperfe
   return e.map((x) => stem + x) as Six;
 }
 
-const IRREGULAR_PP: Record<string, string> = {
-  hacer: 'hecho', decir: 'dicho', ver: 'visto', escribir: 'escrito', volver: 'vuelto', poner: 'puesto',
-  abrir: 'abierto', romper: 'roto', morir: 'muerto', leer: 'leído', creer: 'creído', oír: 'oído', traer: 'traído',
-};
+const FUT_ENDINGS: Six = ['é', 'ás', 'á', 'emos', 'éis', 'án'];
+const COND_ENDINGS: Six = ['ía', 'ías', 'ía', 'íamos', 'íais', 'ían'];
 
+/** The stem the future and conditional are built on: "tendr-" for tener, the infinitive otherwise. */
+function futureStem(inf: string): string {
+  const yo = VERB_BY_INF.get(inf)?.forms.futuro[0];
+  return yo ? yo.slice(0, -1) : inf;
+}
+
+export const VERBS: readonly Verb[] = VERBS_JSON as Verb[];
+export const VERB_BY_INF: ReadonlyMap<string, Verb> = new Map(VERBS.map((v) => [v.inf, v]));
+
+/** The past participle: "hablado", "hecho". */
 export function participle(inf: string): string {
-  if (IRREGULAR_PP[inf]) return IRREGULAR_PP[inf];
-  return inf.slice(0, -2) + (inf.endsWith('ar') ? 'ado' : 'ido');
+  const v = VERB_BY_INF.get(inf);
+  return v ? v.forms.perfecto[0].split(' ')[1] : inf.slice(0, -2) + (inf.endsWith('ar') ? 'ado' : 'ido');
 }
-
-const IRR: Record<string, Partial<Record<'presente' | 'indefinido' | 'imperfecto', Six>>> = {
-  ser: {
-    presente: ['soy', 'eres', 'es', 'somos', 'sois', 'son'],
-    indefinido: ['fui', 'fuiste', 'fue', 'fuimos', 'fuisteis', 'fueron'],
-    imperfecto: ['era', 'eras', 'era', 'éramos', 'erais', 'eran'],
-  },
-  estar: {
-    presente: ['estoy', 'estás', 'está', 'estamos', 'estáis', 'están'],
-    indefinido: ['estuve', 'estuviste', 'estuvo', 'estuvimos', 'estuvisteis', 'estuvieron'],
-  },
-  tener: {
-    presente: ['tengo', 'tienes', 'tiene', 'tenemos', 'tenéis', 'tienen'],
-    indefinido: ['tuve', 'tuviste', 'tuvo', 'tuvimos', 'tuvisteis', 'tuvieron'],
-  },
-  ir: {
-    presente: ['voy', 'vas', 'va', 'vamos', 'vais', 'van'],
-    indefinido: ['fui', 'fuiste', 'fue', 'fuimos', 'fuisteis', 'fueron'],
-    imperfecto: ['iba', 'ibas', 'iba', 'íbamos', 'ibais', 'iban'],
-  },
-  hacer: {
-    presente: ['hago', 'haces', 'hace', 'hacemos', 'hacéis', 'hacen'],
-    indefinido: ['hice', 'hiciste', 'hizo', 'hicimos', 'hicisteis', 'hicieron'],
-  },
-  poder: {
-    presente: ['puedo', 'puedes', 'puede', 'podemos', 'podéis', 'pueden'],
-    indefinido: ['pude', 'pudiste', 'pudo', 'pudimos', 'pudisteis', 'pudieron'],
-  },
-  querer: {
-    presente: ['quiero', 'quieres', 'quiere', 'queremos', 'queréis', 'quieren'],
-    indefinido: ['quise', 'quisiste', 'quiso', 'quisimos', 'quisisteis', 'quisieron'],
-  },
-  dormir: {
-    presente: ['duermo', 'duermes', 'duerme', 'dormimos', 'dormís', 'duermen'],
-    indefinido: ['dormí', 'dormiste', 'durmió', 'dormimos', 'dormisteis', 'durmieron'],
-  },
-  ver: {
-    presente: ['veo', 'ves', 've', 'vemos', 'veis', 'ven'],
-    indefinido: ['vi', 'viste', 'vio', 'vimos', 'visteis', 'vieron'],
-    imperfecto: ['veía', 'veías', 'veía', 'veíamos', 'veíais', 'veían'],
-  },
-  saber: {
-    presente: ['sé', 'sabes', 'sabe', 'sabemos', 'sabéis', 'saben'],
-    indefinido: ['supe', 'supiste', 'supo', 'supimos', 'supisteis', 'supieron'],
-  },
-  decir: {
-    presente: ['digo', 'dices', 'dice', 'decimos', 'decís', 'dicen'],
-    indefinido: ['dije', 'dijiste', 'dijo', 'dijimos', 'dijisteis', 'dijeron'],
-  },
-  venir: {
-    presente: ['vengo', 'vienes', 'viene', 'venimos', 'venís', 'vienen'],
-    indefinido: ['vine', 'viniste', 'vino', 'vinimos', 'vinisteis', 'vinieron'],
-  },
-  volver: { presente: ['vuelvo', 'vuelves', 'vuelve', 'volvemos', 'volvéis', 'vuelven'] },
-  pensar: { presente: ['pienso', 'piensas', 'piensa', 'pensamos', 'pensáis', 'piensan'] },
-  dar: {
-    presente: ['doy', 'das', 'da', 'damos', 'dais', 'dan'],
-    indefinido: ['di', 'diste', 'dio', 'dimos', 'disteis', 'dieron'],
-  },
-  salir: { presente: ['salgo', 'sales', 'sale', 'salimos', 'salís', 'salen'] },
-  jugar: {
-    presente: ['juego', 'juegas', 'juega', 'jugamos', 'jugáis', 'juegan'],
-    indefinido: ['jugué', 'jugaste', 'jugó', 'jugamos', 'jugasteis', 'jugaron'],
-  },
-  poner: {
-    presente: ['pongo', 'pones', 'pone', 'ponemos', 'ponéis', 'ponen'],
-    indefinido: ['puse', 'pusiste', 'puso', 'pusimos', 'pusisteis', 'pusieron'],
-  },
-  recordar: { presente: ['recuerdo', 'recuerdas', 'recuerda', 'recordamos', 'recordáis', 'recuerdan'] },
-  conocer: { presente: ['conozco', 'conoces', 'conoce', 'conocemos', 'conocéis', 'conocen'] },
-  empezar: {
-    presente: ['empiezo', 'empiezas', 'empieza', 'empezamos', 'empezáis', 'empiezan'],
-    indefinido: ['empecé', 'empezaste', 'empezó', 'empezamos', 'empezasteis', 'empezaron'],
-  },
-  pedir: {
-    presente: ['pido', 'pides', 'pide', 'pedimos', 'pedís', 'piden'],
-    indefinido: ['pedí', 'pediste', 'pidió', 'pedimos', 'pedisteis', 'pidieron'],
-  },
-  leer: { indefinido: ['leí', 'leíste', 'leyó', 'leímos', 'leísteis', 'leyeron'] },
-  creer: { indefinido: ['creí', 'creíste', 'creyó', 'creímos', 'creísteis', 'creyeron'] },
-  tocar: { indefinido: ['toqué', 'tocaste', 'tocó', 'tocamos', 'tocasteis', 'tocaron'] },
-  llegar: { indefinido: ['llegué', 'llegaste', 'llegó', 'llegamos', 'llegasteis', 'llegaron'] },
-};
-
-// [infinitive, english base, 3rd person, past, past participle]
-type VRow = [string, string, string, string, string];
-
-const ALL: Verb[] = [];
-function verbs(ch: number, rows: VRow[]) {
-  for (const [inf, base, s3, past, pp] of rows) {
-    const irr = IRR[inf] ?? {};
-    const presente = irr.presente ?? regular(inf, 'presente');
-    const fut = futureStem(inf);
-    const forms: Record<Tense, Six> = {
-      presente,
-      indefinido: irr.indefinido ?? regular(inf, 'indefinido'),
-      imperfecto: irr.imperfecto ?? regular(inf, 'imperfecto'),
-      perfecto: HABER.map((h) => `${h} ${participle(inf)}`) as Six,
-      futuro: FUT_ENDINGS.map((e) => fut + e) as Six,
-      condicional: COND_ENDINGS.map((e) => fut + e) as Six,
-      subjuntivo: subjunctive(inf, presente[0]),
-      imperativo: NO_IMPERATIVE.has(inf) ? ['', '', '', '', '', ''] : ['', IMP_TU[inf] ?? presente[2], '', '', inf.slice(0, -1) + 'd', ''],
-    };
-    const irregular: Partial<Record<Tense, true>> = {};
-    for (const t of ['presente', 'indefinido', 'imperfecto'] as const) if (irr[t]) irregular[t] = true;
-    if (IRREGULAR_PP[inf] && !IRREGULAR_PP[inf].endsWith('ído')) irregular.perfecto = true;
-    if (FUT_STEM[inf]) irregular.futuro = irregular.condicional = true;
-    if (SUBJ_IRR[inf] || !presente[0].endsWith('o') || presente[0].slice(0, -1) !== inf.slice(0, -2)) irregular.subjuntivo = true;
-    if (IMP_TU[inf]) irregular.imperativo = true;
-    ALL.push({ inf, en: { base, s3, past, pp }, ch, forms, irregular });
-  }
-}
-
-// Chapter 2 — regular verbs (Lola joins).
-verbs(2, [
-  ['hablar', 'speak', 'speaks', 'spoke', 'spoken'],
-  ['cantar', 'sing', 'sings', 'sang', 'sung'],
-  ['bailar', 'dance', 'dances', 'danced', 'danced'],
-  ['comprar', 'buy', 'buys', 'bought', 'bought'],
-  ['cocinar', 'cook', 'cooks', 'cooked', 'cooked'],
-  ['tocar', 'play (music)', 'plays (music)', 'played (music)', 'played (music)'],
-  ['escuchar', 'listen', 'listens', 'listened', 'listened'],
-  ['trabajar', 'work', 'works', 'worked', 'worked'],
-  ['comer', 'eat', 'eats', 'ate', 'eaten'],
-  ['beber', 'drink', 'drinks', 'drank', 'drunk'],
-  ['vender', 'sell', 'sells', 'sold', 'sold'],
-  ['vivir', 'live', 'lives', 'lived', 'lived'],
-  ['escribir', 'write', 'writes', 'wrote', 'written'],
-  ['abrir', 'open', 'opens', 'opened', 'opened'],
-]);
-// Chapter 3 — the big irregulars and stem-changers.
-verbs(3, [
-  ['ser', 'be', 'is', 'was', 'been'],
-  ['estar', 'be', 'is', 'was', 'been'],
-  ['tener', 'have', 'has', 'had', 'had'],
-  ['ir', 'go', 'goes', 'went', 'gone'],
-  ['hacer', 'do', 'does', 'did', 'done'],
-  ['poder', 'can', 'can', 'could', 'been able to'],
-  ['querer', 'want', 'wants', 'wanted', 'wanted'],
-  ['dormir', 'sleep', 'sleeps', 'slept', 'slept'],
-  ['ver', 'see', 'sees', 'saw', 'seen'],
-  ['saber', 'know', 'knows', 'knew', 'known'],
-  ['jugar', 'play (games)', 'plays (games)', 'played (games)', 'played (games)'],
-  ['pensar', 'think', 'thinks', 'thought', 'thought'],
-]);
-// Chapter 4 — more irregulars, now also in the perfecto.
-verbs(4, [
-  ['decir', 'say', 'says', 'said', 'said'],
-  ['venir', 'come', 'comes', 'came', 'come'],
-  ['volver', 'return', 'returns', 'returned', 'returned'],
-  ['poner', 'put', 'puts', 'put', 'put'],
-  ['dar', 'give', 'gives', 'gave', 'given'],
-  ['salir', 'leave', 'leaves', 'left', 'left'],
-  ['conocer', 'know (a person)', 'knows (a person)', 'met', 'known'],
-  ['empezar', 'start', 'starts', 'started', 'started'],
-]);
-// Chapter 5 — the verbs of the finale.
-verbs(5, [
-  ['recordar', 'remember', 'remembers', 'remembered', 'remembered'],
-  ['pedir', 'ask for', 'asks for', 'asked for', 'asked for'],
-  ['leer', 'read', 'reads', 'read', 'read'],
-  ['creer', 'believe', 'believes', 'believed', 'believed'],
-  ['llegar', 'arrive', 'arrives', 'arrived', 'arrived'],
-  ['ayudar', 'help', 'helps', 'helped', 'helped'],
-  ['luchar', 'fight', 'fights', 'fought', 'fought'],
-  ['perdonar', 'forgive', 'forgives', 'forgave', 'forgiven'],
-  ['olvidar', 'forget', 'forgets', 'forgot', 'forgotten'],
-]);
-
-export const VERBS: readonly Verb[] = ALL;
-export const VERB_BY_INF: ReadonlyMap<string, Verb> = new Map(ALL.map((v) => [v.inf, v]));
 
 export function verbsUpToChapter(ch: number, level: Level = 'a2'): Verb[] {
   // Advanced players get every verb from the start.
-  return ALL.filter((v) => level === 'b1' || v.ch <= ch);
+  return VERBS.filter((v) => level === 'b1' || v.ch <= ch);
 }
 
 /** Chapter each tense unlocks in, per Spanish level. */
@@ -410,6 +197,8 @@ export function conjugate(v: Verb, p: Person, tense: Tense = 'presente'): string
   return v.forms[tense][slot(p)];
 }
 
+export const HABER: Six = ['he', 'has', 'ha', 'hemos', 'habéis', 'han'];
+
 const EN_PRONOUN: Record<Person, string> = {
   yo: 'I', tú: 'you', él: 'he', ella: 'she', nosotros: 'we', vosotros: 'you all', ellos: 'they', ellas: 'they',
 };
@@ -418,26 +207,27 @@ const EN_PRONOUN: Record<Person, string> = {
 export function englishFor(v: Verb, p: Person, tense: Tense = 'presente'): string {
   const pr = EN_PRONOUN[p];
   const third = p === 'él' || p === 'ella';
-  const be = v.en.base === 'be';
+  // "be" and phrases like "be able to" conjugate their "be".
+  const be = v.en.base === 'be' || v.en.base.startsWith('be ');
+  const rest = be ? v.en.base.slice(2) : '';
+  const am = `${p === 'yo' ? 'am' : third ? 'is' : 'are'}${rest}`;
   switch (tense) {
     case 'presente':
-      if (be) return `${pr} ${p === 'yo' ? 'am' : third ? 'is' : 'are'}`;
+      if (be) return `${pr} ${am}`;
       return `${pr} ${third ? v.en.s3 : v.en.base}`;
     case 'perfecto':
       return `${pr} ${third ? 'has' : 'have'} ${v.en.pp}`;
     case 'indefinido':
-      if (be) return `${pr} ${p === 'yo' || third ? 'was' : 'were'}`;
+      if (be) return `${pr} ${p === 'yo' || third ? 'was' : 'were'}${rest}`;
       return `${pr} ${v.en.past}`;
     case 'imperfecto':
-      if (v.en.base === 'can') return `${pr} used to be able to`;
       return `${pr} used to ${v.en.base}`;
     case 'futuro':
-      if (v.en.base === 'can') return `${pr} will be able to`;
       return `${pr} will ${v.en.base}`;
     case 'condicional':
-      if (v.en.base === 'can') return `${pr} could`;
       return `${pr} would ${v.en.base}`;
     case 'subjuntivo':
+      if (be) return `${pr} ${am}`;
       return `${pr} ${third ? v.en.s3 : v.en.base}`;
     case 'imperativo':
       return `${cap(v.en.base)}! (${p === 'vosotros' ? 'to a group: vosotros' : 'to one friend: tú'})`;

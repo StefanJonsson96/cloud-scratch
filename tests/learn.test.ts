@@ -91,9 +91,12 @@ describe('vocabulary data', () => {
   it('example sentences contain their word where a blank is possible', () => {
     const blanks = WORDS.filter((w) => blankExample(w));
     expect(blanks.length).toBeGreaterThan(WORDS.length * 0.6);
-    const b = blankExample(getWord('frio'));
-    expect(b).toEqual({ text: 'El agua está _____.', form: 'fría', whole: true });
-    expect(blankExample(getWord('ser-pan-comido'))?.form).toBe('comido');
+    const frio = getWord('frio');
+    const b = blankExample(frio)!;
+    expect(b.whole).toBe(true);
+    expect(frio.forms.map((f) => f.toLowerCase())).toContain(b.form.toLowerCase());
+    expect(b.text.split('_____').length).toBe(2);
+    expect(frio.ex![0]).toBe(b.text.replace('_____', b.form));
   });
 });
 
@@ -131,7 +134,12 @@ describe('verbs', () => {
     expect(englishFor(v('ser'), 'nosotros')).toBe('we are');
     expect(englishFor(v('comer'), 'vosotros', 'perfecto')).toBe('you all have eaten');
     expect(englishFor(v('ir'), 'yo', 'indefinido')).toBe('I went');
-    expect(englishFor(v('jugar'), 'nosotros', 'imperfecto')).toBe('we used to play (games)');
+    expect(englishFor(v('jugar'), 'nosotros', 'imperfecto')).toBe('we used to play');
+    expect(englishFor(v('poder'), 'ella', 'presente')).toBe('she is able to');
+    expect(englishFor(v('poder'), 'yo', 'indefinido')).toBe('I was able to');
+    // Verbs that share an English meaning say which one they are.
+    expect(v('tocar').en.sense).toBe('a musical instrument');
+    expect(v('conocer').en.sense).toBe('a person or a place');
   });
 
   it('has unique infinitives', () => {
@@ -153,8 +161,9 @@ describe('grammar drills', () => {
     const items = GRAMMAR.filter((g) => g.topic === 'gustar');
     expect(items.length).toBeGreaterThan(10);
     for (const g of items) {
-      const plural = /___ (los|las) /.test(g.es);
-      expect(g.answer.endsWith(plural ? 'gustan' : 'gusta'), g.es).toBe(true);
+      expect(['gusta', 'gustan'], g.es).toContain(g.answer);
+      expect(g.wrong).toEqual([g.answer === 'gusta' ? 'gustan' : 'gusta']);
+      expect(g.es).toMatch(/\b(me|te|le|nos|os|les) ___/i);
     }
   });
 });
@@ -328,7 +337,7 @@ describe('Spanish levels', () => {
     const keys = run('b1').map((x) => x.key);
     expect(keys.some((k) => b1Tense.test(k))).toBe(true);
     expect(keys.some((k) => k.startsWith('es:'))).toBe(true);
-    expect(keys.some((k) => k.startsWith('gr:sj'))).toBe(true);
+    expect(keys.some((k) => k.startsWith('gr:subjuntivo-'))).toBe(true);
   });
 
   it('A1 and A2 never use B1 material', () => {

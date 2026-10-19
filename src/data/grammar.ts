@@ -1,20 +1,13 @@
 // Grammar drills for the classic stumbling blocks that apps rarely explain:
-// ser vs estar, por vs para, and the "backwards" verb gustar.
-// Every item carries an English translation and a rule of thumb.
+// ser vs estar, por vs para, the "backwards" verb gustar and the subjunctive.
+// The drills are real Tatoeba sentences picked by `npm run data`
+// (src/data/generated/drills.json); the rules of thumb below are ours.
 
-export type GrammarTopic = 'serEstar' | 'porPara' | 'gustar' | 'subjuntivo';
+import type { DrillTopic, GenDrill } from './types';
+import drills from './generated/drills.json';
 
-export interface GrammarItem {
-  id: string;
-  topic: GrammarTopic;
-  ch: number;
-  /** Sentence with "___" where the answer goes. */
-  es: string;
-  en: string;
-  answer: string;
-  wrong: string[];
-  rule: string;
-}
+export type GrammarTopic = DrillTopic;
+export type GrammarItem = GenDrill;
 
 export const RULES: Record<string, { title: string; text: string }> = {
   serIdentity: {
@@ -79,143 +72,7 @@ export const RULES: Record<string, { title: string; text: string }> = {
   },
 };
 
-const ITEMS: GrammarItem[] = [];
-let n = 0;
-function se(ch: number, es: string, en: string, answer: string, wrong: string, rule: keyof typeof RULES) {
-  ITEMS.push({ id: `se${n++}`, topic: 'serEstar', ch, es, en, answer, wrong: [wrong], rule });
-}
-function pp(ch: number, es: string, en: string, answer: 'por' | 'para') {
-  const cap = es.startsWith('___');
-  const a = cap ? answer[0].toUpperCase() + answer.slice(1) : answer;
-  const other = answer === 'por' ? 'para' : 'por';
-  const w = cap ? other[0].toUpperCase() + other.slice(1) : other;
-  ITEMS.push({ id: `pp${n++}`, topic: 'porPara', ch, es, en, answer: a, wrong: [w], rule: answer });
-}
-
-// ---- ser / estar
-se(1, 'Mateo ___ pescador.', 'Mateo is a fisherman.', 'es', 'está', 'serIdentity');
-se(1, 'La abuela ___ en casa.', 'Grandma is at home.', 'está', 'es', 'estarState');
-se(1, 'El agua ___ muy fría hoy.', 'The water is very cold today.', 'está', 'es', 'estarState');
-se(1, 'Yo ___ de Puerto Alegre.', "I'm from Puerto Alegre.", 'soy', 'estoy', 'serIdentity');
-se(1, '¿Dónde ___ el faro?', 'Where is the lighthouse?', 'está', 'es', 'estarState');
-se(1, 'Nosotros ___ amigos.', 'We are friends.', 'somos', 'estamos', 'serIdentity');
-se(1, 'Mateo ___ cansado.', 'Mateo is tired.', 'está', 'es', 'estarState');
-se(1, 'El mar ___ enorme.', 'The sea is huge.', 'es', 'está', 'serIdentity');
-se(1, 'Vosotros ___ muy valientes.', 'You (all) are very brave.', 'sois', 'estáis', 'serIdentity');
-se(1, '___ las ocho de la mañana.', "It's eight in the morning.", 'Son', 'Están', 'serIdentity');
-se(1, '¿Vosotros ___ bien?', 'Are you (all) okay?', 'estáis', 'sois', 'estarState');
-se(2, 'La sopa ___ fría. ¡Qué asco!', 'The soup is cold. Yuck!', 'está', 'es', 'estarState');
-se(2, 'Este queso ___ de Asturias.', 'This cheese is from Asturias.', 'es', 'está', 'serIdentity');
-se(2, 'La tienda ___ cerrada.', 'The shop is closed.', 'está', 'es', 'estarResult');
-se(2, 'Lola ___ música.', 'Lola is a musician.', 'es', 'está', 'serIdentity');
-se(2, 'Hoy ___ lunes.', 'Today is Monday.', 'es', 'está', 'serIdentity');
-se(2, 'Lola ___ muy contenta hoy.', 'Lola is very happy today.', 'está', 'es', 'estarState');
-se(2, 'Los churros ___ en la mesa.', 'The churros are on the table.', 'están', 'son', 'estarState');
-se(3, 'La fiesta ___ en la plaza.', 'The party is in the square.', 'es', 'está', 'serEvent');
-se(3, 'El concierto ___ en el bosque.', 'The concert is in the forest.', 'es', 'está', 'serEvent');
-se(3, 'El lobo ___ triste.', 'The wolf is sad.', 'está', 'es', 'estarState');
-se(3, 'La puerta ___ abierta.', 'The door is open.', 'está', 'es', 'estarResult');
-se(3, '¿___ listos? ¡Vamos!', 'Are you (all) ready? Let’s go!', 'Estáis', 'Sois', 'meaningChange');
-se(3, 'El zorro ___ muy listo.', 'The fox is very clever.', 'es', 'está', 'meaningChange');
-se(3, 'Este libro ___ aburrido.', 'This book is boring.', 'es', 'está', 'meaningChange');
-se(3, 'Mateo ___ aburrido: no hay nada que hacer.', "Mateo is bored: there's nothing to do.", 'está', 'es', 'meaningChange');
-se(4, 'Mi tío ___ médico.', 'My uncle is a doctor.', 'es', 'está', 'serIdentity');
-se(4, 'Tú ___ muy alto.', 'You are very tall.', 'eres', 'estás', 'serIdentity');
-se(4, 'Mis padres ___ en la montaña.', 'My parents are on the mountain.', 'están', 'son', 'estarState');
-se(4, 'El monje ___ malo: tiene fiebre.', 'The monk is ill: he has a fever.', 'está', 'es', 'meaningChange');
-se(4, '¿Qué hora ___?', 'What time is it?', 'es', 'está', 'serIdentity');
-se(5, 'El rey ___ solo en la torre.', 'The king is alone in the tower.', 'está', 'es', 'estarState');
-se(5, 'La verdad ___ importante.', 'The truth is important.', 'es', 'está', 'serIdentity');
-
-// ---- por / para
-pp(3, 'Este churro es ___ ti.', 'This churro is for you.', 'para');
-pp(3, 'Gracias ___ la ayuda.', 'Thanks for the help.', 'por');
-pp(3, 'Caminamos ___ la playa.', 'We walk along the beach.', 'por');
-pp(3, 'Mañana salimos ___ la montaña.', 'Tomorrow we leave for the mountain.', 'para');
-pp(3, 'Estudio ___ aprender.', 'I study (in order) to learn.', 'para');
-pp(3, 'Lo compré ___ diez euros.', 'I bought it for ten euros.', 'por');
-pp(3, 'Hablo con mi madre ___ teléfono.', 'I talk to my mother on the phone.', 'por');
-pp(3, 'Necesito la poción ___ el lunes.', 'I need the potion by Monday.', 'para');
-pp(3, 'Entrenamos dos veces ___ semana.', 'We train twice a week.', 'por');
-pp(3, '___ mí, el queso es lo mejor.', 'For me, cheese is the best.', 'para');
-pp(4, 'Lucho ___ mi pueblo.', 'I fight for (the sake of) my village.', 'por');
-pp(4, 'Pasamos ___ el bosque.', 'We go through the forest.', 'por');
-pp(4, 'Te cambio mi churro ___ tu café.', "I'll swap my churro for your coffee.", 'por');
-pp(4, 'Salimos ___ la mañana.', 'We leave in the morning.', 'por');
-pp(4, 'La guitarra es ___ tocar flamenco.', 'The guitar is for playing flamenco.', 'para');
-pp(4, 'El tren ___ Sevilla sale a las tres.', 'The train to Seville leaves at three.', 'para');
-pp(5, 'Gracias ___ todo, abuela.', 'Thanks for everything, grandma.', 'por');
-pp(5, 'Esta llave es ___ la puerta de la torre.', 'This key is for the tower door.', 'para');
-
-// ---- gustar (generated): who likes what
-const LIKERS: { es: string; pron: string; en: string; en3: boolean }[] = [
-  { es: 'A mí', pron: 'me', en: 'I like', en3: false },
-  { es: 'A ti', pron: 'te', en: 'You like', en3: false },
-  { es: 'A Mateo', pron: 'le', en: 'Mateo likes', en3: true },
-  { es: 'A Lola', pron: 'le', en: 'Lola likes', en3: true },
-  { es: 'A nosotros', pron: 'nos', en: 'We like', en3: false },
-  { es: 'A vosotros', pron: 'os', en: 'You (all) like', en3: false },
-  { es: 'A los monjes', pron: 'les', en: 'The monks like', en3: false },
-];
-const LIKED: { es: string; en: string; plural: boolean; ch: number }[] = [
-  { es: 'el chocolate', en: 'chocolate', plural: false, ch: 2 },
-  { es: 'los churros', en: 'churros', plural: true, ch: 2 },
-  { es: 'bailar', en: 'dancing', plural: false, ch: 2 },
-  { es: 'las tapas', en: 'tapas', plural: true, ch: 2 },
-  { es: 'la música', en: 'music', plural: false, ch: 2 },
-  { es: 'las fresas', en: 'strawberries', plural: true, ch: 2 },
-  { es: 'el mar', en: 'the sea', plural: false, ch: 3 },
-  { es: 'cantar', en: 'singing', plural: false, ch: 3 },
-  { es: 'los gatos', en: 'cats', plural: true, ch: 3 },
-  { es: 'las montañas', en: 'mountains', plural: true, ch: 4 },
-];
-const PRONS = ['me', 'te', 'le', 'nos', 'os', 'les'];
-LIKERS.forEach((who, i) => {
-  LIKED.forEach((what, j) => {
-    // Keep the pool varied but not huge: a deterministic subset of combinations.
-    if ((i + j) % 3 !== 0) return;
-    const verb = what.plural ? 'gustan' : 'gusta';
-    const other = what.plural ? 'gusta' : 'gustan';
-    const otherPron = PRONS[(PRONS.indexOf(who.pron) + 2) % PRONS.length];
-    ITEMS.push({
-      id: `gu${i}-${j}`,
-      topic: 'gustar',
-      ch: what.ch,
-      es: `${who.es} ___ ${what.es}.`,
-      en: `${who.en} ${what.en}.`,
-      answer: `${who.pron} ${verb}`,
-      wrong: [`${who.pron} ${other}`, `${otherPron} ${verb}`, `${otherPron} ${other}`],
-      rule: 'gustar',
-    });
-  });
-});
-
-// Indicative or subjunctive? (B1)
-function sj(es: string, en: string, answer: string, wrong: string, rule: keyof typeof RULES) {
-  ITEMS.push({ id: `sj${n++}`, topic: 'subjuntivo', ch: 1, es, en, answer, wrong: [wrong], rule });
-}
-sj('Quiero que tú ___ a mi fiesta.', 'I want you to come to my party.', 'vengas', 'vienes', 'subjWish');
-sj('Espero que vosotros ___ bien.', 'I hope you all are well.', 'estéis', 'estáis', 'subjWish');
-sj('Ojalá ___ sol mañana.', 'I hope it’s sunny tomorrow.', 'haga', 'hace', 'subjWish');
-sj('Mi madre quiere que yo ___ la verdad.', 'My mother wants me to tell the truth.', 'diga', 'digo', 'subjWish');
-sj('Os pido que ___ silencio.', 'I’m asking you all to be quiet.', 'hagáis', 'hacéis', 'subjWish');
-sj('No creo que ___ verdad.', 'I don’t think it’s true.', 'sea', 'es', 'subjDoubt');
-sj('Creo que ___ verdad.', 'I think it’s true.', 'es', 'sea', 'indicFact');
-sj('Es posible que ___ mañana.', 'It might rain tomorrow.', 'llueva', 'llueve', 'subjDoubt');
-sj('Dudo que Mateo ___ hambre ahora.', 'I doubt Mateo is hungry now.', 'tenga', 'tiene', 'subjDoubt');
-sj('Pienso que ___ una buena idea.', 'I think it’s a good idea.', 'es', 'sea', 'indicFact');
-sj('No pienso que ___ una buena idea.', 'I don’t think it’s a good idea.', 'sea', 'es', 'subjDoubt');
-sj('Sé que tú ___ razón.', 'I know you’re right.', 'tienes', 'tengas', 'indicFact');
-sj('Es verdad que Lola ___ muy bien.', 'It’s true that Lola sings very well.', 'canta', 'cante', 'indicFact');
-sj('Me alegro de que ___ aquí.', 'I’m glad you’re here.', 'estés', 'estás', 'subjEmotion');
-sj('Es una pena que no ___ venir.', 'It’s a shame you can’t come.', 'puedas', 'puedes', 'subjEmotion');
-sj('Cuando ___ a casa, llámame.', 'When you get home, call me.', 'llegues', 'llegas', 'subjFuture');
-sj('Siempre me llamas cuando ___ a casa.', 'You always call me when you get home.', 'llegas', 'llegues', 'subjFuture');
-sj('Te llamo cuando ___ del trabajo.', 'I’ll call you when I leave work.', 'salga', 'salgo', 'subjFuture');
-sj('Te lo explico para que lo ___.', 'I’m explaining it so that you understand it.', 'entiendas', 'entiendes', 'subjPurpose');
-sj('Busco un piso que ___ terraza.', 'I’m looking for a flat that has a terrace.', 'tenga', 'tiene', 'subjUnknown');
-sj('Tengo un piso que ___ terraza.', 'I have a flat that has a terrace.', 'tiene', 'tenga', 'subjUnknown');
-sj('¿Conoces a alguien que ___ alemán?', 'Do you know anyone who speaks German?', 'hable', 'habla', 'subjUnknown');
+const ITEMS = drills as GrammarItem[];
 
 export const GRAMMAR: readonly GrammarItem[] = ITEMS;
 

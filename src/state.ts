@@ -37,6 +37,8 @@ export interface Settings {
   speedBonus: boolean;
   /** Show an arrow on the map pointing at the current objective. */
   marker: boolean;
+  /** Ask Wiktionary about typed answers the game doesn't recognise before marking them wrong. */
+  liveCheck: boolean;
   textSpeed: 'normal' | 'fast' | 'instant';
   /** Random encounter frequency. */
   encounters: 'normal' | 'low';
@@ -82,6 +84,7 @@ export const DEFAULT_SETTINGS: Settings = {
   autoVoice: true,
   speedBonus: false,
   marker: true,
+  liveCheck: true,
   textSpeed: 'normal',
   encounters: 'normal',
   difficulty: 'normal',

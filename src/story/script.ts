@@ -139,6 +139,7 @@ export class Script {
       timed: this.g.settings.speedBonus,
       freeHint: this.g.talents.includes('memoria'),
       accentsOptional: this.g.settings.level === 'a1',
+      liveCheck: this.g.settings.liveCheck,
     });
     if (ch.srs) record(this.g.srs, ch.key, r.grade, Date.now(), ch.maxBox);
     this.g.stats.answered++;

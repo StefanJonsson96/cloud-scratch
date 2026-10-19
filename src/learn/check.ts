@@ -1,10 +1,12 @@
 // Typed-answer checking: forgiving enough to be fun, strict enough to teach.
 
+import type { Variant } from '../data/types';
+
 export type Grade = 'fast' | 'correct' | 'close' | 'wrong';
 
 export interface CheckResult {
   grade: Exclude<Grade, 'fast'>;
-  /** Short explanation shown to the player for "close" answers. */
+  /** Short explanation shown to the player ("close" answers and variants). */
   note?: string;
   /** The accepted answer the input was matched against. */
   matched?: string;
@@ -48,11 +50,16 @@ export interface CheckOptions {
   article?: 'el' | 'la';
   /** Treat a missing accent as fully correct (accessibility setting / amulet). */
   accentsOptional?: boolean;
+  /**
+   * Other right answers: synonyms and informal words count as correct,
+   * regional ones (Latin America, Canarias…) as "almost", each with a note.
+   */
+  variants?: readonly Variant[];
 }
 
 /**
- * Compare a typed answer against a list of accepted answers.
- * Returns correct, close (accent / small typo / wrong article) or wrong.
+ * Compare a typed answer against a list of accepted answers and their variants.
+ * Returns correct, close (accent / small typo / wrong article / regional word) or wrong.
  */
 export function checkTyped(input: string, accepted: string[], opts: CheckOptions = {}): CheckResult {
   let ans = normalize(input);
@@ -91,7 +98,16 @@ export function checkTyped(input: string, accepted: string[], opts: CheckOptions
     return { grade: 'close', note: articleNote ?? `Watch the accent: “${normalize(target)}”.`, matched: target };
   }
 
-  // 3. One small typo (two for long answers).
+  // 3. Another word for the same thing ("porfa" for "por favor"). Its own
+  // article may differ (la nevera / el frigorífico), so no article note.
+  const variant = matchVariant(ans, opts.variants ?? []);
+  if (variant) {
+    const accentSlip = normalize(variant.form) !== ans && !opts.accentsOptional;
+    const note = accentSlip ? `${variant.note} Watch the accent: “${normalize(variant.form)}”.` : variant.note;
+    return { grade: variant.kind === 'regional' || accentSlip ? 'close' : 'correct', note, matched: variant.form };
+  }
+
+  // 4. One small typo (two for long answers).
   let best = Infinity;
   let bestIdx = -1;
   norms.forEach((a, i) => {
@@ -111,4 +127,10 @@ export function checkTyped(input: string, accepted: string[], opts: CheckOptions
   }
 
   return { grade: 'wrong' };
+}
+
+/** A variant matching the typed answer, ignoring accents. */
+export function matchVariant(ans: string, variants: readonly Variant[]): Variant | undefined {
+  const bare = stripAccents(normalize(ans));
+  return variants.find((v) => stripAccents(normalize(v.form)) === bare);
 }

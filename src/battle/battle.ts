@@ -362,6 +362,7 @@ async function challenge(ctx: BattleContext, view: BattleView, actor: Unit, ch: 
     voice: g.settings.voice,
     timed,
     freeHint: g.talents.includes('memoria'),
+    liveCheck: g.settings.liveCheck,
   });
 }
 
