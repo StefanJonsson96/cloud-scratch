@@ -8,4 +8,5 @@ export const GAME_WORDS: [string, string][] = [
   ['fuyades', 'flee (Don Quijote’s old Spanish; today: huyáis)'],
   ['bacía', 'barber’s basin (the one Don Quijote wore as a helmet)'],
   ['shh', 'shh, quiet'],
+  ['pasapalabra', 'pass! — skip this word and come back to it later (from the TV quiz Pasapalabra)'],
 ];

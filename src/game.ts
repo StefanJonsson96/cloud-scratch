@@ -25,6 +25,8 @@ import { initTouch } from './engine/input';
 import { playMusic } from './engine/audio';
 import { missingVoiceGenders, setSpeechEnabled, voiceChoice } from './engine/speech';
 import { preloadVoices, setHeroNameSource } from './engine/voiceover';
+import { markPostcardsSeen, newPostcards } from './data/postcards';
+import { postcardToast } from './ui/postcards';
 
 export class Game implements WorldHost {
   g!: GameState;
@@ -97,6 +99,7 @@ export class Game implements WorldHost {
     if (fresh || !g.flags.intro_done) await this.world.lockWhile(this.runScript('intro'));
     else if (this.world.map.onEnter) await this.world.lockWhile(this.runScript(this.world.map.onEnter));
     if (pendingTalents(g)) await this.world.lockWhile(offerTalents(g).then(() => void save(g)));
+    this.announcePostcards();
   }
 
   stop() {
@@ -106,6 +109,8 @@ export class Game implements WorldHost {
     document.body.classList.add('no-world');
   }
 
+  /** How many scripts are running: one scene can start another (a warp runs the next map's script). */
+  private scriptDepth = 0;
   async runScript(id: string, npc?: NpcInstance, at?: { x: number; y: number }) {
     const [name, ...args] = id.split(':');
     const fn = SCRIPTS[name];
@@ -114,14 +119,27 @@ export class Game implements WorldHost {
       return;
     }
     const s = new Script(this, npc, args, at);
+    this.scriptDepth++;
     try {
       await fn(s);
     } finally {
+      this.scriptDepth--;
       this.dialogue.close();
       this.world.refreshNpcs();
       this.world.applyMood();
       this.updateGoal();
+      // Only once the whole scene is over (a warp inside a script runs the next map's script too).
+      if (!this.scriptDepth) this.announcePostcards();
     }
+  }
+
+  /** Postcards are unlocked by story flags: tell the player about any new ones. */
+  private announcePostcards() {
+    const fresh = newPostcards(this.g.flags);
+    if (!fresh.length) return;
+    markPostcardsSeen(this.g.flags, fresh);
+    save(this.g);
+    postcardToast(fresh);
   }
 
   /** Once per session: tell the player if men and women will sound alike, and where to fix it. */

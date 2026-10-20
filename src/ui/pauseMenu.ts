@@ -1,5 +1,6 @@
 // The pause menu: party, items, the Grimorio (dictionary, verbs, grammar,
-// bestiary), quick review practice, settings and saving.
+// bestiary), the travel diary, postcards, quick review practice, settings and
+// saving.
 
 import type { Game } from '../game';
 import { volumeSliders, showHelp } from './corner';
@@ -26,8 +27,10 @@ import { record } from '../learn/srs';
 import { runChallenge } from './challengeView';
 import { dayStreak, exportSave, importSave, save, type GameState, type Settings } from '../state';
 import { spriteCanvas } from '../engine/sprites';
+import { journalView } from './journal';
+import { postcardAlbum } from './postcards';
 
-type Tab = 'equipo' | 'objetos' | 'grimorio' | 'repaso' | 'ajustes';
+type Tab = 'equipo' | 'objetos' | 'grimorio' | 'diario' | 'postales' | 'repaso' | 'ajustes';
 
 export function openPauseMenu(game: Game, start: Tab = 'equipo'): Promise<void> {
   return new Promise((resolve) => {
@@ -53,6 +56,8 @@ export function openPauseMenu(game: Game, start: Tab = 'equipo'): Promise<void> 
       ['equipo', 'Equipo', 'Party'],
       ['objetos', 'Objetos', 'Items'],
       ['grimorio', 'Grimorio', 'Dictionary & grammar'],
+      ['diario', 'Diario', 'Journal'],
+      ['postales', 'Postales', 'Postcards'],
       ['repaso', 'Repaso', 'Practice'],
       ['ajustes', 'Ajustes', 'Settings & save'],
     ];
@@ -64,7 +69,7 @@ export function openPauseMenu(game: Game, start: Tab = 'equipo'): Promise<void> 
         tabs.append(h('button', { class: `tab${id === t ? ' on' : ''}`, role: 'tab', title: en, onclick: () => show(id) }, es, h('small', { class: 'muted' }, ` ${en}`)));
       }
       clear(body);
-      ({ equipo, objetos, grimorio, repaso, ajustes })[t](game, body, () => show(current), close);
+      ({ equipo, objetos, grimorio, diario, postales, repaso, ajustes })[t](game, body, () => show(current), close);
     };
     let closed = false;
     const pop = pushLayer((a) => {
@@ -456,6 +461,11 @@ function progress(game: Game, el: HTMLElement) {
     ),
   );
 }
+
+// ---------------------------------------------------- diario and postales
+const diario: View = (game, el) => journalView(game.g, el);
+
+const postales: View = (game, el) => postcardAlbum(game.g, el);
 
 // ------------------------------------------------------------------ repaso
 const repaso: View = (game, el) => {

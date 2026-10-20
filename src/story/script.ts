@@ -76,6 +76,8 @@ export const CAST: Record<string, Speaker> = {
   pablito: { name: 'Pablito', face: 'pablito', voice: CAST_VOICES.pablito },
   posadero: { name: 'El ventero', face: 'posadero', voice: CAST_VOICES.posadero },
   pastor: { name: 'El pastor', face: 'pastor', voice: CAST_VOICES.pastor },
+  // Side activities
+  presentador: { name: 'El presentador', face: 'vecino2', voice: CAST_VOICES.presentador },
 };
 
 export class Script {

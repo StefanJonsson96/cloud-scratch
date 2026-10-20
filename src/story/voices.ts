@@ -68,6 +68,8 @@ export const CAST_VOICES: Record<string, CastVoice> = {
   pablito: c('pablito', 'm', 'f', 1.15, 1.5, 1.08),
   posadero: c('posadero', 'm', 'm2', 0.92, 0.9),
   pastor: c('pastor', 'm', 'm', 0.9, 0.8, 0.9),
+  // El Rosco's quiz-show host: bright and quick, on the steadier male voice.
+  presentador: c('presentador', 'm', 'm2', 1.06, 1.05, 1.08),
 };
 
 /** Narration and system messages. */
