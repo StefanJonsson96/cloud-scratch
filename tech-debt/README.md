@@ -7,6 +7,7 @@ would look like, so whoever picks it up doesn't have to rediscover the context.
 | # | Item | Added |
 | --- | --- | --- |
 | 002 | [Generated synonyms and sentences are picked by rules, not reviewed](002-generated-content-is-not-reviewed.md) | 2026-10 |
+| 003 | [The recorded voices are inlined in the single-file build](003-voices-are-inlined-in-the-single-file-build.md) | 2026-10 |
 
 ## Adding an item
 
