@@ -222,7 +222,7 @@ script('estudiante', async (s) => {
 script('guardian_biblioteca', async (s) => {
   if (s.has('guardian')) return;
   await s.narrate('At the foot of the stairs, a huge eraser blocks the way. It is rubbing out the steps one by one!');
-  const out = await s.battle({ enemies: ['pagina', 'borrador_mayor', 'pagina'], bg: 'biblioteca', canFlee: false });
+  const out = await s.battle({ enemies: ['pagina', 'borrador_mayor'], bg: 'biblioteca', canFlee: false });
   if (out !== 'win') return;
   s.flag('guardian');
   s.refresh();
