@@ -11,6 +11,8 @@ import { newSrs, record } from '../src/learn/srs';
 import { agree } from '../src/story/agree';
 import { MAPS } from '../src/world/maps';
 import { STOP_BY_ID } from '../src/world/stops';
+import { ENEMIES } from '../src/battle/enemies';
+import { TOWER_FLOORS } from '../src/data/tower';
 
 function rng(seed = 1) {
   let s = seed >>> 0;
@@ -204,5 +206,13 @@ describe('el rosco', () => {
     expect(roscoReward(0, 20)).toBe(0);
     expect(roscoReward(10, 20)).toBe(30);
     expect(roscoReward(20, 20)).toBe(110);
+  });
+});
+
+describe('la torre de los ecos', () => {
+  it('has ten floors of real enemies, ending with a boss', () => {
+    expect(TOWER_FLOORS).toHaveLength(10);
+    for (const f of TOWER_FLOORS) for (const id of f) expect(ENEMIES[id], id).toBeDefined();
+    expect(TOWER_FLOORS[TOWER_FLOORS.length - 1].some((id) => ENEMIES[id].boss)).toBe(true);
   });
 });

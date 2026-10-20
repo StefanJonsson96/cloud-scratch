@@ -6,6 +6,19 @@ A grey fog called *El Silencio* is stealing the words of a little coastal villag
 the last *Palabrista* (word-mage), is struck silent. With Mateo the fisherman's son and Lola the
 flamenco guitarist, you travel up the coast to the Mute Tower to win the words back.
 
+That's Act I. In **Act II, *La Gran Ruta***, the Grey Lady starts stealing the *Mother Word* of
+every region of Spain, and you take the train across the country to win them back — ten chapters
+in all:
+
+| | Where | The Spanish |
+| --- | --- | --- |
+| 0–5 | Puerto Alegre and the north coast | the present, *ser/estar*, *gustar*, Spain's *perfecto*, *indefinido* vs *imperfecto* |
+| 6 | La Mancha: windmills that really are giants | telling a story with the two past tenses |
+| 7 | Valencia: Las Fallas, but the fire won't burn | the future |
+| 8 | Seville and the Alhambra: Lola's family has lost its *duende* | commands and the conditional |
+| 9 | Santiago de Compostela: a meiga, a queimada, the Santa Compaña | wishes with the subjunctive |
+| 10 | Salamanca: the old library and the Book of Forgetting | doubts and feelings with the subjunctive |
+
 ![A battle: enemies announce their next move in Spanish](https://github.com/StefanJonsson96/palabrista/blob/main/docs/battle.png?raw=true)
 
 ## Run it
@@ -36,9 +49,12 @@ how to add one). Mute and volume (music, effects, voices) are the 🔊 and 🎚�
 - **Follow the 🎯 objective** in the corner — it always says what to do next, in Spanish with the
   English underneath — and the yellow arrow on the map, which points at the target or at the exit
   that leads there.
-- **Explore** a pixel-art coast: a fishing village, a market town, a whispering forest, a snowy
-  monastery and the tower at the end. Talk to everyone — many villagers have lost a word and need
-  you to give it back.
+- **Explore** a pixel-art Spain: a fishing village, a market town, a whispering forest, a snowy
+  monastery, windmills and wheat, the Fallas, the Alhambra, a Galician forest in the rain and
+  Salamanca's golden stone. Talk to everyone — many people have lost a word and need you to give it
+  back, and every region has side quests (lost sheep, a paella recipe, a bagpiper's song…).
+- **Take the train.** In Act II the station map shows every line you've opened; they all run through
+  Madrid, like Spain's real high-speed network.
 - **Fight** in turn-based battles. A timeline shows who acts next (speed matters). Basic attacks roll
   a d20. Elements combo, BG3-style: 💧 *Agua* makes enemies wet, ⚡ *Rayo* then does double damage,
   ❄️ *Hielo* freezes them solid.
@@ -53,12 +69,25 @@ how to add one). Mute and volume (music, effects, voices) are the 🔊 and 🎚�
     *ser* vs *estar*, *por* vs *para*.
   - **Lola** — verbs: full conjugation including *vosotros*, the Spain-style *pretérito perfecto*
     (*hoy he comido*), *indefinido* vs *imperfecto*, and *gustar*.
+  - **Bruno** (Act II) — listening: hear a real sentence, read by a woman or a man, and pick what it
+    means — later, build it from the words you heard.
 - **Racha.** Right answers fill a streak meter. When it's full, unleash a *Palabra Final* by
   building a Spanish sentence from word tiles.
 - **No clock.** Take as long as you need to read and answer. (Want pressure? Turn on the speed bonus
   in *Ajustes*.) Lost a fight? Each retry gives you *¡Ánimo!* — the enemies get a bit weaker.
 
 ![Choose a class: each changes how you grow, adds a skill and a passive](https://github.com/StefanJonsson96/palabrista/blob/main/docs/classes.png?raw=true)
+
+### Off the main road
+
+- **Postales** — a postcard from every place you visit, with a short note about Spain (the Fallas,
+  the Giralda, the frog on Salamanca's university…), in simple Spanish with English underneath.
+- **El Rosco** — the word quiz from the Spanish TV show *Pasapalabra*: one word for every letter of
+  the alphabet, from the words you've met. Find the presenter at the station.
+- **Diario** — your journal: the story so far, retold in the past tenses.
+- **Bestiario** — every creature you've beaten, described in Spanish.
+- **La Torre de los Ecos** — after the ending: ten fights in a row against the echoes of the
+  journey's monsters and bosses, with a review question between floors.
 
 ### Classes and talents
 
@@ -158,11 +187,12 @@ scripts/data/ the data build: reads Wiktionary, Tatoeba and conjugate-esp, write
 scripts/voices/ records the story dialogue (`npm run voices`), writes src/data/generated/voices/
   battle/     rules (turn order, damage, combos, enemy AI), enemies, classes & talents, controller and screen
   world/      tiles, maps, overworld engine
-  story/      the scripts for every chapter, and the objective for each stage
+  story/      the scripts for every chapter, side activities, and the objective for each stage
   ui/         dialogue, challenge card, menus, title, character creation, help & volume
   engine/     input, audio (chiptune synth, volume), speech (per-character voices), pixel-art sprites
   art/        sprites as strings of palette characters
-tests/        learning logic, battle rules, and map/story integrity
+tests/        learning logic, battle rules, map/story integrity, and the side features
+tools/        a playtest bot that follows the objective marker (tools/playtest), a sprite gallery
 tech-debt/    known shortcuts we intend to fix later
 ```
 

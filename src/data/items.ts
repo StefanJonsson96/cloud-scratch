@@ -71,6 +71,7 @@ acc({ id: 'clavel', name: 'Clavel de Triana', en: 'Triana Carnation', icon: '�
 acc({ id: 'azabache', name: 'Azabache', en: 'Jet Charm', icon: '🖤', bonus: { def: 5, maxHp: 30 }, desc: 'A charm of black jet, carved in Santiago for centuries. +5 DEF, +30 HP.' });
 acc({ id: 'bordon', name: 'Bordón de peregrino', en: "Pilgrim's Staff", icon: '🦯', bonus: { atk: 6, def: 3 }, desc: 'A pilgrim’s walking staff, worn smooth by the Camino. +6 ATK, +3 DEF.' });
 acc({ id: 'gramatica', name: 'Gramática de Nebrija', en: "Nebrija's Grammar", icon: '📕', bonus: { mag: 8, maxMp: 15 }, desc: 'The first grammar of Spanish (1492), by a Salamanca professor. +8 MAG, +15 MP.' });
+acc({ id: 'eco_dorado', name: 'Eco dorado', en: 'Golden Echo', icon: '🏆', racha: 2, bonus: { atk: 4, mag: 4, def: 4, spd: 2 }, desc: 'For climbing all ten floors of the Tower of Echoes. Start battles with 2 Racha. +4 ATK, MAG and DEF, +2 SPD.' });
 acc({ id: 'corazon', name: 'Corazón valiente', en: 'Brave Heart', icon: '❤️‍🔥', racha: 2, desc: 'Start every battle with 2 Racha.' });
 
 export function itemLabel(id: string): string {

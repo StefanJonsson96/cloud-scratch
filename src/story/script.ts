@@ -98,6 +98,7 @@ export const CAST: Record<string, Speaker> = {
   pulpeira: { name: 'La pulpeira', face: 'pulpeira', voice: CAST_VOICES.pulpeira },
   uxia: { name: 'Uxía', face: 'uxia', voice: CAST_VOICES.uxia },
   dama: { name: 'La Dama Gris', face: 'dama', voice: CAST_VOICES.dama },
+  memoria: { name: 'Memoria', face: 'dama', voice: CAST_VOICES.memoria },
   ines: { name: 'La profesora Inés', face: 'profesora', voice: CAST_VOICES.ines },
   tuno: { name: 'El tuno', face: 'tuno', voice: CAST_VOICES.tuno },
   librera: { name: 'La librera', face: 'librera', voice: CAST_VOICES.librera },

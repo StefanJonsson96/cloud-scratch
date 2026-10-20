@@ -316,10 +316,10 @@ script('boss_dama', async (s) => {
 
 script('memoria', async (s) => {
   if (s.has('salamanca_word')) {
-    await s.say('dama', 'Cuidaré de las palabras viejas. Pero dejaré volar a todas.', 'I will look after the old words. But I will let them all fly.');
+    await s.say('memoria', 'Cuidaré de las palabras viejas. Pero dejaré volar a todas.', 'I will look after the old words. But I will let them all fly.');
     return;
   }
-  await s.say('dama', 'Tocad el cristal. Es la última Palabra Madre.', "Touch the crystal (you all). It's the last Mother Word.");
+  await s.say('memoria', 'Tocad el cristal. Es la última Palabra Madre.', "Touch the crystal (you all). It's the last Mother Word.");
 });
 
 script('cristal_salamanca', async (s) => {
@@ -402,7 +402,7 @@ const GUESTS: Record<string, [string, string, string][]> = {
   manolo: [['manolo', 'Esta guitarra ha visto muchas cosas… pero nunca una fiesta como esta. ¡Olé!', 'This guitar has seen a lot of things… but never a party like this one. Olé!']],
   maruxa: [['maruxa', 'Yo no creo en las meigas… pero haberlas, haylas. ¡Ja, ja!', "I don't believe in witches… but they exist, they do. Ha ha!"]],
   peregrina: [['peregrina', '¡He hablado con mi hermano! Ojalá que vosotros también volváis a casa pronto.', "I've talked to my brother! I hope you all get home soon too."]],
-  memoria: [['dama', 'Aquí nadie olvida a nadie. Me gusta este pueblo.', 'Here nobody forgets anybody. I like this village.']],
+  memoria: [['memoria', 'Aquí nadie olvida a nadie. Me gusta este pueblo.', 'Here nobody forgets anybody. I like this village.']],
   bruno: [['bruno', '¿Sabes qué es lo mejor de hablar? Que alguien te contesta.', "Do you know the best thing about talking? That someone answers you."]],
   mateo: [['mateo', '¡Esta es la mejor paella de España! Bueno… después de la de Tío Vicent.', "This is the best paella in Spain! Well… after Tío Vicent's."]],
   lola: [['lola', 'Mi madre y mi abuelo han venido desde Sevilla. ¡Mi familia y mis amigos, juntos!', 'My mum and my grandad have come all the way from Seville. My family and my friends, together!']],

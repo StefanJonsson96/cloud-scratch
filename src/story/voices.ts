@@ -90,6 +90,8 @@ export const CAST_VOICES: Record<string, CastVoice> = {
   uxia: c('uxia', 'f', 'f', 1.16, 1.4, 1.08),
   // The Grey Lady: slow, low and cold.
   dama: c('dama', 'f', 'f', 0.86, 0.75, 0.82),
+  // …and the same lady once she remembers who she is: warmer, less slow.
+  memoria: c('memoria', 'f', 'f', 0.95, 0.9, 0.95),
   ines: c('ines', 'f', 'f', 0.92, 0.85, 0.9),
   tuno: c('tuno', 'm', 'm2', 1.05, 1.05, 1.05),
   librera: c('librera', 'f', 'f', 1.03, 1.05),
