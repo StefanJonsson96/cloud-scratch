@@ -310,6 +310,14 @@ while (Date.now() - t0 < MINUTES * 60000) {
     same = 0;
   } else if (++same >= STUCK_AFTER) {
     result = `stuck on "${s.goal}" at ${s.map} ${s.x},${s.y} (marker ${JSON.stringify(s.marker)})`;
+    // What was on screen, to tell a game bug from a bot one.
+    const screen = await page.evaluate(() => ({
+      locked: window.__game.world.locked,
+      overlays: [...document.querySelectorAll('.overlay, .chapter-card, .dialogue:not([hidden]), .battle')].map((e) => e.className),
+      menu: [...document.querySelectorAll('.menu-item')].map((b) => (b.classList.contains('focus') ? '> ' : '  ') + b.textContent),
+    }));
+    console.log('Screen when stuck:', JSON.stringify(screen, null, 1));
+    if (SHOTS) await page.screenshot({ path: `${SHOTS}/stuck.png` });
     break;
   }
   if (!s.goal) { result = 'no objective'; break; }

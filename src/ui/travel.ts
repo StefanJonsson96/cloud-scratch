@@ -94,6 +94,8 @@ function drawMap(c: CanvasRenderingContext2D, g: GameState, here: Stop, target: 
 
 /** Show the map and let the player choose; returns the stop, or null to stay. */
 export async function chooseTrip(host: HTMLElement, g: GameState, hereId: string, wanted?: string): Promise<Stop | null> {
+  // One ticket office at a time (a double tap on the train mustn't open two).
+  if (host.querySelector('.travel-panel')) return null;
   const here = STOPS.find((s) => s.id === hereId) ?? STOPS[0];
   const canvas = h('canvas', { class: 'travel-map', width: String(W), height: String(H) }) as HTMLCanvasElement;
   const ctx = canvas.getContext('2d')!;
