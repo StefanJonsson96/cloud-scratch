@@ -11,3 +11,4 @@ import './ch7';
 import './ch8';
 import './ch9';
 import './ch10';
+import './side';

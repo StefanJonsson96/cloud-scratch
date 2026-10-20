@@ -102,6 +102,8 @@ export const CAST: Record<string, Speaker> = {
   tuno: { name: 'El tuno', face: 'tuno', voice: CAST_VOICES.tuno },
   librera: { name: 'La librera', face: 'librera', voice: CAST_VOICES.librera },
   estudiante: { name: 'Un estudiante', face: 'vecino', voice: CAST_VOICES.estudiante },
+  // Side activities
+  presentador: { name: 'El presentador', face: 'vecino2', voice: CAST_VOICES.presentador },
 };
 
 export class Script {

@@ -27,6 +27,8 @@ export const estacion: MapDef = {
     { id: 'tren', x: 10, y: 2, sprite: 'tren', deco: true, talk: 'tren:puerto' },
     { id: 'revisor', x: 14, y: 3, sprite: 'revisor', dir: 'down', talk: 'revisor' },
     { id: 'viajera', x: 4, y: 7, sprite: 'vecina2', dir: 'up', talk: 'viajera_estacion', wander: true },
+    // El Rosco's host, waiting for contestants between trains.
+    { id: 'presentador', x: 13, y: 6, sprite: 'vecino2', dir: 'down', talk: 'rosco' },
   ],
   warps: [{ x: 9, y: 9, to: 'puerto', tx: 21, ty: 5, dir: 'down' }],
   things: [

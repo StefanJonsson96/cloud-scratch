@@ -20,4 +20,5 @@ export const GAME_WORDS: [string, string][] = [
   ['zascandil', 'zascandil: a restless busybody (an old-fashioned word)'],
   ['bacía', 'barber’s basin (the one Don Quijote wore as a helmet)'],
   ['shh', 'shh, quiet'],
+  ['pasapalabra', 'pass! — skip this word and come back to it later (from the TV quiz Pasapalabra)'],
 ];

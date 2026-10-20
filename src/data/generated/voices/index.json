@@ -4295,13 +4295,25 @@
 "ch2",
 "0a9a4beffb"
 ],
+"m2:hasta luego aquí estaré": [
+"side",
+"942e02b5a0"
+],
 "m2:hay un monstruo en mi bodega se come todo": [
 "ch2",
 "fb6c25109f"
 ],
+"m2:hay una palabra para cada letra si no sabes una di pasapalabra y sigue luego vuelves a ella": [
+"side",
+"f5debf6a30"
+],
 "m2:hola chicos qué os pongo": [
 "ch2",
 "4668730103"
+],
+"m2:hola hola bienvenidos al rosco el concurso de las palabras": [
+"side",
+"98451e0bf6"
 ],
 "m2:hola qué tal": [
 "ch1",
@@ -4342,6 +4354,10 @@
 "m2:jaja no significa que estoy muy muy cansado": [
 "ch4",
 "149cb69e29"
+],
+"m2:jugamos": [
+"side",
+"87b3fff584"
 ],
 "m2:la alhambra está arriba en la colina vamos": [
 "ch8",
@@ -4535,6 +4551,10 @@
 "ch3",
 "bdc2c3dfd8"
 ],
+"m2:muy bien sabes muchas palabras": [
+"side",
+"b7e2f3ce31"
+],
 "m2:muy bien también gracias": [
 "ch1",
 "1f93d287f6"
@@ -4574,6 +4594,10 @@
 "m2:no eso es lo que diría un ninot hablad del mañana": [
 "ch7",
 "3bfa448579"
+],
+"m2:no está mal hay que seguir practicando": [
+"side",
+"93c1624276"
 ],
 "m2:no estás solo": [
 "ch5",
@@ -4678,6 +4702,10 @@
 "m2:nuestra tienda no está abierta": [
 "sentences",
 "b20a3a68c9"
+],
+"m2:nunca lo has hecho tan bien": [
+"side",
+"d8f8ce20bf"
 ],
 "m2:nunca quisiste ser mi amigo": [
 "sentences",
@@ -4947,6 +4975,10 @@
 "ch8",
 "3e9b39792a"
 ],
+"m2:todas las letras genial genial": [
+"side",
+"598b8fedee"
+],
 "m2:todas las manzanas están aquí": [
 "sentences",
 "ed03aa542b"
@@ -5003,6 +5035,10 @@
 "ch7",
 "7d0f15c520"
 ],
+"m2:uy todavía no conoces muchas palabras vuelve más tarde": [
+"side",
+"ba7da20855"
+],
 "m2:vale retiro lo de la cabra": [
 "ch6",
 "cc9845a03f"
@@ -5034,6 +5070,10 @@
 "m2:voy a hacer que lo entiendas": [
 "sentences",
 "087c2769aa"
+],
+"m2:vuelve cuando quieras": [
+"side",
+"8db7601c36"
 ],
 "m2:y ahora qué hacemos": [
 "ch3",
@@ -5082,6 +5122,10 @@
 "m2:ánimo el templo está arriba ya queda poco": [
 "ch4",
 "d7df6cd7ae"
+],
+"m2:ánimo la próxima vez mejor": [
+"side",
+"585ff9f989"
 ],
 "m2:él no dirá que sí": [
 "sentences",

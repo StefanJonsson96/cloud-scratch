@@ -94,6 +94,8 @@ export const CAST_VOICES: Record<string, CastVoice> = {
   tuno: c('tuno', 'm', 'm2', 1.05, 1.05, 1.05),
   librera: c('librera', 'f', 'f', 1.03, 1.05),
   estudiante: c('estudiante', 'm', 'm2', 1.02),
+  // El Rosco's quiz-show host: bright and quick, on the steadier male voice.
+  presentador: c('presentador', 'm', 'm2', 1.06, 1.05, 1.08),
 };
 
 /** Narration and system messages. */
