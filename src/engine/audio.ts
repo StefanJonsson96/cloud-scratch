@@ -330,6 +330,49 @@ const TRACKS: Record<string, Track> = {
     bass: 'D3 . A2 . A2 . A2 . E3 . E3 . G2 . D3 . D3 . D3 . A2 . D3 . D3 . A2 . A2 . A2 . E3 . C#3 . G2 . A2 . A2 . D3 . A2 . D2 . D3 . A2 . A2 . A2 . E3 . E3 . B2 . F#3 . F#3 . A2 . E3 . A2 . G2 . D3 . D3 . A2 . E3 . E3 . A2 . E3 . C#3 . D3 . A2 . D2 .',
     perc: 'k . c h c h k . c h c h k . c h c h k . c h c c k . c h c h k . c h c h k . c h c h k . c c c c k . c h c h k . c h c h k . c h c h k . c h c c k . c h c h k . c h c h k . c h c h k . c c c c',
   },
+  // Valencia: a brass-band pasodoble, oom-pah bass and snare.
+  valencia: {
+    bpm: 112,
+    div: 2,
+    lead: 'A4 . C5 E5 A5 - - G5 F5 E5 D5 E5 C5 - A4 . B4 . D5 F5 G#5 - - F5 E5 D5 C5 B4 A4 - - . C5 . E5 G5 C6 - - B5 A5 G5 F5 E5 D5 - G4 . A4 B4 C5 D5 E5 - G#4 . A4 B4 G#4 B4 A4 - - .',
+    bass: 'A2 . E3 . A2 . E3 . D3 . A2 . A2 . E3 . E2 . B2 . E2 . B2 . E2 . B2 . A2 . E3 . C3 . G2 . C3 . G2 . F2 . C3 . G2 . D3 . F2 . C3 . E2 . B2 . E2 . B2 . A2 . E3 .',
+    perc: 'k . s . k . s . k . s . k . s . k . s . k . s . k . s . k . s s k . s . k . s . k . s . k . s . k . s . k . s . k . s . k s s s',
+  },
+  // Sevilla: sevillanas in 3/4 over the Andalusian cadence, with palmas.
+  sevilla: {
+    bpm: 160,
+    div: 2,
+    lead: 'E5 - D5 C5 B4 A4 C5 - B4 A4 G#4 A4 B4 - A4 G4 F4 G4 D5 - - - . . C5 - B4 A4 G4 F4 A4 - G4 F4 E4 F4 G#4 - A4 B4 C5 B4 E4 - - - . . A4 C5 E5 - E5 - F5 E5 D5 - C5 - D5 B4 G4 - G4 - A4 G4 F4 - E4 - F4 A4 C5 - C5 - D5 C5 B4 - A4 - G#4 A4 B4 C5 B4 A4 G#4 - - - E4 .',
+    bass: 'A2 . A2 . E3 . A2 . A2 . E3 . G2 . G2 . D3 . G2 . G2 . D3 . F2 . F2 . C3 . F2 . F2 . C3 . E2 . E2 . B2 . E2 . E2 . B2 . A2 . A2 . E3 . A2 . A2 . E3 . G2 . G2 . D3 . G2 . G2 . D3 . F2 . F2 . C3 . F2 . F2 . C3 . E2 . E2 . B2 . E2 . E2 . B2 .',
+    perc: 'k . c . c c k . c . c c k . c . c c k . c . c c k . c . c c k . c . c c k . c . c c k . c c c c k . c . c c k . c . c c k . c . c c k . c . c c k . c . c c k . c . c c k . c . c c k . c c c c',
+    leadWave: 'triangle',
+  },
+  // The Alhambra: slow and hushed, in a Moorish-sounding scale.
+  alhambra: {
+    bpm: 84,
+    div: 2,
+    lead: 'D5 - - - Eb5 - D5 - C5 - Bb4 - A4 - - - G4 - A4 - Bb4 - A4 G4 F#4 - - - - - . . A4 - Bb4 - C5 - D5 - Eb5 - D5 C5 Bb4 - A4 - G4 - F#4 - Eb4 - F#4 G4 D4 - - - - - . .',
+    bass: 'D2 - - - A2 - - - D2 - - - A2 - - - G2 - - - D3 - - - D2 - - - A2 - - - D2 - - - A2 - - - C3 - - - G2 - - - G2 - - - D3 - - - D2 - - - - - - -',
+    perc: 'k . . h . . h . k . . h . . h . k . . h . . h . k . . h . . h . k . . h . . h . k . . h . . h . k . . h . . h . k . . h . h h h',
+    leadWave: 'triangle',
+  },
+  // Galicia: a muiñeira in 6/8 — the gaita (bagpipe) over a drone.
+  galicia: {
+    bpm: 100,
+    div: 3,
+    lead: 'A4 . D5 D5 . E5 F#5 E5 D5 E5 . A4 B4 . G5 G5 . F#5 E5 - - E5 . . A4 . D5 D5 . E5 F#5 E5 F#5 A5 . F#5 E5 D5 C#5 D5 . E5 D5 - - D5 . . F#5 . A5 A5 . F#5 G5 F#5 E5 F#5 . D5 E5 . G5 G5 . E5 F#5 E5 D5 E5 . . F#5 . A5 A5 . F#5 B5 A5 G5 F#5 . E5 D5 E5 F#5 E5 . C#5 D5 - - - . .',
+    bass: 'D3 . . A2 . . D3 . . A2 . . G2 . . D3 . . A2 . . E3 . . D3 . . A2 . . D3 . . A2 . . A2 . . E3 . . D3 . . A2 . . D3 . . A2 . . G2 . . D3 . . A2 . . E3 . . A2 . . E3 . . D3 . . A2 . . G2 . . D3 . . A2 . . E3 . . D3 . . A2 . .',
+    perc: 'k . h s . h k . h s . h k . h s . h k . h s . h k . h s . h k . h s . h k . h s . h k . h s s s k . h s . h k . h s . h k . h s . h k . h s . h k . h s . h k . h s . h k . h s . h k . h s s s',
+  },
+  // Salamanca: a student tuna's waltz, plucked like a bandurria.
+  salamanca: {
+    bpm: 132,
+    div: 2,
+    lead: 'A4 - D5 - F#5 - E5 - D5 - C#5 - B4 - G5 - F#5 E5 E5 - - - . . C#5 - E5 - G5 - F#5 - E5 - D5 - C#5 D5 E5 - A4 - D5 - - - . . F#5 - A5 - F#5 - G5 - B5 - G5 - F#5 - A5 - D5 - E5 - - - . . D5 - G5 - B5 - A5 - F#5 - D5 - E5 F#5 E5 - C#5 - D5 - - - . .',
+    bass: 'D3 . A2 . A2 . A2 . E3 . E3 . G2 . D3 . D3 . A2 . E3 . E3 . A2 . E3 . E3 . D3 . A2 . A2 . A2 . E3 . E3 . D3 . A2 . A2 . D3 . A2 . A2 . G2 . D3 . D3 . D3 . A2 . A2 . A2 . E3 . E3 . G2 . D3 . D3 . D3 . A2 . A2 . A2 . E3 . E3 . D3 . A2 . A2 .',
+    perc: 'k . h . h . k . h . h . k . h . h . k . h . h . k . h . h . k . h . h . k . h . h . k . h h h h k . h . h . k . h . h . k . h . h . k . h . h . k . h . h . k . h . h . k . h . h . k . h h h h',
+    leadWave: 'triangle',
+  },
   // Caves, cellars and towers.
   dungeon: {
     bpm: 92,

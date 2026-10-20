@@ -7,3 +7,7 @@ import './ch4';
 import './ch5';
 import './act2';
 import './ch6';
+import './ch7';
+import './ch8';
+import './ch9';
+import './ch10';

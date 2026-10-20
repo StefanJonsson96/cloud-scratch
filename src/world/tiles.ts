@@ -76,6 +76,9 @@ export const TILES: Record<string, TileInfo> = {
   q: { solid: false, name: 'moss' },
   l: { solid: false, encounter: true, name: 'fern' },
   j: { solid: false, name: 'parquet' },
+  p: { solid: false, encounter: true, name: 'ricefield' },
+  d: { solid: false, encounter: true, name: 'sawdust' },
+  U: { solid: false, encounter: true, name: 'shadowfloor' },
 };
 
 export function tileInfo(ch: string): TileInfo {
@@ -569,6 +572,29 @@ function drawers(): Record<string, (c: Ctx, r: () => number, frame: number, mask
       }
       px(c, 0, 2, P.r, 16, 1);
       px(c, 0, 10, P.r, 16, 1);
+    },
+    // Shallow paddy water with rows of young rice.
+    ricefield(c, r) {
+      speckle(c, r, P.a, [[P['9'], 10], [P.b, 6]]);
+      for (let y = 2; y < 16; y += 5) {
+        for (let x = 1 + (y % 2) * 2; x < 16; x += 4) {
+          px(c, x, y, P['6'], 1, 3);
+          px(c, x + 1, y - 1, P['5'], 1, 3);
+        }
+      }
+    },
+    // The library's dim aisles: old parquet, in shadow, with a loose page or two.
+    shadowfloor(c, r) {
+      drawers().parquet(c, r, 0, 15);
+      px(c, 0, 0, 'rgba(26,28,44,0.45)', 16, 16);
+      if (r() < 0.5) px(c, Math.floor(r() * 10) + 2, Math.floor(r() * 10) + 2, P.u, 3, 2);
+    },
+    // The workshop floor: planks under curls of wood and blobs of paint.
+    sawdust(c, r) {
+      drawers().parquet(c, r, 0, 15);
+      for (let i = 0; i < 6; i++) px(c, Math.floor(r() * 15), Math.floor(r() * 15), P.n, 2, 1);
+      const paint = [P['2'], P['9'], P['4'], P.p][Math.floor(r() * 4)];
+      px(c, Math.floor(r() * 12) + 2, Math.floor(r() * 12) + 2, paint, 2, 2);
     },
   };
 }

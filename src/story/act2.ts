@@ -51,6 +51,7 @@ const ARRIVALS: Record<string, [string, string]> = {
   mancha: ['La Mancha. Llanuras de trigo hasta el horizonte… y molinos quietos.', 'La Mancha. Plains of wheat to the horizon… and windmills standing still.'],
   valencia: ['Valencia. Huele a pólvora y a azahar.', 'Valencia. It smells of gunpowder and orange blossom.'],
   sevilla: ['Sevilla. Hace un calor de mil demonios.', "Seville. It's devilishly hot."],
+  granada: ['Granada. La Alhambra brilla en la colina, roja como el atardecer.', 'Granada. The Alhambra glows on its hill, red as the sunset.'],
   santiago: ['Santiago de Compostela. Llueve, claro.', "Santiago de Compostela. It's raining, of course."],
   salamanca: ['Salamanca. Las piedras doradas brillan al sol.', 'Salamanca. The golden stones shine in the sun.'],
 };
@@ -61,6 +62,9 @@ script('tren', async (s) => {
   const [es, en] = ARRIVALS[stop.id];
   await s.narrate(en, es);
   s.save();
+  // Stepping off the train onto a story trigger (a new chapter) starts it straight away.
+  const here = s.game.world.triggerHere();
+  if (here) await s.run(here);
 });
 
 script('revisor', async (s) => {

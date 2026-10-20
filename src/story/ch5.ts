@@ -200,6 +200,11 @@ script('abuela_fin', async (s) => {
     await s.run('act2_start');
     return;
   }
+  if (s.has('fin2')) {
+    await s.say('abuela', 'Las cinco Palabras Madre están en casa. Y tú también.', 'The five Mother Words are home. And so are you.');
+    await s.say('abuela', 'Pero un Palabrista nunca deja de aprender. ¡Coge el tren cuando quieras!', 'But a Palabrista never stops learning. Take the train whenever you like!');
+    return;
+  }
   await s.say('abuela', '¿Sabes? Las palabras son poder… pero son más poderosas cuando se comparten.', 'You know what? Words are power… but they are most powerful when they are shared.');
   await s.say('abuela', 'Sigue practicando, ¿vale? ¡Un Palabrista nunca deja de aprender!', 'Keep practising, okay? A Palabrista never stops learning!');
 });

@@ -17,6 +17,16 @@ const SIGNS: Record<string, [string, string]> = {
   villamolinos: ['Villamolinos. Aquí se hace el mejor queso de La Mancha.', 'Windmill Town. The best cheese in La Mancha is made here.'],
   estacion_mancha: ['Estación de Villamolinos. Trenes a Madrid y a toda España.', 'Villamolinos station. Trains to Madrid and all of Spain.'],
   llanura: ['Norte: el cerro de los molinos. Oeste: Villamolinos.', 'North: the windmill ridge. West: Villamolinos.'],
+  estacion_valencia: ['Estación del Norte. Valencia.', 'North Station. Valencia.'],
+  valencia: ['Plaza del Ayuntamiento. ¡Bienvenidos a las Fallas!', 'City Hall Square. Welcome to the Fallas!'],
+  estacion_sevilla: ['Estación de Santa Justa. Sevilla.', 'Santa Justa Station. Seville.'],
+  sevilla: ['La Giralda y la catedral. Al este, el río y el barrio de Triana.', 'The Giralda and the cathedral. To the east, the river and the Triana neighbourhood.'],
+  estacion_santiago: ['Estación de Santiago de Compostela.', 'Santiago de Compostela station.'],
+  santiago: ['Praza do Obradoiro. Aquí termina el Camino de Santiago.', 'The Obradoiro square. This is where the Way of St James ends.'],
+  estacion_salamanca: ['Estación de Salamanca.', 'Salamanca station.'],
+  salamanca: ['Plaza Mayor de Salamanca. Al sur, la universidad.', 'The Plaza Mayor of Salamanca. To the south, the university.'],
+  estacion_granada: ['Estación de Granada. Arriba, la Alhambra.', 'Granada station. Up above, the Alhambra.'],
+  huerta: ['La huerta de Valencia. Al norte, el taller de Ximo. Al oeste, la ciudad.', "Valencia's orchards. To the north, Ximo's workshop. To the west, the city."],
 };
 
 script('sign', async (s) => {

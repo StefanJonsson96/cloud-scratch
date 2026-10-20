@@ -202,6 +202,13 @@ export class Overworld {
     this.stepCount++;
   }
 
+  /** The script of an active trigger under the player, if any. */
+  triggerHere(): string | undefined {
+    return (this.map.triggers ?? []).find(
+      (t) => this.px >= t.x && this.px < t.x + (t.w ?? 1) && this.py >= t.y && this.py < t.y + (t.h ?? 1) && (!t.when || t.when(this.g)),
+    )?.script;
+  }
+
   private async arrive() {
     this.g.x = this.px;
     this.g.y = this.py;
@@ -219,11 +226,9 @@ export class Overworld {
       await this.lockWhile(this.transition(warp.to, warp.tx, warp.ty, warp.dir ?? this.dir));
       return;
     }
-    const trig = (this.map.triggers ?? []).find(
-      (t) => this.px >= t.x && this.px < t.x + (t.w ?? 1) && this.py >= t.y && this.py < t.y + (t.h ?? 1) && (!t.when || t.when(this.g)),
-    );
+    const trig = this.triggerHere();
     if (trig) {
-      await this.lockWhile(this.host.runScript(trig.script));
+      await this.lockWhile(this.host.runScript(trig));
       return;
     }
     if (tileInfo(this.tileAt(this.px, this.py)).encounter && this.map.encounters) {
@@ -404,9 +409,10 @@ export class Overworld {
     ents.push({ y: ppy - camY, draw: () => this.drawChar('hero', this.dir, pf, ppx - camX, ppy - camY, false) });
     ents.sort((a, b) => a.y - b.y).forEach((e) => e.draw());
     if (this.g.settings.marker !== false) this.drawMarker(camX, camY);
-    if (this.map.weather) this.drawWeather(this.map.weather, W, H);
+    const weather = typeof this.map.weather === 'function' ? this.map.weather(this.g) : this.map.weather;
+    if (weather) this.drawWeather(weather, W, H);
 
-    if (this.map.dark) {
+    if (typeof this.map.dark === 'function' ? this.map.dark(this.g) : this.map.dark) {
       const cx = ppx - camX + TILE / 2;
       const cy = ppy - camY + TILE / 2;
       const grad = c.createRadialGradient(cx, cy, 18, cx, cy, 90);

@@ -26,10 +26,11 @@ const f = (k: string) => (g: GameState) => !!g.flags[k];
 export const STOPS: Stop[] = [
   { id: 'puerto', es: 'Puerto Alegre', en: 'home, on the north coast', lon: -5.3, lat: 43.55, map: 'estacion', x: 10, y: 3, dir: 'down', board: ['estacion', 10, 2], open: () => true },
   { id: 'mancha', es: 'La Mancha', en: 'windmills and wheat', lon: -3.12, lat: 39.4, map: 'villamolinos', x: 4, y: 9, dir: 'down', board: ['villamolinos', 4, 8], open: f('act2') },
-  { id: 'valencia', es: 'Valencia', en: 'Las Fallas', lon: -0.38, lat: 39.47, map: 'valencia', x: 3, y: 12, dir: 'right', board: ['valencia', 3, 11], open: f('mancha_done') },
-  { id: 'sevilla', es: 'Sevilla', en: "Lola's home", lon: -5.98, lat: 37.39, map: 'sevilla', x: 3, y: 12, dir: 'right', board: ['sevilla', 3, 11], open: f('valencia_done') },
-  { id: 'santiago', es: 'Santiago de Compostela', en: 'the end of the Camino', lon: -8.54, lat: 42.88, map: 'santiago', x: 3, y: 12, dir: 'right', board: ['santiago', 3, 11], open: f('sevilla_done') },
-  { id: 'salamanca', es: 'Salamanca', en: 'the old university', lon: -5.66, lat: 40.97, map: 'salamanca', x: 3, y: 12, dir: 'right', board: ['salamanca', 3, 11], open: f('santiago_done') },
+  { id: 'valencia', es: 'Valencia', en: 'Las Fallas', lon: -0.38, lat: 39.47, map: 'valencia', x: 5, y: 3, dir: 'down', board: ['valencia', 5, 2], open: f('mancha_done') },
+  { id: 'sevilla', es: 'Sevilla', en: "Lola's home", lon: -5.98, lat: 37.39, map: 'sevilla', x: 5, y: 3, dir: 'down', board: ['sevilla', 5, 2], open: f('valencia_done') },
+  { id: 'granada', es: 'Granada', en: 'the Alhambra', lon: -3.6, lat: 37.18, map: 'granada', x: 5, y: 3, dir: 'down', board: ['granada', 5, 2], open: f('granada_open') },
+  { id: 'santiago', es: 'Santiago de Compostela', en: 'the end of the Camino', lon: -8.54, lat: 42.88, map: 'santiago', x: 5, y: 3, dir: 'down', board: ['santiago', 5, 2], open: f('sevilla_done') },
+  { id: 'salamanca', es: 'Salamanca', en: 'the old university', lon: -5.66, lat: 40.97, map: 'salamanca', x: 5, y: 3, dir: 'down', board: ['salamanca', 5, 2], open: f('santiago_done') },
 ];
 
 export const STOP_BY_ID: Readonly<Record<string, Stop>> = Object.fromEntries(STOPS.map((s) => [s.id, s]));

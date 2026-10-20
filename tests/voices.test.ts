@@ -32,7 +32,7 @@ describe('recorded dialogue', () => {
     for (const v of Object.values(CAST_VOICES)) {
       if (v.gender === 'f') expect(v.base, v.id).toBe('f');
       // Boys use the female voice sped up, like a child's.
-      else if (!['nino', 'pablito'].includes(v.id)) expect(['m', 'm2'], v.id).toContain(v.base);
+      else if (!['nino', 'pablito', 'curro'].includes(v.id)) expect(['m', 'm2'], v.id).toContain(v.base);
     }
     expect(NARRATOR_VOICE.base).toBe('f');
     expect(heroVoice('f').base).toBe('f');

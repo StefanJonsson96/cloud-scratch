@@ -34,7 +34,7 @@ import { makeChallenge, type Challenge } from '../learn/challenges';
 import { record } from '../learn/srs';
 import type { Grade } from '../learn/check';
 import { ACCESSORIES } from '../data/items';
-import { grantXp, todayKey, type GameState } from '../state';
+import { fullHeal, grantXp, todayKey, type GameState } from '../state';
 import { listeningAvailable } from '../engine/speech';
 import { playMusic, currentMusic, sfx } from '../engine/audio';
 import { runChallenge } from '../ui/challengeView';
@@ -114,12 +114,15 @@ export async function runBattle(ctx: BattleContext, setup: BattleSetup): Promise
     for (let tries = 0; ; tries++) {
       const { result, view } = await fight(ctx, setup, Math.min(ANIMO_MAX, tries));
       if (result !== 'lose') return result;
-      const choice = await view.defeat(!!setup.noGameOver, Math.min(ANIMO_MAX, tries + 1));
+      const boss = setup.enemies.some((id) => ENEMIES[id]?.boss);
+      const choice = await view.defeat(!!setup.noGameOver, Math.min(ANIMO_MAX, tries + 1), boss);
       view.destroy();
       if (choice === 'retry') {
         const snap = JSON.parse(before);
         g.party = snap.party;
         g.inventory = snap.inventory;
+        // A boss is retried rested: walking in hurt shouldn't make every retry hopeless.
+        if (boss) for (const m of g.party) fullHeal(m);
         continue;
       }
       return 'lose';

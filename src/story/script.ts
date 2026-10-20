@@ -4,6 +4,7 @@ import type { Game } from '../game';
 import type { NpcInstance } from '../world/overworld';
 import type { Dir } from '../state';
 import { addItem, addMember, fullHeal, save } from '../state';
+import type { MemberState } from '../battle/rules';
 import type { MemberId } from '../battle/defs';
 import { MEMBERS } from '../battle/defs';
 import type { BattleOutcome, BattleSetup } from '../battle/battle';
@@ -76,6 +77,31 @@ export const CAST: Record<string, Speaker> = {
   pablito: { name: 'Pablito', face: 'pablito', voice: CAST_VOICES.pablito },
   posadero: { name: 'El ventero', face: 'posadero', voice: CAST_VOICES.posadero },
   pastor: { name: 'El pastor', face: 'pastor', voice: CAST_VOICES.pastor },
+  vicenta: { name: 'Vicenta', face: 'vicenta', voice: CAST_VOICES.vicenta },
+  pepet: { name: 'Pepet', face: 'pepet', voice: CAST_VOICES.pepet },
+  horchatera: { name: 'La horchatera', face: 'horchatera', voice: CAST_VOICES.horchatera },
+  hostalera: { name: 'La hostalera', face: 'vecina2', voice: CAST_VOICES.hostalera },
+  adivina: { name: 'La adivina', face: 'adivina', voice: CAST_VOICES.adivina },
+  director: { name: 'El director de la banda', face: 'director', voice: CAST_VOICES.director },
+  tio_vicent: { name: 'Tío Vicent', face: 'tio_vicent', voice: CAST_VOICES.tio_vicent },
+  ximo: { name: 'Ximo', face: 'ximo', voice: CAST_VOICES.ximo },
+  ninot: { name: 'El ninot', face: 'ninot', voice: CAST_VOICES.ninot },
+  rocio: { name: 'Rocío', face: 'rocio', voice: CAST_VOICES.rocio },
+  manolo: { name: 'Abuelo Manolo', face: 'manolo', voice: CAST_VOICES.manolo },
+  carmela: { name: 'Carmela', face: 'carmela', voice: CAST_VOICES.carmela },
+  curro: { name: 'Curro', face: 'curro', voice: CAST_VOICES.curro },
+  guia: { name: 'La guía', face: 'guia', voice: CAST_VOICES.guia },
+  jardinero: { name: 'El jardinero', face: 'jardinero', voice: CAST_VOICES.jardinero },
+  fantasma: { name: 'El poeta', face: 'fantasma', voice: CAST_VOICES.fantasma },
+  maruxa: { name: 'Maruxa', face: 'maruxa', voice: CAST_VOICES.maruxa },
+  gaitero: { name: 'El gaitero', face: 'gaitero', voice: CAST_VOICES.gaitero },
+  pulpeira: { name: 'La pulpeira', face: 'pulpeira', voice: CAST_VOICES.pulpeira },
+  uxia: { name: 'Uxía', face: 'uxia', voice: CAST_VOICES.uxia },
+  dama: { name: 'La Dama Gris', face: 'dama', voice: CAST_VOICES.dama },
+  ines: { name: 'La profesora Inés', face: 'profesora', voice: CAST_VOICES.ines },
+  tuno: { name: 'El tuno', face: 'tuno', voice: CAST_VOICES.tuno },
+  librera: { name: 'La librera', face: 'librera', voice: CAST_VOICES.librera },
+  estudiante: { name: 'Un estudiante', face: 'vecino', voice: CAST_VOICES.estudiante },
 };
 
 export class Script {
@@ -227,6 +253,31 @@ export class Script {
       es: `¡${MEMBERS[id].name} se une al grupo!`,
       en: `${MEMBERS[id].name} joins the party! (${MEMBERS[id].roleEn} · fights with ${MEMBERS[id].styleEn.toLowerCase()} challenges)`,
     });
+  }
+
+  /** A member leaves the party for a while; their progress is kept for when they come back. */
+  leave(id: MemberId) {
+    const m = this.g.party.find((x) => x.id === id);
+    if (!m) return;
+    this.g.flags[`away:${id}`] = JSON.stringify(m);
+    this.g.party = this.g.party.filter((x) => x !== m);
+  }
+
+  /** A member who left comes back, caught up to the others' level. */
+  async rejoin(id: MemberId) {
+    const saved = this.g.flags[`away:${id}`];
+    if (typeof saved !== 'string') return this.join(id);
+    delete this.g.flags[`away:${id}`];
+    const m = JSON.parse(saved) as MemberState;
+    const avg = Math.round(this.g.party.reduce((a, x) => a + x.level, 0) / Math.max(1, this.g.party.length));
+    if (m.level < avg) {
+      m.level = avg;
+      m.xp = 0;
+    }
+    fullHeal(m);
+    this.g.party.push(m);
+    sfx('levelup');
+    await this.game.dialogue.say({ es: `¡${MEMBERS[id].name} vuelve al grupo!`, en: `${MEMBERS[id].name} is back in the party!` });
   }
 
   heal() {

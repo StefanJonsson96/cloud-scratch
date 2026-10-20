@@ -840,6 +840,42 @@ textarea {
 .bg-mancha {
   background: linear-gradient(180deg, #4f86d0 0%, #b8d8f0 47%, #e8c070 48%, #c9963c 72%, #8b5a3c 100%);
 }
+.bg-valencia {
+  background: linear-gradient(180deg, #1f2a5c 0%, #5d4f9e 40%, #f2a65a 62%, #e8dca8 63%, #c9b67e 100%);
+}
+.bg-huerta {
+  background: linear-gradient(180deg, #4f86d0 0%, #a8d2f0 46%, #38b764 47%, #2e6b3f 70%, #41a6f6 71%, #3b5dc9 100%);
+}
+.bg-taller {
+  background: radial-gradient(ellipse at 50% 70%, #8b5a3c 0%, #4b2c20 60%, #2a1712 100%);
+}
+.bg-sevilla {
+  background: linear-gradient(180deg, #f2a65a 0%, #ffe9a8 45%, #e8dca8 46%, #c28560 100%);
+}
+.bg-alcazar {
+  background: linear-gradient(180deg, #a8d2f0 0%, #f4f4f4 40%, #38b764 41%, #2e6b3f 100%);
+}
+.bg-granada {
+  background: linear-gradient(180deg, #5d275d 0%, #b13e53 40%, #ef7d57 60%, #c28560 61%, #8b5a3c 100%);
+}
+.bg-alhambra {
+  background: linear-gradient(180deg, #29366f 0%, #3b5dc9 35%, #d4a95b 36%, #9c6b43 100%);
+}
+.bg-santiago {
+  background: linear-gradient(180deg, #566c86 0%, #94b0c2 45%, #b8c7d3 46%, #2e6b3f 70%, #566c86 100%);
+}
+.bg-fraga {
+  background: linear-gradient(180deg, #1a1c2c 0%, #24462f 40%, #2e6b3f 60%, #142a1c 100%);
+}
+.bg-salamanca {
+  background: linear-gradient(180deg, #ef7d57 0%, #ffcd75 45%, #d4a95b 46%, #9c6b43 100%);
+}
+.bg-biblioteca {
+  background: radial-gradient(ellipse at 50% 60%, #8b5a3c 0%, #4b2c20 55%, #1a1c2c 100%);
+}
+.bg-libro {
+  background: radial-gradient(ellipse at 50% 40%, #f4f4f4 0%, #b8c7d3 40%, #566c86 100%);
+}
 .bg-cima {
   background: radial-gradient(ellipse at 50% 30%, #5d275d 0%, #1a1028 60%, #05040a 100%);
 }

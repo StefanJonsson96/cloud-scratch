@@ -191,7 +191,8 @@ async function route(page, tx, ty, adjacent) {
         const isGoal = goal(nx, ny);
         // Don't wander through other exits on the way.
         if (warps.has(key(nx, ny)) && !(isGoal && !adjacent)) continue;
-        if (!w.passable(nx, ny)) continue;
+        // An exit can be stepped on even when its tile is solid (a gate), like in the game.
+        if (!w.passable(nx, ny) && !(isGoal && warps.has(key(nx, ny)))) continue;
         prev.set(key(nx, ny), [x, y, d]);
         if (isGoal) { end = [nx, ny]; break; }
         q.push([nx, ny]);

@@ -81,6 +81,18 @@ export const puerto: MapDef = {
     { id: 'bruno', x: 16, y: 11, sprite: 'bruno', dir: 'down', talk: 'bruno_fin', when: all(f('fin'), nf('act2')) },
     { id: 'mateo_fin', x: 13, y: 10, sprite: 'mateo', dir: 'right', talk: 'mateo_fin', when: all(f('fin'), nf('act2')), wander: true },
     { id: 'lola_fin', x: 17, y: 10, sprite: 'lola', dir: 'left', talk: 'lola_fin', when: all(f('fin'), nf('act2')) },
+    // The last festival: friends from all over Spain.
+    { id: 'bruno_fin2', x: 16, y: 11, sprite: 'bruno', dir: 'down', talk: 'invitado:bruno', when: f('fin2') },
+    { id: 'mateo_fin2', x: 12, y: 12, sprite: 'mateo', dir: 'right', talk: 'invitado:mateo', when: f('fin2'), wander: true },
+    { id: 'lola_fin2', x: 17, y: 10, sprite: 'lola', dir: 'left', talk: 'invitado:lola', when: f('fin2') },
+    { id: 'alonso_fin2', x: 8, y: 12, sprite: 'alonso', dir: 'right', talk: 'invitado:alonso', when: f('fin2') },
+    { id: 'sancha_fin2', x: 9, y: 13, sprite: 'sancha', dir: 'up', talk: 'invitado:sancha', when: f('fin2') },
+    { id: 'vicenta_fin2', x: 6, y: 12, sprite: 'vicenta', dir: 'down', talk: 'invitado:vicenta', when: f('fin2') },
+    { id: 'rocio_fin2', x: 24, y: 12, sprite: 'rocio', dir: 'left', talk: 'invitado:rocio', when: f('fin2') },
+    { id: 'manolo_fin2', x: 25, y: 13, sprite: 'manolo', dir: 'left', talk: 'invitado:manolo', when: f('fin2') },
+    { id: 'maruxa_fin2', x: 27, y: 12, sprite: 'maruxa', dir: 'left', talk: 'invitado:maruxa', when: f('fin2') },
+    { id: 'peregrina_fin2', x: 23, y: 13, sprite: 'peregrina', dir: 'up', talk: 'invitado:peregrina', when: f('fin2') },
+    { id: 'memoria_fin2', x: 26, y: 10, sprite: 'dama', dir: 'down', talk: 'invitado:memoria', when: f('fin2') },
   ],
   warps: [
     { x: 4, y: 4, to: 'casa_abuela', tx: 5, ty: 6, dir: 'up' },

@@ -73,9 +73,12 @@ export interface MapDef {
   patch?: (g: GameState) => [x: number, y: number, ch: string][];
   /** Script run every time the map is entered. */
   onEnter?: string;
-  dark?: boolean;
+  /** Night: a dark vignette around the player (caves, or a plaza after sunset). */
+  dark?: boolean | ((g: GameState) => boolean);
   /** Which train station serves this map (see world/stops.ts); Act I's coast is 'puerto'. */
   region?: string;
   /** Particles over the map: Galician rain, Fallas embers, falling petals. */
-  weather?: 'rain' | 'embers' | 'petals';
+  weather?: Weather | ((g: GameState) => Weather | undefined);
 }
+
+export type Weather = 'rain' | 'embers' | 'petals';

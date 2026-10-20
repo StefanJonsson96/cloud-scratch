@@ -15,6 +15,18 @@ export interface Goal {
 const count = (g: GameState, keys: string[]) => keys.filter((k) => g.flags[k]).length;
 const FLOWERS = ['flor_roja', 'flor_azul', 'flor_amarilla'];
 const MONKS = ['monje_mano', 'monje_oreja', 'monje_corazon'];
+const NINOTS = ['ninot_cocinera', 'ninot_musico', 'ninot_pintor'];
+const NINOT_AT: [number, number][] = [
+  [5, 9],
+  [12, 9],
+  [19, 9],
+];
+const INGREDIENTS = ['tengo_orujo', 'tengo_limón', 'tengo_café'];
+const INGREDIENT_AT: [number, number][] = [
+  [5, 12],
+  [10, 8],
+  [24, 10],
+];
 const FLOWER_AT: [number, number][] = [
   [5, 9],
   [34, 9],
@@ -88,7 +100,61 @@ export function currentGoal(g: GameState): Goal | null {
   if (!f('gigante')) return { es: 'Sube al molino grande.', en: 'Climb to the biggest windmill.', at: ['cerro', 13, 5] };
   if (!f('mancha_word')) return { es: 'Toca el cristal.', en: 'Touch the crystal.', at: ['cerro', 15, 5] };
   if (!f('mancha_reward')) return { es: 'Vuelve con Don Alonso.', en: 'Go back and tell Don Alonso.', at: ['villamolinos', 27, 11] };
-  return { es: '¡Continuará!', en: 'To be continued: Valencia is coming soon.' };
+  if (!f('ch7')) return { es: 'Toma el tren a Valencia.', en: 'Take the train to Valencia.', at: ['valencia', 5, 3] };
+
+  // Chapter 7
+  if (!f('pepet_met')) return { es: 'Busca al pirotécnico en la plaza.', en: 'Find Pepet, the fireworks master, by the mascletà in the square.', at: ['valencia', 17, 13] };
+  if (!f('gate_taller')) return { es: 'Ve a la huerta y llama a la puerta del taller.', en: "Go east to the huerta and knock at Ximo's workshop.", at: ['huerta', 32, 5] };
+  const ninots = count(g, NINOTS);
+  if (ninots < 3) {
+    const next = NINOTS.findIndex((k) => !g.flags[k]);
+    return { es: `Despierta a los ninots del taller (${ninots}/3).`, en: `Wake the three big ninots in the workshop with the future tense (${ninots}/3).`, at: ['taller', ...NINOT_AT[next]] };
+  }
+  if (!f('chispa')) return { es: 'Habla con Ximo.', en: 'Talk to Ximo, behind the gate.', at: ['taller', 12, 3] };
+  if (!f('gran_falla')) return { es: 'Vuelve a la plaza: ¡es la noche de la cremà!', en: "Go back to the square with the Spark: it's the night of the cremà!", at: ['valencia', 24, 11] };
+  if (!f('valencia_word')) return { es: 'Toca el cristal.', en: 'Touch the crystal.', at: ['valencia', 27, 12] };
+  if (!f('valencia_reward')) return { es: 'Habla con Vicenta.', en: 'Talk to Vicenta.', at: ['valencia', 21, 12] };
+  if (!f('ch8')) return { es: 'Toma el tren a Sevilla.', en: 'Take the train to Seville.', at: ['sevilla', 5, 3] };
+
+  // Chapter 8
+  if (!f('lola_home')) return { es: 'Ve a casa de Lola, en Triana.', en: "Go to Lola's house in Triana, across the bridge.", at: ['sevilla', 34, 9] };
+  if (!f('rocio_ok')) return { es: 'Ayuda a la madre de Lola.', en: "Help Lola's mother: tell her what to do.", at: ['sevilla', 33, 6] };
+  if (!f('guitarra')) return { es: 'Busca la guitarra en los jardines del Alcázar.', en: "Find Grandad Manolo's guitar in the Alcázar gardens.", at: ['alcazar', 16, 2] };
+  if (!f('granada_open')) return { es: 'Lleva la guitarra al abuelo Manolo.', en: 'Take the guitar back to Grandad Manolo.', at: ['sevilla', 36, 7] };
+  if (!f('granada_seen')) return { es: 'Toma el tren a Granada.', en: 'Take the train to Granada.', at: ['granada', 5, 3] };
+  if (!f('entradas')) return { es: 'Pide entrar en la Alhambra.', en: 'Ask (politely!) to get into the Alhambra.', at: ['granada', 30, 1] };
+  if (!f('puerta1')) return { es: 'Abre la primera puerta de la Alhambra.', en: "Open the Alhambra's first door.", at: ['alhambra', 15, 12] };
+  if (!f('puerta2')) return { es: 'Abre la segunda puerta.', en: 'Open the second door.', at: ['alhambra', 15, 6] };
+  if (!f('leon')) return { es: 'Entra en el Patio de los Leones.', en: 'Go into the Court of the Lions.', at: ['alhambra', 15, 5] };
+  if (!f('sevilla_word')) return { es: 'Toca el cristal.', en: 'Touch the crystal.', at: ['alhambra', 10, 4] };
+  if (!f('sevilla_reward')) return { es: 'Vuelve a casa de Lola, en Sevilla.', en: "Go back to Lola's house in Seville.", at: ['sevilla', 33, 6] };
+  if (!f('ch9')) return { es: 'Toma el tren a Santiago de Compostela.', en: 'Take the train to Santiago de Compostela.', at: ['santiago', 5, 3] };
+
+  // Chapter 9
+  if (!f('maruxa_hint')) return { es: 'Habla con la peregrina en la plaza.', en: 'Talk to the pilgrim in front of the cathedral — you met her on the road in chapter 2.', at: ['santiago', 20, 8] };
+  if (!f('maruxa_met')) return { es: 'Busca a la meiga en el bosque, al este.', en: 'Find the meiga (the wise woman) in the woods to the east.', at: ['fraga', 26, 10] };
+  const got = count(g, INGREDIENTS);
+  if (got < 3) {
+    const next = INGREDIENTS.findIndex((k) => !g.flags[k]);
+    return { es: `Busca los ingredientes de la queimada (${got}/3).`, en: `Find the queimada ingredients in Santiago (${got}/3): orujo, a lemon, coffee.`, at: ['santiago', ...INGREDIENT_AT[next]] };
+  }
+  if (!f('queimada')) return { es: 'Lleva los ingredientes a Maruxa.', en: 'Take the ingredients to Maruxa, the meiga.', at: ['fraga', 26, 10] };
+  if (!f('compana')) return { es: 'Espera a la Santa Compaña en el cruceiro.', en: 'Wait for the Santa Compaña at the stone cross, in the clearing to the east.', at: ['fraga', 34, 14] };
+  if (!f('santiago_word')) return { es: 'Toca el cristal.', en: 'Touch the crystal.', at: ['fraga', 32, 12] };
+  if (!f('santiago_reward')) return { es: 'Vuelve con la peregrina.', en: 'Go back to the pilgrim in Santiago.', at: ['santiago', 20, 8] };
+  if (!f('ch10')) return { es: 'Toma el tren a Salamanca.', en: 'Take the train to Salamanca and rescue Bruno.', at: ['salamanca', 5, 3] };
+
+  // Chapter 10
+  if (!f('ines_met')) return { es: 'Busca a la profesora Inés, delante de la universidad.', en: 'Find Professor Inés in front of the university, south of the Plaza Mayor.', at: ['salamanca', 23, 21] };
+  if (!f('llave')) return { es: 'Busca la rana en la fachada de la universidad.', en: "Find the frog on the university's carved façade.", at: ['salamanca', 24, 19] };
+  if (!f('duda1')) return { es: 'Entra en la biblioteca y abre la primera puerta.', en: "Go into the library (the door right of the façade) and open the first door.", at: ['biblioteca', 14, 15] };
+  if (!f('duda2')) return { es: 'Abre la segunda puerta.', en: 'Open the second door.', at: ['biblioteca', 14, 8] };
+  if (!f('guardian')) return { es: 'Sube por la escalera.', en: 'Climb the stairs at the back of the library.', at: ['biblioteca', 14, 2] };
+  if (!f('bruno_back')) return { es: 'Rescata a Bruno.', en: 'Rescue Bruno.', at: ['libro', 12, 10] };
+  if (!f('dama')) return { es: 'Sube hasta la Dama Gris.', en: 'Climb up to the Grey Lady.', at: ['libro', 12, 6] };
+  if (!f('salamanca_word')) return { es: 'Toca el cristal.', en: 'Touch the last crystal.', at: ['libro', 14, 3] };
+  if (!f('fin2')) return null;
+  return { es: '¡Fin! Habla con todos en la fiesta.', en: 'The End! Talk to everyone at the party — friends have come from all over Spain.' };
 }
 
 /**

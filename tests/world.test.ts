@@ -125,7 +125,9 @@ describe('story text', () => {
   const spanish: string[] = [];
   const clean = (s: string) => s.replace(/\$\{[^}]*\}/g, 'Alex').replace(/\{([^{}|]*)\|([^{}|]*)\}/g, '$1 $2');
   for (const m of storySrc.matchAll(/\.(?:say|ask|quiz)\(\s*'[^']*',\s*(['`"])((?:\\.|(?!\1).)*)\1/g)) spanish.push(clean(m[2]));
-  for (const m of storySrc.matchAll(/\[\s*(['`"])((?:\\.|(?!\1).)*)\1,\s*(['`"])/g)) spanish.push(clean(m[2]));
+  // [es, en] pairs — but not lists of English answer options.
+  const english = /\b(the|that|is|it's|there's|I'm|I|you|my|of)\b/i;
+  for (const m of storySrc.matchAll(/\[\s*(['`"])((?:\\.|(?!\1).)*)\1,\s*(['`"])/g)) if (!english.test(m[2])) spanish.push(clean(m[2]));
   for (const m of storySrc.matchAll(/narrate\(\s*(['`"])(?:\\.|(?!\1).)*\1,\s*(['`"])((?:\\.|(?!\2).)*)\2/g)) spanish.push(clean(m[3]));
 
   it('found the dialogue', () => {
@@ -133,7 +135,7 @@ describe('story text', () => {
   });
 
   it('every Spanish word in the story can be tapped for a translation', () => {
-    const names = ['Alex', 'Mateo', 'Lola', 'Rosa', 'Bruno', 'Pepe', 'Lucía', 'Dani', 'Paco', 'Ramón', 'Carmen', 'Julián', 'Pilar', 'Encarna', 'Marta', 'Tomás', 'Sevilla', 'Santiago', 'Compostela', 'Asturias', 'Puerto', 'Alegre', 'San', 'Sabor', 'Callado', 'Glotón', 'Gólem', 'LUZ', 'COLOR', 'VOZ', 'ÑAM', 'Doña', 'Don', 'R', 'Zzz', 'Clic', 'Auuu', 'Auuuuu', 'Auu', 'Uf', 'Eco', 'Monte', 'Gaviota', 'Madrid', 'exhausted', "I'm", 'name', 'm', 'very', 'sleepy', 'España', 'Alonso', 'Sancha', 'Villamolinos', 'Mambrino', 'Pablito'];
+    const names = ['Alex', 'Mateo', 'Lola', 'Rosa', 'Bruno', 'Pepe', 'Lucía', 'Dani', 'Paco', 'Ramón', 'Carmen', 'Julián', 'Pilar', 'Encarna', 'Marta', 'Tomás', 'Sevilla', 'Santiago', 'Compostela', 'Asturias', 'Puerto', 'Alegre', 'San', 'Sabor', 'Callado', 'Glotón', 'Gólem', 'LUZ', 'COLOR', 'VOZ', 'ÑAM', 'Doña', 'Don', 'R', 'Zzz', 'Clic', 'Auuu', 'Auuuuu', 'Auu', 'Uf', 'Eco', 'Monte', 'Gaviota', 'Madrid', 'name', 'm', 'España', 'Alonso', 'Sancha', 'Villamolinos', 'Mambrino', 'Pablito', 'Vicenta', 'Pepet', 'Ximo', 'Vicent', 'Manila', 'Alhambra', 'Andalucía', 'Betis', 'Generalife', 'Nicolás', 'Triana', 'Uxía', 'Maruxa', 'Obradoiro', 'MORRIÑA', 'Galicia', 'Memoria', 'Nebrija', 'Luis', 'León', 'Fray', 'Villamolinos', 'Tralarí', 'Tralará', 'OLVIDO', 'PALABRA', 'Inés', 'Manolo', 'Rocío', 'Rocio'];
     const missing = new Map<string, number>();
     for (const line of spanish) {
       for (const w of unknownWords(line, names)) {
@@ -154,12 +156,16 @@ describe('objectives', () => {
     'ch4', 'tomas_story', 'monje_mano', 'monje_oreja', 'monje_corazon', 'golem', 'voz',
     'ch5', 'gate_torre1', 'gate_torre2', 'final', 'fin',
     'act2', 'ch6', 'alonso_met', 'gate_cerro', 'gigante', 'mancha_word', 'mancha_reward',
+    'ch7', 'pepet_met', 'gate_taller', 'ninot_cocinera', 'ninot_musico', 'ninot_pintor', 'chispa', 'gran_falla', 'valencia_word', 'valencia_reward',
+    'ch8', 'lola_home', 'rocio_ok', 'guitarra', 'granada_open', 'granada_seen', 'entradas', 'puerta1', 'puerta2', 'leon', 'sevilla_word', 'sevilla_reward',
+    'ch9', 'maruxa_hint', 'maruxa_met', 'tengo_orujo', 'tengo_limón', 'tengo_café', 'queimada', 'compana', 'santiago_word', 'santiago_reward',
+    'ch10', 'ines_met', 'llave', 'duda1', 'duda2', 'guardian', 'bruno_back', 'dama', 'salamanca_word', 'fin2',
   ];
   const stages = ORDER.map((_, i) => ({ flags: Object.fromEntries(ORDER.slice(0, i).map((k) => [k, true])) }) as unknown as GameState);
 
   it('there is always something to do until the final scene', () => {
     for (const [i, g] of stages.entries()) {
-      if (ORDER[i - 1] === 'final') continue;
+      if (ORDER[i - 1] === 'final' || ORDER[i - 1] === 'salamanca_word') continue;
       expect(currentGoal(g), `after ${ORDER[i - 1] ?? 'start'}`).not.toBeNull();
     }
   });
@@ -176,8 +182,8 @@ describe('objectives', () => {
   it('every objective points somewhere, reachable from the previous one', () => {
     let from = 'casa_abuela';
     for (const [i, g] of stages.entries()) {
-      // The finale takes everyone home to the festival.
-      if (ORDER[i - 1] === 'fin') from = 'puerto';
+      // The finales take everyone home to the festival.
+      if (ORDER[i - 1] === 'fin' || ORDER[i - 1] === 'fin2') from = 'puerto';
       const goal = currentGoal(g);
       if (!goal?.at) continue;
       const [map, x, y] = goal.at;
@@ -191,7 +197,7 @@ describe('objectives', () => {
   });
 
   it('objectives use words the dictionary knows', () => {
-    const names = ['Carmen', 'Mateo', 'Ramón', 'San', 'Sabor', 'Monte', 'Eco', 'Torre', 'Muda', 'Callado', 'Puerto', 'Alegre', 'Doña', 'Don', 'Alonso', 'Mancha'];
+    const names = ['Carmen', 'Mateo', 'Ramón', 'San', 'Sabor', 'Monte', 'Eco', 'Torre', 'Muda', 'Callado', 'Puerto', 'Alegre', 'Doña', 'Don', 'Alonso', 'Mancha', 'Valencia', 'Vicenta', 'Ximo', 'Sevilla', 'Lola', 'Triana', 'Alcázar', 'Manolo', 'Granada', 'Alhambra', 'Patio', 'Leones', 'Santiago', 'Compostela', 'Maruxa', 'Compaña', 'Salamanca', 'Inés', 'Bruno', 'Dama', 'Gris'];
     const missing = new Set<string>();
     for (const g of stages) for (const w of unknownWords(currentGoal(g)?.es ?? '', names)) missing.add(w);
     expect([...missing]).toEqual([]);
